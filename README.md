@@ -1,59 +1,26 @@
-# RelaxKon
+# RelaxKon website client
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.8.
+`RelaxKon/` is the Angular 22 client for the official RelaxKon website. It contains all browser UI: layouts, routes, pages, theme switching, runtime UI language switching, and typed API clients.
 
-## Development server
+## Requirements and commands
 
-To start a local development server, run:
+- Node.js compatible with Angular 22 and npm 11+
+- `npm install`
+- `npm start` — serves `http://localhost:4200`
+- `npm run build` — creates the production build in `dist/RelaxKon`
 
-```bash
-ng serve
-```
+## API and local proxy
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+All client requests use the relative `/api` base URL supplied by `src/environments/`. `npm start` loads `proxy.conf.json`, which forwards `/api` to the backend HTTPS development endpoint at `https://localhost:7252`. The proxy disables certificate validation only for local development.
 
-## Code scaffolding
+Do not hard-code an API host in a component or service. A production reverse proxy should expose the same `/api` path on `relaxkon.com`.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Theme and UI languages
 
-```bash
-ng generate component component-name
-```
+`ThemeService` supports system, light, and dark preferences, persists the choice in LocalStorage, and watches `prefers-color-scheme` in system mode. Theme values are CSS design tokens in `src/styles.scss`.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+UI translations are runtime-loaded from `public/assets/i18n/`. To add a UI language, add its JSON dictionary, extend `SiteLanguage`, and add it to the header selector. Documentation language is URL-based and comes from the API.
 
-```bash
-ng generate --help
-```
+## Project boundary
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+This project is the only home for the website frontend. Do not add website UI to `RelaxKonServer`; it is an API-only application. See [`../WEBSITE_ARCHITECTURE.md`](../WEBSITE_ARCHITECTURE.md) for the workspace-wide boundary rules.

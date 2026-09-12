@@ -1,0 +1,3 @@
+import { Component } from '@angular/core';
+@Component({ template: `<section class="page"><div class="container"><p class="eyebrow">About RelaxKon</p><h1>Build the workspace, not a screen stream.</h1><p class="lead">RelaxKon is developing software around a simple premise: rich, responsive interfaces belong on the device in front of you, while workspaces, services, and state should remain available across devices.</p><div class="notice">RelaxKonOS is not presented as a conventional remote-desktop product. Its client and server have intentionally different roles.</div></div></section>` })
+export class AboutComponent {}

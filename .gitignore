@@ -10,6 +10,16 @@
 /node_modules
 npm-debug.log
 yarn-error.log
+pnpm-debug.log
+
+# Angular build/cache artifacts
+/.angular
+/dist
+/coverage
+/.cache
+
+# Local environment overrides (the standard relative /api environments are tracked)
+/src/environments/environment.local.ts
 
 # IDEs and editors
 .idea/

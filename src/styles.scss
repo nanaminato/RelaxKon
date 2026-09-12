@@ -1,0 +1,48 @@
+:root {
+  color-scheme: light;
+  --rk-bg: #fbfcfe;
+  --rk-surface: #ffffff;
+  --rk-surface-secondary: #f2f5fa;
+  --rk-text: #132238;
+  --rk-text-secondary: #607087;
+  --rk-border: #dce3ec;
+  --rk-primary: #1769d2;
+  --rk-primary-hover: #0d56b3;
+  --rk-code-bg: #172235;
+  --rk-shadow: 0 12px 32px rgb(20 41 70 / 8%);
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --rk-bg: #101826;
+  --rk-surface: #162235;
+  --rk-surface-secondary: #1c2a40;
+  --rk-text: #edf3fb;
+  --rk-text-secondary: #aab9ca;
+  --rk-border: #2c3d56;
+  --rk-primary: #75b4ff;
+  --rk-primary-hover: #a5ceff;
+  --rk-code-bg: #0b111c;
+  --rk-shadow: 0 12px 32px rgb(0 0 0 / 24%);
+}
+* { box-sizing: border-box; }
+html { min-width: 320px; background: var(--rk-bg); }
+body { margin: 0; color: var(--rk-text); background: var(--rk-bg); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.6; }
+a { color: var(--rk-primary); text-decoration: none; }
+a:hover { color: var(--rk-primary-hover); }
+button, select, input { font: inherit; }
+button { cursor: pointer; }
+.container { width: min(1120px, calc(100% - 2rem)); margin: 0 auto; }
+.page { min-height: calc(100vh - 150px); padding: 4rem 0; }
+.eyebrow { margin: 0 0 .75rem; color: var(--rk-primary); font-size: .78rem; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; }
+h1, h2, h3 { line-height: 1.15; letter-spacing: -.03em; }
+h1 { font-size: clamp(2.5rem, 5vw, 4.75rem); margin: 0; }
+h2 { font-size: clamp(1.75rem, 3vw, 2.5rem); margin-top: 0; }
+.lead { color: var(--rk-text-secondary); font-size: 1.16rem; max-width: 64ch; }
+.button { display: inline-flex; justify-content: center; align-items: center; border: 1px solid var(--rk-primary); border-radius: .55rem; padding: .7rem 1rem; font-weight: 700; }
+.button.primary { color: white; background: var(--rk-primary); }
+.button.secondary { color: var(--rk-primary); background: transparent; }
+.card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.card { padding: 1.35rem; border: 1px solid var(--rk-border); border-radius: .8rem; background: var(--rk-surface); box-shadow: var(--rk-shadow); }
+.card p { color: var(--rk-text-secondary); }
+.notice { padding: 1rem; border-left: 3px solid var(--rk-primary); background: var(--rk-surface-secondary); border-radius: .25rem; }
+@media (max-width: 760px) { .page { padding: 2.5rem 0; } .card-grid { grid-template-columns: 1fr; } }
