@@ -1,0 +1,219 @@
+<!-- 1. Hero -->
+<section class="hero">
+  <div class="hero__glow" aria-hidden="true"></div>
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <p class="eyebrow">{{ i18n.t('home.hero.eyebrow') }}</p>
+      <h1>{{ i18n.t('home.hero.title') }}</h1>
+      <p class="lead">{{ i18n.t('home.hero.lead') }}</p>
+      <div class="btn-row hero__actions">
+        <a class="btn btn--primary btn--lg" routerLink="/products/relaxkonos">{{ i18n.t('home.hero.ctaPrimary') }}</a>
+        <a class="btn btn--secondary btn--lg" routerLink="/docs">{{ i18n.t('home.hero.ctaSecondary') }}</a>
+      </div>
+      <p class="hero__note">
+        <span class="badge badge--accent"><span class="badge__dot"></span>{{ i18n.t('home.hero.note') }}</span>
+      </p>
+    </div>
+
+    <aside class="diagram" aria-hidden="true">
+      <div class="diagram__layer diagram__layer--client">
+        <span class="diagram__tag">{{ i18n.t('home.hero.clientTitle') }}</span>
+        <strong>{{ i18n.t('home.hero.clientSubtitle') }}</strong>
+        <ul>
+          <li>{{ i18n.t('home.hero.clientItem1') }}</li>
+          <li>{{ i18n.t('home.hero.clientItem2') }}</li>
+          <li>{{ i18n.t('home.hero.clientItem3') }}</li>
+        </ul>
+      </div>
+
+      <div class="diagram__link">
+        <span class="diagram__line"></span>
+        <span class="diagram__label">
+          {{ i18n.t('home.hero.protocolLabel') }}
+          <small>{{ i18n.t('home.hero.protocolItem1') }} · {{ i18n.t('home.hero.protocolItem2') }}</small>
+        </span>
+        <span class="diagram__line"></span>
+      </div>
+
+      <div class="diagram__layer diagram__layer--server">
+        <span class="diagram__tag">{{ i18n.t('home.hero.serverTitle') }}</span>
+        <strong>{{ i18n.t('home.hero.serverSubtitle') }}</strong>
+        <ul>
+          <li>{{ i18n.t('home.hero.serverItem1') }}</li>
+          <li>{{ i18n.t('home.hero.serverItem2') }}</li>
+          <li>{{ i18n.t('home.hero.serverItem3') }}</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- 2. Core features -->
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <p class="eyebrow">{{ i18n.t('home.features.eyebrow') }}</p>
+      <h2>{{ i18n.t('home.features.title') }}</h2>
+      <p class="lead">{{ i18n.t('home.features.lead') }}</p>
+    </div>
+    <div class="grid grid--3">
+      @for (feature of features; track feature) {
+        <article class="card card--hover feature">
+          <span class="card__icon" aria-hidden="true">{{ feature.glyph }}</span>
+          <h3>{{ i18n.t('home.features.items.' + feature.index + '.title') }}</h3>
+          <p>{{ i18n.t('home.features.items.' + feature.index + '.text') }}</p>
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- 3. Applications showcase -->
+<section class="section section--tint">
+  <div class="container">
+    <div class="flex-between section__head section__head--wide">
+      <div>
+        <p class="eyebrow">{{ i18n.t('home.apps.eyebrow') }}</p>
+        <h2>{{ i18n.t('home.apps.title') }}</h2>
+        <p class="lead">{{ i18n.t('home.apps.lead') }}</p>
+      </div>
+      <a class="btn btn--secondary" routerLink="/docs/en-US/latest/apps/terminal">{{ i18n.t('home.apps.cta') }}</a>
+    </div>
+
+    <div class="apps">
+      @for (group of appGroups; track group.titleKey) {
+        <div class="apps__group">
+          <h3 class="apps__group-title">{{ i18n.t(group.titleKey) }}</h3>
+          <ul class="apps__list">
+            @for (app of group.apps; track app) {
+              <li class="apps__item">{{ i18n.t('appNames.' + app) }}</li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- 4. Architecture -->
+<section class="section">
+  <div class="container">
+    <div class="section__head section__head--center">
+      <p class="eyebrow">{{ i18n.t('home.architecture.eyebrow') }}</p>
+      <h2>{{ i18n.t('home.architecture.title') }}</h2>
+      <p class="lead">{{ i18n.t('home.architecture.lead') }}</p>
+    </div>
+    <div class="grid grid--3">
+      <article class="card arch">
+        <span class="arch__index mono">01</span>
+        <h3>{{ i18n.t('home.architecture.clientTitle') }}</h3>
+        <p>{{ i18n.t('home.architecture.clientText') }}</p>
+      </article>
+      <article class="card arch">
+        <span class="arch__index mono">02</span>
+        <h3>{{ i18n.t('home.architecture.protocolTitle') }}</h3>
+        <p>{{ i18n.t('home.architecture.protocolText') }}</p>
+      </article>
+      <article class="card arch">
+        <span class="arch__index mono">03</span>
+        <h3>{{ i18n.t('home.architecture.serverTitle') }}</h3>
+        <p>{{ i18n.t('home.architecture.serverText') }}</p>
+      </article>
+    </div>
+    <p class="arch__caption">{{ i18n.t('home.architecture.diagramCaption') }}</p>
+  </div>
+</section>
+
+<!-- 5. Cross-platform + 6. Security -->
+<section class="section section--tint">
+  <div class="container split">
+    <div>
+      <p class="eyebrow">{{ i18n.t('home.platforms.eyebrow') }}</p>
+      <h2>{{ i18n.t('home.platforms.title') }}</h2>
+      <p class="lead">{{ i18n.t('home.platforms.lead') }}</p>
+      <ul class="platforms">
+        @for (platform of platforms; track platform.key) {
+          <li class="platform">
+            <span class="platform__name">{{ i18n.t('home.platforms.' + platform.key) }}</span>
+            <span class="platform__text">{{ i18n.t('home.platforms.' + platform.textKey) }}</span>
+          </li>
+        }
+      </ul>
+      <p class="muted small">{{ i18n.t('home.platforms.serverNote') }}</p>
+    </div>
+
+    <div>
+      <p class="eyebrow">{{ i18n.t('home.security.eyebrow') }}</p>
+      <h2>{{ i18n.t('home.security.title') }}</h2>
+      <p class="lead">{{ i18n.t('home.security.lead') }}</p>
+      <div class="stack">
+        @for (item of security; track item) {
+          <article class="card card--tint">
+            <h3>{{ i18n.t(item.titleKey) }}</h3>
+            <p>{{ i18n.t(item.textKey) }}</p>
+          </article>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. Design philosophy -->
+<section class="section">
+  <div class="container philosophy">
+    <div class="section__head">
+      <p class="eyebrow">{{ i18n.t('home.philosophy.eyebrow') }}</p>
+      <h2>{{ i18n.t('home.philosophy.title') }}</h2>
+      <p class="lead">{{ i18n.t('home.philosophy.lead') }}</p>
+    </div>
+    <blockquote class="quote">{{ i18n.t('home.philosophy.quote') }}</blockquote>
+    <div class="grid grid--4 principles">
+      @for (principle of principles; track principle) {
+        <div class="principle">
+          <h3>{{ i18n.t(principle.titleKey) }}</h3>
+          <p>{{ i18n.t(principle.textKey) }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- 8. Documentation entry -->
+<section class="section section--tint">
+  <div class="container">
+    <div class="flex-between section__head section__head--wide">
+      <div>
+        <p class="eyebrow">{{ i18n.t('home.docs.eyebrow') }}</p>
+        <h2>{{ i18n.t('home.docs.title') }}</h2>
+        <p class="lead">{{ i18n.t('home.docs.lead') }}</p>
+      </div>
+      <a class="btn btn--primary" routerLink="/docs">{{ i18n.t('home.docs.cta') }}</a>
+    </div>
+    <div class="grid grid--3">
+      @for (card of docCards; track card) {
+        <a class="card card--hover doc-card" [routerLink]="card.link">
+          <h3>{{ i18n.t(card.titleKey) }}</h3>
+          <p>{{ i18n.t(card.textKey) }}</p>
+          <span class="doc-card__cta">{{ i18n.t('common.learnMore') }} →</span>
+        </a>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- 9. Download entry -->
+<section class="section">
+  <div class="container">
+    <div class="cta-band">
+      <div>
+        <p class="eyebrow">{{ i18n.t('home.download.eyebrow') }}</p>
+        <h2>{{ i18n.t('home.download.title') }}</h2>
+        <p class="lead">{{ i18n.t('home.download.lead') }}</p>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn--primary btn--lg" routerLink="/downloads">{{ i18n.t('home.download.cta') }}</a>
+        <a class="btn btn--secondary btn--lg" routerLink="/releases">{{ i18n.t('home.download.secondary') }}</a>
+      </div>
+    </div>
+  </div>
+</section>

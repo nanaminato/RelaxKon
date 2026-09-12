@@ -1,0 +1,37 @@
+<section class="page-hero">
+  <div class="container page-hero__inner">
+    <p class="eyebrow">{{ i18n.t('products.eyebrow') }}</p>
+    <h1>{{ i18n.t('products.title') }}</h1>
+    <p class="lead">{{ i18n.t('products.lead') }}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid grid--2">
+      <a class="product" routerLink="/products/relaxkonos">
+        <div class="product__head">
+          <span class="product__mark" aria-hidden="true">R</span>
+          <span class="badge badge--primary">{{ i18n.t('downloads.prerelease') }}</span>
+        </div>
+        <h2>{{ i18n.t('products.cardTitle') }}</h2>
+        <p>{{ i18n.t('products.cardText') }}</p>
+        <ul class="product__points">
+          <li>{{ i18n.t('home.features.items.0.title') }}</li>
+          <li>{{ i18n.t('home.features.items.1.title') }}</li>
+          <li>{{ i18n.t('home.features.items.3.title') }}</li>
+        </ul>
+        <span class="product__cta">{{ i18n.t('products.cardHref') }} →</span>
+      </a>
+
+      <article class="product product--muted">
+        <h2>{{ i18n.t('products.comingTitle') }}</h2>
+        <p>{{ i18n.t('products.comingText') }}</p>
+        <div class="btn-row">
+          <a class="btn btn--secondary" routerLink="/releases">{{ i18n.t('releases.title') }}</a>
+          <a class="btn btn--ghost" routerLink="/docs">{{ i18n.t('nav.documentation') }}</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

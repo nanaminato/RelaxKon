@@ -1,0 +1,65 @@
+<header class="site-header" [class.is-scrolled]="scrolled()">
+  <div class="header-inner">
+    <a class="brand" routerLink="/" (click)="closeAll()" aria-label="RelaxKon">
+      <span class="brand__mark" aria-hidden="true">R</span>
+      <span class="brand__text">Relax<span>Kon</span></span>
+    </a>
+
+    <button class="icon-btn menu-btn" type="button" (click)="toggleMobile()" [attr.aria-expanded]="mobileOpen()" [attr.aria-label]="i18n.t('nav.menu')">
+      <span class="bars" aria-hidden="true"></span>
+    </button>
+
+    <nav class="nav" [class.is-open]="mobileOpen()">
+      <div class="nav__item nav__item--menu">
+        <button type="button" class="nav__link nav__link--button" [attr.aria-expanded]="productsOpen()" (click)="toggleProducts($event)">
+          {{ i18n.t('nav.products') }}<span class="caret" aria-hidden="true"></span>
+        </button>
+        @if (productsOpen()) {
+          <div class="dropdown" role="menu">
+            <a class="dropdown__item" routerLink="/products/relaxkonos" role="menuitem" (click)="closeAll()">
+              <span class="dropdown__dot" aria-hidden="true"></span>
+              <span>
+                <strong>RelaxKonOS</strong>
+                <small>{{ i18n.t('products.cardText') }}</small>
+              </span>
+            </a>
+            <div class="dropdown__footer">
+              <a routerLink="/products" (click)="closeAll()">{{ i18n.t('nav.allProducts') }} →</a>
+            </div>
+          </div>
+        }
+      </div>
+      <a class="nav__link" routerLink="/docs" routerLinkActive="is-active" (click)="closeAll()">{{ i18n.t('nav.documentation') }}</a>
+      <a class="nav__link" routerLink="/downloads" routerLinkActive="is-active" (click)="closeAll()">{{ i18n.t('nav.downloads') }}</a>
+      <a class="nav__link" routerLink="/releases" routerLinkActive="is-active" (click)="closeAll()">{{ i18n.t('nav.releases') }}</a>
+      <a class="nav__link" routerLink="/about" routerLinkActive="is-active" (click)="closeAll()">{{ i18n.t('nav.about') }}</a>
+
+      <div class="nav__controls">
+        <button class="search-trigger" type="button" (click)="openSearch()">
+          <span aria-hidden="true">⌕</span>
+          <span>{{ i18n.t('nav.search') }}</span>
+          <kbd aria-hidden="true">/</kbd>
+        </button>
+        <div class="segmented" role="group" [attr.aria-label]="i18n.t('theme.label')">
+          @for (option of themeOptions; track option.value) {
+            <button type="button" [class.is-active]="theme.preference() === option.value" (click)="setTheme(option.value)" [attr.aria-pressed]="theme.preference() === option.value" [title]="i18n.t(option.label)">
+              <span aria-hidden="true">{{ option.glyph }}</span>
+            </button>
+          }
+        </div>
+        <label class="lang">
+          <span class="sr-only">{{ i18n.t('nav.language') }}</span>
+          <!-- ngModel (not [value]) so the control re-syncs once the options exist;
+               a plain [value] binding is written before @for renders the <option>s. -->
+          <select [ngModel]="i18n.language()" (ngModelChange)="setLanguage($event)">
+            @for (option of languages; track option.code) {
+              <option [ngValue]="option.code">{{ option.label }}</option>
+            }
+          </select>
+        </label>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<app-search-overlay [open]="searchOpen()" (closed)="searchOpen.set(false)" />

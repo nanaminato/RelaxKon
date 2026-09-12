@@ -1,0 +1,46 @@
+@if (open()) {
+  <div class="overlay" role="dialog" aria-modal="true" [attr.aria-label]="i18n.t('search.title')" (click)="close()">
+    <div class="panel" (click)="$event.stopPropagation()">
+      <div class="panel__input">
+        <span class="panel__icon" aria-hidden="true">⌕</span>
+        <input
+          #searchInput
+          type="search"
+          [placeholder]="i18n.t('search.placeholder')"
+          [ngModel]="query()"
+          (ngModelChange)="onQuery($event)"
+          (keydown)="onKeydown($event)"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button class="panel__close" type="button" (click)="close()" [attr.aria-label]="i18n.t('search.close')">esc</button>
+      </div>
+
+      <div class="panel__body">
+        @if (query().trim().length < 2) {
+          <p class="panel__state">{{ i18n.t('search.prompt') }} <span class="muted">{{ i18n.t('search.hint') }}</span></p>
+        } @else if (loading()) {
+          <p class="panel__state">{{ i18n.t('common.loading') }}</p>
+        } @else if (!results().length) {
+          <p class="panel__state">{{ i18n.t('search.empty', { query: query() }) }}</p>
+        } @else {
+          <p class="panel__count">{{ i18n.t('search.results', { count: results().length }) }}</p>
+          <ul class="results">
+            @for (item of results(); track item.slug; let index = $index) {
+              <li>
+                <button type="button" class="result" [class.is-active]="index === active()" (mouseenter)="active.set(index)" (click)="go(item)">
+                  <span class="result__head">
+                    <strong>{{ item.title }}</strong>
+                    <span class="badge">{{ item.category }}</span>
+                  </span>
+                  <span class="result__snippet">{{ item.snippet }}</span>
+                  <span class="result__meta mono">{{ item.language }} · {{ item.version }}</span>
+                </button>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </div>
+  </div>
+}

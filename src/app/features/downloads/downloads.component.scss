@@ -1,0 +1,12 @@
+.groups { gap: 2.5rem; }
+.group__head { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem; }
+.group__head h2 { margin: 0; font-size: 1.35rem; }
+.download { gap: .8rem; }
+.download__head { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+.download__meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem .9rem; margin: 0; }
+.download__meta div { display: grid; gap: .1rem; }
+.download__meta dt { color: var(--rk-text-muted); font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.download__meta dd { margin: 0; font-size: .9rem; }
+.download__checksum { grid-column: 1 / -1; }
+.download__checksum dd { overflow-wrap: anywhere; font-size: .8rem; color: var(--rk-text-muted); }
+.download .btn { align-self: flex-start; }

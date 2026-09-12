@@ -1,0 +1,18 @@
+.timeline { position: relative; display: grid; gap: 1.2rem; margin: 0; padding: 0 0 0 1.75rem; list-style: none; }
+.timeline::before { content: ''; position: absolute; top: .6rem; bottom: .6rem; left: .34rem; width: 1px; background: var(--rk-border-strong); }
+.entry { position: relative; }
+.entry__dot {
+  position: absolute;
+  top: 1.5rem;
+  left: -1.75rem;
+  width: 11px; height: 11px;
+  border: 2px solid var(--rk-bg);
+  border-radius: 50%;
+  background: var(--rk-primary);
+}
+.entry__card { color: inherit; }
+.entry__head { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
+.entry__version { color: var(--rk-primary); font-weight: 700; font-size: .88rem; }
+.entry__head time { margin-left: auto; }
+.entry__card h2 { font-size: 1.25rem; }
+.entry__cta { margin-top: auto; padding-top: .5rem; color: var(--rk-primary); font-size: .88rem; font-weight: 680; }

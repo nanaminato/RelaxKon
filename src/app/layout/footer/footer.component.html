@@ -1,0 +1,40 @@
+<footer class="site-footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <a class="brand" routerLink="/">
+        <span class="brand__mark" aria-hidden="true">R</span>
+        <span class="brand__text">Relax<span>Kon</span></span>
+      </a>
+      <p class="muted small">{{ i18n.t('footer.description') }}</p>
+      <p class="badge">{{ i18n.t('brand.tagline') }}</p>
+    </div>
+
+    <nav class="footer__cols" aria-label="Footer">
+      <div class="footer__col">
+        <h3>{{ i18n.t('footer.product') }}</h3>
+        <a routerLink="/products/relaxkonos">{{ i18n.t('footer.linkProduct') }}</a>
+        <a routerLink="/downloads">{{ i18n.t('footer.linkDownloads') }}</a>
+        <a routerLink="/releases">{{ i18n.t('footer.linkReleases') }}</a>
+      </div>
+      <div class="footer__col">
+        <h3>{{ i18n.t('footer.resources') }}</h3>
+        <a routerLink="/docs">{{ i18n.t('footer.linkDocs') }}</a>
+        <a routerLink="/docs/en-US/latest/concepts/architecture">{{ i18n.t('footer.linkArchitecture') }}</a>
+        <a routerLink="/docs/en-US/latest/concepts/security">{{ i18n.t('footer.linkSecurity') }}</a>
+        <a routerLink="/faq">{{ i18n.t('footer.linkFaq') }}</a>
+      </div>
+      <div class="footer__col">
+        <h3>{{ i18n.t('footer.project') }}</h3>
+        <a routerLink="/about">{{ i18n.t('footer.linkAbout') }}</a>
+        <span class="muted small">{{ i18n.t('brand.domain') }}</span>
+      </div>
+    </nav>
+  </div>
+
+  <div class="footer__bottom">
+    <div class="container footer__bottom-inner">
+      <span class="small muted">© {{ year }} {{ i18n.t('brand.name') }}. {{ i18n.t('footer.rights') }}</span>
+      <span class="small muted">{{ i18n.t('footer.builtWith') }}</span>
+    </div>
+  </div>
+</footer>

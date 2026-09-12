@@ -1,0 +1,40 @@
+<section class="section">
+  <div class="container narrow">
+    <a class="back" routerLink="/releases">← {{ i18n.t('releases.backToList') }}</a>
+
+    @if (loading()) {
+      <div class="skeleton" style="height: 260px; margin-top: 1.5rem"></div>
+    } @else if (release(); as item) {
+      <header class="release__head">
+        <p class="eyebrow">{{ i18n.t('releases.title') }}</p>
+        <h1>{{ item.title }}</h1>
+        <div class="release__meta">
+          <span class="mono badge">{{ item.version }}</span>
+          @if (item.isPrerelease) { <span class="badge badge--warning">{{ i18n.t('releases.prerelease') }}</span> }
+          <time class="muted small">{{ item.releaseDate | rkDate: 'long' : i18n.language() }}</time>
+        </div>
+        <p class="lead">{{ item.summary }}</p>
+      </header>
+
+      @if (item.highlights.length) {
+        <section class="highlights">
+          <h2>{{ i18n.t('releases.highlights') }}</h2>
+          <ul>
+            @for (highlight of item.highlights; track highlight) {
+              <li>{{ highlight }}</li>
+            }
+          </ul>
+        </section>
+      }
+
+      <article class="prose" [innerHTML]="html()"></article>
+    } @else {
+      <div class="notice notice--warning" style="margin-top: 1.5rem">
+        <div>
+          <strong>{{ i18n.t('common.error') }}</strong>
+          <p class="mb-0">{{ i18n.t('docs.notFoundHint') }}</p>
+        </div>
+      </div>
+    }
+  </div>
+</section>

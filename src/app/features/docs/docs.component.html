@@ -1,0 +1,145 @@
+<div class="docs" [class.docs--drawer]="drawerOpen()">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.is-open]="drawerOpen()" aria-label="Documentation navigation">
+    <div class="sidebar__head">
+      <a class="sidebar__title" routerLink="/docs">{{ i18n.t('docs.title') }}</a>
+      <button class="sidebar__close" type="button" (click)="drawerOpen.set(false)" [attr.aria-label]="i18n.t('docs.closeDrawer')">✕</button>
+    </div>
+
+    <!-- ngModel (not [value]) so both switchers re-sync once the options exist;
+         a plain [value] binding is written before @for renders the <option>s. -->
+    <div class="switchers">
+      <label>
+        <span>{{ i18n.t('docs.languageLabel') }}</span>
+        <select [ngModel]="language()" (ngModelChange)="switchLanguage($event)">
+          @for (item of languages(); track item.code) {
+            <option [ngValue]="item.code">{{ item.name }}</option>
+          }
+        </select>
+      </label>
+      <label>
+        <span>{{ i18n.t('docs.versionLabel') }}</span>
+        <select [ngModel]="version()" (ngModelChange)="switchVersion($event)">
+          @for (item of versions(); track item) {
+            <option [ngValue]="item">{{ item }}</option>
+          }
+        </select>
+      </label>
+    </div>
+
+    <div class="sidebar__search">
+      <input
+        type="search"
+        [placeholder]="i18n.t('docs.searchPlaceholder')"
+        [ngModel]="query()"
+        (ngModelChange)="onQuery($event)"
+        (keyup.enter)="runSearch()"
+        autocomplete="off"
+      />
+      @if (searching()) { <p class="sidebar__hint">{{ i18n.t('docs.searching') }}</p> }
+      @if (results().length) {
+        <ul class="sidebar__results">
+          @for (item of results(); track item.slug) {
+            <li>
+              <a [routerLink]="docLink(item.slug)">
+                <strong>{{ item.title }}</strong>
+                <small>{{ item.snippet }}</small>
+              </a>
+            </li>
+          }
+        </ul>
+      } @else if (query().trim().length > 1 && !searching()) {
+        <p class="sidebar__hint">{{ i18n.t('docs.noResults') }}</p>
+      }
+    </div>
+
+    @if (loading()) {
+      <div class="sidebar__skeleton">
+        @for (row of [1, 2, 3, 4, 5, 6]; track row) {
+          <span class="skeleton" style="height: 14px"></span>
+        }
+      </div>
+    } @else {
+      <nav class="sidebar__nav">
+        @for (group of navigation(); track group.title) {
+          <section>
+            <h3>{{ group.title }}</h3>
+            @for (item of group.children; track item.slug) {
+              <a [class.is-current]="item.slug === document()?.slug" [routerLink]="docLink(item.slug!)">{{ item.title }}</a>
+            }
+          </section>
+        }
+      </nav>
+    }
+  </aside>
+
+  @if (drawerOpen()) {
+    <div class="docs__scrim" (click)="drawerOpen.set(false)" aria-hidden="true"></div>
+  }
+
+  <!-- Content -->
+  <main class="content">
+    <div class="content__bar">
+      <button class="icon-btn" type="button" (click)="drawerOpen.set(true)" [attr.aria-label]="i18n.t('docs.openDrawer')">☰</button>
+      <span class="mono content__crumb">{{ language() }} · {{ version() }}</span>
+      <button class="toc-toggle" type="button" (click)="tocOpen.set(!tocOpen())" [attr.aria-expanded]="tocOpen()">
+        {{ i18n.t('docs.onThisPage') }}
+      </button>
+    </div>
+
+    @if (loading()) {
+      <div class="content__loading">
+        <span class="skeleton" style="height: 34px; width: 55%"></span>
+        <span class="skeleton" style="height: 16px"></span>
+        <span class="skeleton" style="height: 16px; width: 88%"></span>
+        <span class="skeleton" style="height: 16px; width: 72%"></span>
+        <span class="skeleton" style="height: 220px"></span>
+      </div>
+    } @else if (!document()) {
+      <div class="notice notice--warning">
+        <div>
+          <strong>{{ i18n.t('docs.notFound') }}</strong>
+          <p class="mb-0">{{ i18n.t('docs.notFoundHint') }}</p>
+        </div>
+      </div>
+    } @else if (document(); as item) {
+      @if (item.isFallback) {
+        <p class="notice mt-0">{{ i18n.t('docs.fallbackNotice', { language: fallbackLanguageName() }) }}</p>
+      }
+
+      <article #article class="prose" [innerHTML]="html()"></article>
+
+      <nav class="pager">
+        @if (item.previous) {
+          <a class="pager__link" [routerLink]="docLink(item.previous.slug)">
+            <small>{{ i18n.t('docs.previousPage') }}</small>
+            <strong>← {{ item.previous.title }}</strong>
+          </a>
+        } @else { <span></span> }
+        @if (item.next) {
+          <a class="pager__link pager__link--next" [routerLink]="docLink(item.next.slug)">
+            <small>{{ i18n.t('docs.nextPage') }}</small>
+            <strong>{{ item.next.title }} →</strong>
+          </a>
+        }
+      </nav>
+    }
+  </main>
+
+  <!-- Table of contents -->
+  @if (headings().length) {
+    <aside class="toc" [class.is-open]="tocOpen()">
+      <h2>{{ i18n.t('docs.onThisPage') }}</h2>
+      <nav>
+        @for (heading of headings(); track heading.id) {
+          <a
+            [class.is-active]="activeHeading() === heading.id"
+            [class.level-3]="heading.level === 3"
+            [href]="'#' + heading.id"
+            (click)="focusHeading($event, heading.id)"
+          >{{ heading.text }}</a>
+        }
+      </nav>
+    </aside>
+  }
+</div>
