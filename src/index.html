@@ -2,10 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>RelaxKon</title>
+  <title>RelaxKon — Desktops beyond devices</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="RelaxKonOS is a cross-platform remote workspace operating environment with local UI rendering, persistent applications and server-managed workspaces.">
+  <meta name="theme-color" content="#f7f9fc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script>
+    // Resolve the theme before the first paint so the palette never flashes.
+    (function () {
+      try {
+        var stored = localStorage.getItem('rk-theme');
+        var preference = stored === 'light' || stored === 'dark' ? stored : 'system';
+        var dark = preference === 'dark' || (preference === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+        var saved = localStorage.getItem('rk-language');
+        if (saved) document.documentElement.lang = saved;
+      } catch (error) {
+        document.documentElement.dataset.theme = 'light';
+      }
+    })();
+  </script>
 </head>
 <body>
   <app-root></app-root>
