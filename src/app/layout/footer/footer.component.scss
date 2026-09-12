@@ -6,13 +6,7 @@
   padding-block: clamp(2.5rem, 5vw, 4rem);
 }
 .brand { display: inline-flex; align-items: center; gap: .6rem; color: var(--rk-text); }
-.brand__mark {
-  display: grid; place-items: center;
-  width: 30px; height: 30px;
-  border-radius: 9px;
-  background: linear-gradient(140deg, var(--rk-primary), var(--rk-accent));
-  color: #fff; font-weight: 850; font-size: .95rem;
-}
+.brand__mark { display: block; width: 32px; height: 32px; object-fit: contain; }
 .brand__text { font-size: 1.1rem; font-weight: 800; letter-spacing: -.05em; }
 .brand__text span { color: var(--rk-primary); font-weight: 700; }
 .footer__brand p { max-width: 34ch; margin: .9rem 0 0; }
