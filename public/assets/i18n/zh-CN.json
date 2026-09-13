@@ -267,7 +267,13 @@
       "stepTwoTitle": "确认安装选项",
       "stepTwoText": "选择仅本机、局域网或反向代理网络模式，以及文件访问范围。",
       "stepThreeTitle": "连接服务端",
-      "stepThreeText": "健康检查通过后，让桌面客户端连接页面显示的服务端地址。"
+      "stepThreeText": "健康检查通过后，让桌面客户端连接页面显示的服务端地址。",
+      "uninstallEyebrow": "卸载",
+      "uninstallTitle": "需要移除服务端？",
+      "uninstallLead": "停止并删除 RelaxKonOS 服务与程序文件。默认保留数据，便于之后重新安装或迁移。",
+      "uninstallDataTitle": "同时删除数据（不可恢复）",
+      "uninstallWindowsData": "此操作会删除数据库、配置与安装状态，且无法恢复。",
+      "uninstallLinuxData": "此操作会删除数据库、配置与安装状态，且无法恢复。"
     },
     "packages": {
       "eyebrow": "直接下载",

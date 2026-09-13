@@ -267,7 +267,13 @@
       "stepTwoTitle": "セットアップを確認",
       "stepTwoText": "ローカル、LAN、リバースプロキシのネットワークと、ファイルアクセス範囲を選択します。",
       "stepThreeTitle": "サーバーを開く",
-      "stepThreeText": "ヘルスチェック後、デスクトップ クライアントを表示されたサーバーアドレスへ接続します。"
+      "stepThreeText": "ヘルスチェック後、デスクトップ クライアントを表示されたサーバーアドレスへ接続します。",
+      "uninstallEyebrow": "アンインストール",
+      "uninstallTitle": "サーバーを削除しますか？",
+      "uninstallLead": "RelaxKonOS のサービスとプログラムファイルを停止・削除します。データは再インストールや移行に備えて既定で保持されます。",
+      "uninstallDataTitle": "データも削除する（元に戻せません）",
+      "uninstallWindowsData": "データベース、構成、インストール状態を完全に削除します。",
+      "uninstallLinuxData": "データベース、構成、インストール状態を完全に削除します。"
     },
     "packages": {
       "eyebrow": "直接ダウンロード",

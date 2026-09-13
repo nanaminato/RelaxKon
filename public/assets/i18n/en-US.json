@@ -267,7 +267,13 @@
       "stepTwoTitle": "Confirm the setup",
       "stepTwoText": "Choose local-only, LAN, or reverse-proxy networking and the file-access scope.",
       "stepThreeTitle": "Open your server",
-      "stepThreeText": "After the health check, connect the desktop client to the displayed server address."
+      "stepThreeText": "After the health check, connect the desktop client to the displayed server address.",
+      "uninstallEyebrow": "Uninstall",
+      "uninstallTitle": "Need to remove the server?",
+      "uninstallLead": "Stops and removes RelaxKonOS services and program files. Data is kept by default for a later reinstall or migration.",
+      "uninstallDataTitle": "Remove data as well (irreversible)",
+      "uninstallWindowsData": "This permanently removes the database, configuration, and installation state.",
+      "uninstallLinuxData": "This permanently removes the database, configuration, and installation state."
     },
     "packages": {
       "eyebrow": "Direct downloads",

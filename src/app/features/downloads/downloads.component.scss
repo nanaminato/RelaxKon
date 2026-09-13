@@ -24,6 +24,14 @@
 .install-steps li > span { color: var(--rk-primary); font-family: var(--rk-font-mono); font-size: .78rem; font-weight: 800; }
 .install-steps strong { font-size: .9rem; }
 .install-steps p { margin: .1rem 0 0; color: var(--rk-text-secondary); font-size: .82rem; line-height: 1.5; }
+.uninstall-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, .9fr); gap: 1rem 1.5rem; align-items: center; margin-top: 1.5rem; padding: 1.1rem 1.25rem; border: 1px solid var(--rk-border); border-radius: var(--rk-radius-lg); background: var(--rk-surface); }
+.uninstall-card h3 { margin: .55rem 0 .35rem; font-size: 1.05rem; }
+.uninstall-card p { margin: 0; color: var(--rk-text-secondary); font-size: .86rem; line-height: 1.55; }
+.uninstall-card .command-box { margin: 0; }
+.uninstall-card__foot { grid-column: 1 / -1; padding-top: .75rem; border-top: 1px solid var(--rk-border); }
+.uninstall-card__foot summary { color: var(--rk-primary); cursor: pointer; font-size: .84rem; font-weight: 700; }
+.uninstall-card__foot p { margin-top: .6rem; }
+.uninstall-card__foot .command-box { margin-top: .7rem; }
 .groups { gap: 2.5rem; }
 .group__head { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem; }
 .group__head h3 { margin: 0; font-size: 1.35rem; }
@@ -40,7 +48,7 @@
 .download .btn { align-self: flex-start; }
 
 @media (max-width: 760px) {
-  .installer-layout, .install-steps { grid-template-columns: 1fr; }
+  .installer-layout, .install-steps, .uninstall-card { grid-template-columns: 1fr; }
   .installer-picker { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 

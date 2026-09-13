@@ -55,6 +55,30 @@
       <li><span>02</span><div><strong>{{ i18n.t('downloads.quickInstall.stepTwoTitle') }}</strong><p>{{ i18n.t('downloads.quickInstall.stepTwoText') }}</p></div></li>
       <li><span>03</span><div><strong>{{ i18n.t('downloads.quickInstall.stepThreeTitle') }}</strong><p>{{ i18n.t('downloads.quickInstall.stepThreeText') }}</p></div></li>
     </ol>
+
+    <article class="uninstall-card" aria-labelledby="uninstall-title">
+      <div>
+        <span class="badge badge--warning">{{ i18n.t('downloads.quickInstall.uninstallEyebrow') }}</span>
+        <h3 id="uninstall-title">{{ i18n.t('downloads.quickInstall.uninstallTitle') }}</h3>
+        <p>{{ i18n.t('downloads.quickInstall.uninstallLead') }}</p>
+      </div>
+      <div class="command-box">
+        <code>{{ uninstallerCommand() }}</code>
+        <button type="button" class="command-box__copy" (click)="copy(uninstallerCommand(), 'uninstaller')">
+          {{ copied() === 'uninstaller' ? i18n.t('common.copied') : i18n.t('common.copy') }}
+        </button>
+      </div>
+      <details class="uninstall-card__foot">
+        <summary>{{ i18n.t('downloads.quickInstall.uninstallDataTitle') }}</summary>
+        <p>{{ i18n.t(selectedInstaller() === 'windows' ? 'downloads.quickInstall.uninstallWindowsData' : 'downloads.quickInstall.uninstallLinuxData') }}</p>
+        <div class="command-box">
+          <code>{{ purgeDataCommand() }}</code>
+          <button type="button" class="command-box__copy" (click)="copy(purgeDataCommand(), 'uninstaller')">
+            {{ copied() === 'uninstaller' ? i18n.t('common.copied') : i18n.t('common.copy') }}
+          </button>
+        </div>
+      </details>
+    </article>
   </div>
 </section>
 

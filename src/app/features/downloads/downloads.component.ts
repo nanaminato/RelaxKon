@@ -22,7 +22,7 @@ export class DownloadsComponent {
   readonly loading = signal(true);
   readonly items = signal<DownloadInfo[]>([]);
   readonly selectedInstaller = signal<'windows' | 'linux'>(this.detectInstallerPlatform());
-  readonly copied = signal<'installer' | 'checksum' | null>(null);
+  readonly copied = signal<'installer' | 'uninstaller' | 'checksum' | null>(null);
   readonly installerOrigin = this.getInstallerOrigin();
 
   readonly groups = computed(() => {
@@ -42,6 +42,20 @@ export class DownloadsComponent {
     return this.selectedInstaller() === 'windows'
       ? `irm ${base}/install.ps1 | iex`
       : `curl -fsSL ${base}/bootstrap/install-relaxkonos.sh | sudo bash`;
+  });
+
+  readonly uninstallerCommand = computed(() => {
+    const base = `${this.installerOrigin}/relaxkonos/stable/latest`;
+    return this.selectedInstaller() === 'windows'
+      ? `irm ${base}/uninstall.ps1 | iex`
+      : `curl -fsSL ${base}/bootstrap/uninstall-relaxkonos.sh | sudo bash`;
+  });
+
+  readonly purgeDataCommand = computed(() => {
+    const base = `${this.installerOrigin}/relaxkonos/stable/latest`;
+    return this.selectedInstaller() === 'windows'
+      ? `& ([scriptblock]::Create((irm ${base}/uninstall.ps1))) -UninstallerArguments '-RemoveData'`
+      : `curl -fsSL ${base}/bootstrap/uninstall-relaxkonos.sh | sudo bash -s -- --remove-data`;
   });
 
   constructor() {
@@ -69,7 +83,7 @@ export class DownloadsComponent {
     return translation === `downloads.platform.${platform.toLowerCase()}` ? platform : translation;
   }
 
-  async copy(value: string, type: 'installer' | 'checksum'): Promise<void> {
+  async copy(value: string, type: 'installer' | 'uninstaller' | 'checksum'): Promise<void> {
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(value);
