@@ -28,9 +28,13 @@ export class DownloadsComponent {
   readonly groups = computed(() => {
     const map = new Map<string, DownloadInfo[]>();
     for (const item of this.items()) {
-      const list = map.get(item.platform) ?? [];
+      // Content files predate the generated release feed and may spell a
+      // platform differently (for example, "Windows" vs "windows"). Keep a
+      // single platform section regardless of that presentation detail.
+      const platform = item.platform.toLowerCase();
+      const list = map.get(platform) ?? [];
       list.push(item);
-      map.set(item.platform, list);
+      map.set(platform, list);
     }
     return [...map.entries()].map(([platform, groupItems]) => ({ platform, items: groupItems }));
   });
