@@ -4,5 +4,11 @@
     "secure": false,
     "changeOrigin": true,
     "logLevel": "warn"
+  },
+  "/relaxkonos": {
+    "target": "https://localhost:7252",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "warn"
   }
 }

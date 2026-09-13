@@ -23,7 +23,7 @@ export class DownloadsComponent {
   readonly items = signal<DownloadInfo[]>([]);
   readonly selectedInstaller = signal<'windows' | 'linux'>(this.detectInstallerPlatform());
   readonly copied = signal<'installer' | 'uninstaller' | 'checksum' | null>(null);
-  readonly installerOrigin = this.getInstallerOrigin();
+  readonly installerOrigin = this.getCurrentOrigin();
 
   readonly groups = computed(() => {
     const map = new Map<string, DownloadInfo[]>();
@@ -41,7 +41,7 @@ export class DownloadsComponent {
     const base = `${this.installerOrigin}/relaxkonos/stable/latest`;
     return this.selectedInstaller() === 'windows'
       ? `irm ${base}/install.ps1 | iex`
-      : `curl -fsSL ${base}/bootstrap/install-relaxkonos.sh | sudo bash`;
+      : `curl -fsSL ${base}/bootstrap/install-relaxkonos.sh | sudo bash -s -- --release-catalog-base ${base}`;
   });
 
   readonly uninstallerCommand = computed(() => {
@@ -104,16 +104,30 @@ export class DownloadsComponent {
     }
   }
 
+  downloadHref(url: string): string {
+    if (!url || !this.isBrowser) return url;
+    try {
+      const resolved = new URL(url, window.location.origin);
+      // Release artifacts are served by this same website on either supported
+      // hostname. Keep the anchor site-relative so it follows the hostname the
+      // visitor actually chose, instead of pinning a download subdomain.
+      return resolved.pathname.startsWith('/relaxkonos/')
+        ? `${resolved.pathname}${resolved.search}${resolved.hash}`
+        : url;
+    } catch {
+      return url;
+    }
+  }
+
   private detectInstallerPlatform(): 'windows' | 'linux' {
     if (!this.isBrowser) return 'windows';
     return navigator.userAgent.toLowerCase().includes('linux') ? 'linux' : 'windows';
   }
 
-  private getInstallerOrigin(): string {
-    if (!this.isBrowser) return 'https://downloads.relaxkon.com';
-    const origin = window.location.origin;
-    return /^https:\/\/(?:www\.)?relaxkon\.com$/i.test(origin) || /^https:\/\/downloads\.relaxkon\.com$/i.test(origin)
-      ? origin
-      : 'https://downloads.relaxkon.com';
+  private getCurrentOrigin(): string {
+    // Shell download commands require an absolute URL, unlike browser anchors.
+    // Deriving it at runtime keeps both relaxkon.com and downloads.relaxkon.com
+    // on the same deployment without a hard-coded host.
+    return this.isBrowser ? window.location.origin : '';
   }
 }
