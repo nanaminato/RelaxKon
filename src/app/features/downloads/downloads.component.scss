@@ -15,7 +15,7 @@
 .installer-card p { color: var(--rk-text-secondary); }
 .installer-card__step { color: color-mix(in srgb, var(--rk-primary) 55%, var(--rk-border)); font-family: var(--rk-font-mono); font-size: 1.5rem; font-weight: 800; }
 .command-box { display: flex; align-items: center; gap: .75rem; margin: 1rem 0; padding: .8rem; border: 1px solid rgb(255 255 255 / 10%); border-radius: var(--rk-radius); background: var(--rk-code-bg); }
-.command-box code { flex: 1; overflow-x: auto; color: var(--rk-code-text); font-family: var(--rk-font-mono); font-size: .84rem; white-space: nowrap; }
+.command-box code { min-width: 0; flex: 1; overflow: hidden; color: var(--rk-code-text); font-family: var(--rk-font-mono); font-size: .84rem; line-height: 1.55; overflow-wrap: anywhere; white-space: normal; word-break: break-word; }
 .command-box__copy { flex: 0 0 auto; padding: .35rem .6rem; border: 1px solid rgb(255 255 255 / 20%); border-radius: var(--rk-radius-sm); color: var(--rk-code-text); font-size: .76rem; font-weight: 700; }
 .command-box__copy:hover { background: rgb(255 255 255 / 12%); }
 .installer-card__foot { margin: 0; font-size: .84rem; }

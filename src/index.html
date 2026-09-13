@@ -22,7 +22,12 @@
         var dark = preference === 'dark' || (preference === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
         document.documentElement.dataset.theme = dark ? 'dark' : 'light';
         var saved = localStorage.getItem('rk-language');
-        if (saved) document.documentElement.lang = saved;
+        if (saved === 'en-US' || saved === 'zh-CN' || saved === 'ja-JP') {
+          document.documentElement.lang = saved;
+        } else {
+          var locale = ((navigator.languages && navigator.languages[0]) || navigator.language || 'en').toLowerCase();
+          document.documentElement.lang = locale.indexOf('zh') === 0 ? 'zh-CN' : locale.indexOf('ja') === 0 ? 'ja-JP' : 'en-US';
+        }
       } catch (error) {
         document.documentElement.dataset.theme = 'light';
       }

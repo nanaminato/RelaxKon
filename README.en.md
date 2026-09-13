@@ -77,9 +77,9 @@ All colours, spacing, radii and shadows are CSS custom properties (`--rk-*`) def
 
 ## UI languages
 
-Runtime translations live in `public/assets/i18n/{en-US,zh-CN,ja-JP}.json` as nested objects. They are flattened to dotted keys at load time, so templates call `t('home.hero.title')`, with `{placeholder}` interpolation. Switching language never reloads the page and the choice is stored under the `rk-language` LocalStorage key, falling back to the browser language and finally to `en-US`.
+Runtime translations live in `public/assets/i18n/{en-US,zh-CN,ja-JP}.json` as nested objects. They are flattened to dotted keys at load time, so templates call `t('home.hero.title')`, with `{placeholder}` interpolation. Until a visitor manually selects a language, the UI follows the browser/system preferred language: Chinese becomes `zh-CN`, Japanese becomes `ja-JP`, and every other language becomes `en-US`; it also follows a browser `languagechange` event. Only a manual header selection is persisted under the `rk-language` LocalStorage key and takes precedence.
 
-The three dictionaries must stay key-for-key identical (297 keys each today); a missing key renders as the key itself. **Add a UI language** by:
+The three dictionaries must stay key-for-key identical (321 keys each today); a missing key renders as the key itself. **Add a UI language** by:
 
 1. Adding `public/assets/i18n/<code>.json`
 2. Extending the `SiteLanguage` union and `SITE_LANGUAGES` in `core/i18n/i18n.service.ts`

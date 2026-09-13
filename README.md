@@ -77,9 +77,9 @@ public/                   # favicon 全套、brand-mark.png、site.webmanifest�
 
 ## UI 语言
 
-运行时词条位于 `public/assets/i18n/{en-US,zh-CN,ja-JP}.json`，以嵌套对象书写，加载时被压平成点号键，模板里用 `t('home.hero.title')` 取值；支持 `{placeholder}` 插值。切换语言不会重载页面，选择保存在 LocalStorage 的 `rk-language` 键，回退顺序为：已保存的语言 → 浏览器语言 → `en-US`。
+运行时词条位于 `public/assets/i18n/{en-US,zh-CN,ja-JP}.json`，以嵌套对象书写，加载时被压平成点号键，模板里用 `t('home.hero.title')` 取值；支持 `{placeholder}` 插值。未手动选择时，UI 语言跟随浏览器/系统首选语言：中文为 `zh-CN`、日文为 `ja-JP`、其余语言一律为 `en-US`；浏览器触发 `languagechange` 时也会同步。用户在页头手动选择后，选择才保存到 LocalStorage 的 `rk-language` 键并优先使用。
 
-三份词典的键必须完全对齐（当前各 297 条），缺键会直接显示键名。**新增一种 UI 语言**需要：
+三份词典的键必须完全对齐（当前各 321 条），缺键会直接显示键名。**新增一种 UI 语言**需要：
 
 1. 添加 `public/assets/i18n/<code>.json`；
 2. 扩展 `core/i18n/i18n.service.ts` 中的 `SiteLanguage` 联合类型与 `SITE_LANGUAGES` 常量。

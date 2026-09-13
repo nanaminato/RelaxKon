@@ -1,4 +1,5 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Injectable, PLATFORM_ID, computed, inject, signal } from '@angular/core';
 
 export type SiteLanguage = 'en-US' | 'zh-CN' | 'ja-JP';
 
@@ -11,32 +12,48 @@ export const SITE_LANGUAGES: readonly { code: SiteLanguage; label: string; short
 type Dictionary = Record<string, string>;
 type NestedDictionary = Record<string, unknown>;
 
-const STORAGE_KEY = 'rk-language';
+const MANUAL_LANGUAGE_STORAGE_KEY = 'rk-language';
 
 /**
  * Minimal runtime i18n service.
  *
  * Dictionaries live in `assets/i18n/<code>.json` as nested objects and are
  * flattened to dotted keys so templates can call `t('home.hero.title')`.
- * Switching language never reloads the page and the choice is remembered in
- * LocalStorage, falling back to the browser language and finally to en-US.
+ * The UI follows the browser/system language until a visitor explicitly chooses a
+ * language. A manual choice is remembered; all non-Chinese and non-Japanese
+ * locales resolve to English.
  */
 @Injectable({ providedIn: 'root' })
 export class I18nService {
+  private readonly document = inject(DOCUMENT);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+
   readonly languages = SITE_LANGUAGES;
   readonly language = signal<SiteLanguage>(this.detectLanguage());
   readonly messages = signal<Dictionary>({});
   readonly ready = signal(false);
   readonly current = computed(() => SITE_LANGUAGES.find(item => item.code === this.language()) ?? SITE_LANGUAGES[0]);
 
+  constructor() {
+    if (this.isBrowser) {
+      window.addEventListener('languagechange', () => {
+        if (this.hasManualLanguageChoice()) return;
+        const language = this.detectSystemLanguage();
+        if (language === this.language()) return;
+        this.language.set(language);
+        void this.load(language);
+      });
+    }
+  }
+
   async initialize(): Promise<void> {
     await this.load(this.language());
   }
 
   async setLanguage(language: SiteLanguage): Promise<void> {
+    if (this.isBrowser) localStorage.setItem(MANUAL_LANGUAGE_STORAGE_KEY, language);
     if (language === this.language() && this.ready()) return;
-    localStorage.setItem(STORAGE_KEY, language);
-    document.documentElement.lang = language;
+    this.document.documentElement.lang = language;
     this.language.set(language);
     await this.load(language);
   }
@@ -63,18 +80,28 @@ export class I18nService {
       }
       this.messages.set({});
     } finally {
-      document.documentElement.lang = language;
+      this.document.documentElement.lang = language;
       this.ready.set(true);
     }
   }
 
   private detectLanguage(): SiteLanguage {
-    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!this.isBrowser) return 'en-US';
+    const saved = localStorage.getItem(MANUAL_LANGUAGE_STORAGE_KEY);
     if (isSiteLanguage(saved)) return saved;
-    const browser = (navigator.language ?? 'en').toLowerCase();
+    return this.detectSystemLanguage();
+  }
+
+  private detectSystemLanguage(): SiteLanguage {
+    if (!this.isBrowser) return 'en-US';
+    const browser = (navigator.languages?.[0] ?? navigator.language ?? 'en').toLowerCase();
     if (browser.startsWith('zh')) return 'zh-CN';
     if (browser.startsWith('ja')) return 'ja-JP';
     return 'en-US';
+  }
+
+  private hasManualLanguageChoice(): boolean {
+    return this.isBrowser && isSiteLanguage(localStorage.getItem(MANUAL_LANGUAGE_STORAGE_KEY));
   }
 }
 

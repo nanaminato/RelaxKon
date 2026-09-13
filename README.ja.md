@@ -77,9 +77,9 @@ public/                   # favicon 一式、brand-mark.png、site.webmanifest�
 
 ## UI 言語
 
-実行時の文言は `public/assets/i18n/{en-US,zh-CN,ja-JP}.json` にネストしたオブジェクトとして置かれ、読み込み時にドット区切りのキーへ平坦化されるため、テンプレートでは `t('home.hero.title')` で参照します（`{placeholder}` の補間に対応）。言語の切り替えでページは再読み込みされず、選択は LocalStorage の `rk-language` キーに保存されます。フォールバック順は「保存済みの言語 → ブラウザーの言語 → `en-US`」です。
+実行時の文言は `public/assets/i18n/{en-US,zh-CN,ja-JP}.json` にネストしたオブジェクトとして置かれ、読み込み時にドット区切りのキーへ平坦化されるため、テンプレートでは `t('home.hero.title')` で参照します（`{placeholder}` の補間に対応）。手動選択前は UI がブラウザー／システムの優先言語に従い、中国語は `zh-CN`、日本語は `ja-JP`、それ以外はすべて `en-US` になります。ブラウザーの `languagechange` にも追従します。ヘッダーで手動選択した場合だけ LocalStorage の `rk-language` キーへ保存され、以後はこちらが優先されます。
 
-3 つの辞書はキーが完全に一致している必要があります（現在は各 297 件）。欠けたキーはキー名がそのまま表示されます。**UI 言語を追加する**には：
+3 つの辞書はキーが完全に一致している必要があります（現在は各 321 件）。欠けたキーはキー名がそのまま表示されます。**UI 言語を追加する**には：
 
 1. `public/assets/i18n/<code>.json` を追加する
 2. `core/i18n/i18n.service.ts` の `SiteLanguage` ユニオン型と `SITE_LANGUAGES` を拡張する
