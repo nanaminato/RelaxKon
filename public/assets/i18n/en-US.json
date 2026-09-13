@@ -243,7 +243,37 @@
     "latest": "Latest",
     "prerelease": "Preview",
     "empty": "No downloads are configured yet.",
-    "serverHint": "Server packages are distributed with the product archives."
+    "serverHint": "Server packages are distributed with the product archives.",
+    "platform": {
+      "windows": "Windows",
+      "linux": "Linux",
+      "macos": "macOS"
+    },
+    "quickInstall": {
+      "eyebrow": "Start here",
+      "title": "Install the server in one command",
+      "lead": "Choose your host operating system. The installer selects the correct stable package, verifies its SHA-256 checksum, and starts the required services.",
+      "choosePlatform": "Choose a server operating system",
+      "windowsHint": "PowerShell with UAC",
+      "linuxHint": "Debian or Ubuntu with sudo",
+      "stable": "Stable channel",
+      "windowsTitle": "Windows Server installation",
+      "linuxTitle": "Linux server installation",
+      "windowsDescription": "Run this in PowerShell. The installer asks for administrator approval when it is needed.",
+      "linuxDescription": "Run this in a terminal. The installer requests sudo and validates the host before making changes.",
+      "verify": "The package is verified before installation. You can also download an offline ZIP below.",
+      "stepOneTitle": "Run the command",
+      "stepOneText": "Use an administrator-capable shell on the machine that will host RelaxKonOS.",
+      "stepTwoTitle": "Confirm the setup",
+      "stepTwoText": "Choose local-only, LAN, or reverse-proxy networking and the file-access scope.",
+      "stepThreeTitle": "Open your server",
+      "stepThreeText": "After the health check, connect the desktop client to the displayed server address."
+    },
+    "packages": {
+      "eyebrow": "Direct downloads",
+      "title": "Packages and checksums",
+      "lead": "Use a direct archive for offline installs, controlled rollouts, or a manual checksum review."
+    }
   },
   "releases": {
     "eyebrow": "Releases",

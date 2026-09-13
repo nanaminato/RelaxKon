@@ -3,12 +3,68 @@
     <p class="eyebrow">{{ i18n.t('downloads.eyebrow') }}</p>
     <h1>{{ i18n.t('downloads.title') }}</h1>
     <p class="lead">{{ i18n.t('downloads.lead') }}</p>
-    <p class="notice notice--warning mt-2">{{ i18n.t('downloads.note') }}</p>
+    @if (!loading() && !availableItems().length) {
+      <p class="notice notice--warning mt-2">{{ i18n.t('downloads.note') }}</p>
+    }
   </div>
 </section>
 
-<section class="section">
+<section class="section section--tint install-section" aria-labelledby="install-title">
   <div class="container">
+    <div class="section__head install-section__head">
+      <p class="eyebrow">{{ i18n.t('downloads.quickInstall.eyebrow') }}</p>
+      <h2 id="install-title">{{ i18n.t('downloads.quickInstall.title') }}</h2>
+      <p class="muted">{{ i18n.t('downloads.quickInstall.lead') }}</p>
+    </div>
+
+    <div class="installer-layout">
+      <div class="installer-picker" role="tablist" [attr.aria-label]="i18n.t('downloads.quickInstall.choosePlatform')">
+        <button class="installer-option" type="button" role="tab" [attr.aria-selected]="selectedInstaller() === 'windows'"
+          [class.is-selected]="selectedInstaller() === 'windows'" (click)="selectInstaller('windows')">
+          <span class="installer-option__icon" aria-hidden="true">⊞</span>
+          <span><strong>Windows</strong><small>{{ i18n.t('downloads.quickInstall.windowsHint') }}</small></span>
+        </button>
+        <button class="installer-option" type="button" role="tab" [attr.aria-selected]="selectedInstaller() === 'linux'"
+          [class.is-selected]="selectedInstaller() === 'linux'" (click)="selectInstaller('linux')">
+          <span class="installer-option__icon installer-option__icon--linux" aria-hidden="true">●</span>
+          <span><strong>Linux</strong><small>{{ i18n.t('downloads.quickInstall.linuxHint') }}</small></span>
+        </button>
+      </div>
+
+      <article class="installer-card" role="tabpanel">
+        <div class="installer-card__head">
+          <div>
+            <span class="badge badge--accent">{{ i18n.t('downloads.quickInstall.stable') }}</span>
+            <h3>{{ selectedInstaller() === 'windows' ? i18n.t('downloads.quickInstall.windowsTitle') : i18n.t('downloads.quickInstall.linuxTitle') }}</h3>
+          </div>
+          <span class="installer-card__step">01</span>
+        </div>
+        <p>{{ i18n.t(selectedInstaller() === 'windows' ? 'downloads.quickInstall.windowsDescription' : 'downloads.quickInstall.linuxDescription') }}</p>
+        <div class="command-box">
+          <code>{{ installerCommand() }}</code>
+          <button type="button" class="command-box__copy" (click)="copy(installerCommand(), 'installer')">
+            {{ copied() === 'installer' ? i18n.t('common.copied') : i18n.t('common.copy') }}
+          </button>
+        </div>
+        <p class="installer-card__foot">{{ i18n.t('downloads.quickInstall.verify') }}</p>
+      </article>
+    </div>
+
+    <ol class="install-steps" aria-label="Installation steps">
+      <li><span>01</span><div><strong>{{ i18n.t('downloads.quickInstall.stepOneTitle') }}</strong><p>{{ i18n.t('downloads.quickInstall.stepOneText') }}</p></div></li>
+      <li><span>02</span><div><strong>{{ i18n.t('downloads.quickInstall.stepTwoTitle') }}</strong><p>{{ i18n.t('downloads.quickInstall.stepTwoText') }}</p></div></li>
+      <li><span>03</span><div><strong>{{ i18n.t('downloads.quickInstall.stepThreeTitle') }}</strong><p>{{ i18n.t('downloads.quickInstall.stepThreeText') }}</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="section" id="packages" aria-labelledby="packages-title">
+  <div class="container">
+    <div class="section__head">
+      <p class="eyebrow">{{ i18n.t('downloads.packages.eyebrow') }}</p>
+      <h2 id="packages-title">{{ i18n.t('downloads.packages.title') }}</h2>
+      <p class="muted">{{ i18n.t('downloads.packages.lead') }}</p>
+    </div>
     @if (loading()) {
       <div class="grid grid--3">
         @for (placeholder of [1, 2, 3]; track placeholder) {
@@ -22,7 +78,7 @@
         @for (group of groups(); track group.platform) {
           <section class="group">
             <header class="group__head">
-              <h2>{{ group.platform }}</h2>
+              <h3>{{ platformLabel(group.platform) }}</h3>
               <span class="muted small">{{ group.items.length }} {{ i18n.t('downloads.latest') }}</span>
             </header>
             <div class="grid grid--2">
@@ -41,7 +97,7 @@
                     <div><dt>{{ i18n.t('common.releaseDate') }}</dt><dd>{{ item.releaseDate | rkDate: 'medium' : i18n.language() }}</dd></div>
                     <div><dt>{{ i18n.t('common.fileSize') }}</dt><dd class="mono">{{ item.size }}</dd></div>
                     @if (item.checksum) {
-                      <div class="download__checksum"><dt>{{ i18n.t('common.checksum') }}</dt><dd class="mono">{{ item.checksum }}</dd></div>
+                      <div class="download__checksum"><dt>{{ i18n.t('common.checksum') }}</dt><dd class="mono">{{ item.checksum }}</dd><button type="button" (click)="copy(item.checksum, 'checksum')">{{ copied() === 'checksum' ? i18n.t('common.copied') : i18n.t('common.copy') }}</button></div>
                     }
                   </dl>
                   @if (item.fileName) { <p class="mono small muted mb-0">{{ item.fileName }}</p> }

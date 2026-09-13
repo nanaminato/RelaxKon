@@ -243,7 +243,37 @@
     "latest": "最新",
     "prerelease": "预览",
     "empty": "尚未配置任何下载项。",
-    "serverHint": "服务端程序包随产品压缩包一同分发。"
+    "serverHint": "服务端程序包随产品压缩包一同分发。",
+    "platform": {
+      "windows": "Windows",
+      "linux": "Linux",
+      "macos": "macOS"
+    },
+    "quickInstall": {
+      "eyebrow": "快速开始",
+      "title": "一条命令安装服务端",
+      "lead": "选择服务器的操作系统。安装器会选择正确的稳定版、验证 SHA-256 校验和，并启动所需服务。",
+      "choosePlatform": "选择服务器操作系统",
+      "windowsHint": "通过 PowerShell 与 UAC",
+      "linuxHint": "Debian 或 Ubuntu，使用 sudo",
+      "stable": "稳定通道",
+      "windowsTitle": "Windows Server 安装",
+      "linuxTitle": "Linux 服务端安装",
+      "windowsDescription": "在 PowerShell 中运行。需要时安装器会请求管理员授权。",
+      "linuxDescription": "在终端中运行。安装器会请求 sudo，并在变更前验证主机环境。",
+      "verify": "安装前会验证程序包。也可以在下方下载离线 ZIP 包。",
+      "stepOneTitle": "运行命令",
+      "stepOneText": "在将要运行 RelaxKonOS 的机器上，使用可获取管理员权限的终端。",
+      "stepTwoTitle": "确认安装选项",
+      "stepTwoText": "选择仅本机、局域网或反向代理网络模式，以及文件访问范围。",
+      "stepThreeTitle": "连接服务端",
+      "stepThreeText": "健康检查通过后，让桌面客户端连接页面显示的服务端地址。"
+    },
+    "packages": {
+      "eyebrow": "直接下载",
+      "title": "安装包与校验和",
+      "lead": "适合离线安装、受控发布，或需要手动核验校验和的场景。"
+    }
   },
   "releases": {
     "eyebrow": "发行说明",

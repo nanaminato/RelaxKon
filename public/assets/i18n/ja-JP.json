@@ -243,7 +243,37 @@
     "latest": "最新",
     "prerelease": "プレビュー",
     "empty": "ダウンロード項目が設定されていません。",
-    "serverHint": "サーバーパッケージは製品アーカイブに同梱されます。"
+    "serverHint": "サーバーパッケージは製品アーカイブに同梱されます。",
+    "platform": {
+      "windows": "Windows",
+      "linux": "Linux",
+      "macos": "macOS"
+    },
+    "quickInstall": {
+      "eyebrow": "はじめに",
+      "title": "1 コマンドでサーバーをインストール",
+      "lead": "サーバー OS を選択してください。インストーラーが適切な安定版を選び、SHA-256 を検証して必要なサービスを起動します。",
+      "choosePlatform": "サーバー OS を選択",
+      "windowsHint": "PowerShell と UAC",
+      "linuxHint": "sudo を使う Debian または Ubuntu",
+      "stable": "安定チャネル",
+      "windowsTitle": "Windows Server へのインストール",
+      "linuxTitle": "Linux サーバーへのインストール",
+      "windowsDescription": "PowerShell で実行します。必要な場合はインストーラーが管理者承認を要求します。",
+      "linuxDescription": "ターミナルで実行します。インストーラーは sudo を要求し、変更前にホストを検証します。",
+      "verify": "インストール前にパッケージを検証します。下からオフライン ZIP をダウンロードすることもできます。",
+      "stepOneTitle": "コマンドを実行",
+      "stepOneText": "RelaxKonOS をホストするマシン上で、管理者権限を得られるシェルを使います。",
+      "stepTwoTitle": "セットアップを確認",
+      "stepTwoText": "ローカル、LAN、リバースプロキシのネットワークと、ファイルアクセス範囲を選択します。",
+      "stepThreeTitle": "サーバーを開く",
+      "stepThreeText": "ヘルスチェック後、デスクトップ クライアントを表示されたサーバーアドレスへ接続します。"
+    },
+    "packages": {
+      "eyebrow": "直接ダウンロード",
+      "title": "パッケージとチェックサム",
+      "lead": "オフラインインストール、管理された展開、または手動のチェックサム確認に利用できます。"
+    }
   },
   "releases": {
     "eyebrow": "リリースノート",
