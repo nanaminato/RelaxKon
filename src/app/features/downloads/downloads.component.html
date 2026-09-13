@@ -82,6 +82,27 @@
   </div>
 </section>
 
+<section class="section offline-section" aria-labelledby="offline-title">
+  <div class="container">
+    <div class="section__head">
+      <p class="eyebrow">{{ i18n.t('downloads.offline.eyebrow') }}</p>
+      <h2 id="offline-title">{{ i18n.t('downloads.offline.title') }}</h2>
+      <p class="muted">{{ i18n.t('downloads.offline.lead') }}</p>
+    </div>
+    <ol class="offline-steps">
+      <li><span>01</span><div><strong>{{ i18n.t('downloads.offline.stepOneTitle') }}</strong><p>{{ i18n.t('downloads.offline.stepOneText') }}</p></div></li>
+      <li><span>02</span><div><strong>{{ i18n.t('downloads.offline.stepTwoTitle') }}</strong><p>{{ i18n.t('downloads.offline.stepTwoText') }}</p></div></li>
+      <li><span>03</span><div><strong>{{ i18n.t('downloads.offline.stepThreeTitle') }}</strong><p>{{ i18n.t('downloads.offline.stepThreeText') }}</p></div></li>
+    </ol>
+    <div class="command-box offline-command">
+      <code>{{ offlineInstallCommand() }}</code>
+      <button type="button" class="command-box__copy" (click)="copy(offlineInstallCommand(), 'offline')">
+        {{ copied() === 'offline' ? i18n.t('common.copied') : i18n.t('common.copy') }}
+      </button>
+    </div>
+  </div>
+</section>
+
 <section class="section" id="packages" aria-labelledby="packages-title">
   <div class="container">
     <div class="section__head">
@@ -106,10 +127,11 @@
               <span class="muted small">{{ group.items.length }} {{ i18n.t('downloads.latest') }}</span>
             </header>
             <div class="grid grid--2">
-              @for (item of group.items; track item.architecture + item.version) {
+              @for (item of group.items; track item.architecture + item.version + item.packageKind) {
                 <article class="card download">
                   <div class="download__head">
                     <span class="chip mono">{{ item.architecture }}</span>
+                    <span class="chip">{{ packageKindLabel(item.packageKind) }}</span>
                     @if (item.isAvailable) {
                       <span class="badge badge--success"><span class="badge__dot"></span>{{ i18n.t('common.available') }}</span>
                     } @else {
@@ -125,6 +147,18 @@
                     }
                   </dl>
                   @if (item.fileName) { <p class="mono small muted mb-0">{{ item.fileName }}</p> }
+                  @if (item.packageKind === 'client') {
+                    <details class="client-run">
+                      <summary>{{ i18n.t('downloads.clientRunTitle') }}</summary>
+                      <p>{{ i18n.t('downloads.clientRunHint') }}</p>
+                      <div class="command-box">
+                        <code>{{ clientLaunchCommand(item) }}</code>
+                        <button type="button" class="command-box__copy" (click)="copy(clientLaunchCommand(item), 'client')">
+                          {{ copied() === 'client' ? i18n.t('common.copied') : i18n.t('common.copy') }}
+                        </button>
+                      </div>
+                    </details>
+                  }
                   @if (item.isAvailable && item.url) {
                     <a class="btn btn--primary btn--sm" [href]="downloadHref(item.url)" download>{{ i18n.t('common.download') }}</a>
                   } @else {

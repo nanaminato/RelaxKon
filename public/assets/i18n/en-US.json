@@ -243,7 +243,9 @@
     "latest": "Latest",
     "prerelease": "Preview",
     "empty": "No downloads are configured yet.",
-    "serverHint": "Server packages are distributed with the product archives.",
+    "serverHint": "Client and server are separate archives; an offline host needs only the Server package.",
+    "clientRunTitle": "Run the client after downloading",
+    "clientRunHint": "The client does not belong on the server. Download it to your own device, extract it, then run the command below.",
     "platform": {
       "windows": "Windows",
       "linux": "Linux",
@@ -274,6 +276,22 @@
       "uninstallDataTitle": "Remove data as well (irreversible)",
       "uninstallWindowsData": "This permanently removes the database, configuration, and installation state.",
       "uninstallLinuxData": "This permanently removes the database, configuration, and installation state."
+    },
+    "packageKind": {
+      "client": "Client",
+      "server": "Server",
+      "archive": "Archive"
+    },
+    "offline": {
+      "eyebrow": "Offline installation",
+      "title": "Bring only the server package to an offline host",
+      "lead": "Client and server packages are independent. Download the server package, copy it to the target host, and keep the client off the server.",
+      "stepOneTitle": "Download the server package",
+      "stepOneText": "On a connected machine, download the ZIP marked Server and retain its checksum for verification.",
+      "stepTwoTitle": "Copy it to the server",
+      "stepTwoText": "Use trusted removable media, SCP, or an internal share. Do not copy the client package to the server.",
+      "stepThreeTitle": "Extract and run the installer",
+      "stepThreeText": "On the server, extract the Server ZIP and run the command below. The installer validates the original ZIP."
     },
     "packages": {
       "eyebrow": "Direct downloads",

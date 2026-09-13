@@ -243,7 +243,9 @@
     "latest": "最新",
     "prerelease": "预览",
     "empty": "尚未配置任何下载项。",
-    "serverHint": "服务端程序包随产品压缩包一同分发。",
+    "serverHint": "客户端与服务端以相互独立的压缩包分发；离线服务器只需服务端包。",
+    "clientRunTitle": "下载后直接运行客户端",
+    "clientRunHint": "客户端不需要安装到服务器。下载到自己的电脑后解压，并执行下方命令。",
     "platform": {
       "windows": "Windows",
       "linux": "Linux",
@@ -274,6 +276,22 @@
       "uninstallDataTitle": "同时删除数据（不可恢复）",
       "uninstallWindowsData": "此操作会删除数据库、配置与安装状态，且无法恢复。",
       "uninstallLinuxData": "此操作会删除数据库、配置与安装状态，且无法恢复。"
+    },
+    "packageKind": {
+      "client": "客户端",
+      "server": "服务端",
+      "archive": "归档包"
+    },
+    "offline": {
+      "eyebrow": "离线安装",
+      "title": "将服务端包带到无网络服务器",
+      "lead": "客户端与服务端包彼此独立。只需下载服务端包并复制到目标服务器；客户端无需放到服务器上。",
+      "stepOneTitle": "下载服务端包",
+      "stepOneText": "在有网络的设备上下载标有「服务端」的 ZIP，并保留校验和以供核验。",
+      "stepTwoTitle": "复制到目标服务器",
+      "stepTwoText": "通过受信任的 U 盘、SCP 或内部文件共享传输 ZIP；不要下载客户端包到服务器。",
+      "stepThreeTitle": "解压并执行安装器",
+      "stepThreeText": "在服务器上解压服务端 ZIP，并从解压目录运行下方命令。安装器会对原始 ZIP 进行校验。"
     },
     "packages": {
       "eyebrow": "直接下载",

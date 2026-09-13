@@ -22,7 +22,7 @@ export class DownloadsComponent {
   readonly loading = signal(true);
   readonly items = signal<DownloadInfo[]>([]);
   readonly selectedInstaller = signal<'windows' | 'linux'>(this.detectInstallerPlatform());
-  readonly copied = signal<'installer' | 'uninstaller' | 'checksum' | null>(null);
+  readonly copied = signal<'installer' | 'uninstaller' | 'offline' | 'client' | 'checksum' | null>(null);
   readonly installerOrigin = this.getCurrentOrigin();
 
   readonly groups = computed(() => {
@@ -36,6 +36,11 @@ export class DownloadsComponent {
   });
 
   readonly availableItems = computed(() => this.items().filter(item => item.isAvailable && !!item.url));
+  readonly offlineServerArchive = computed(() => {
+    const platform = this.selectedInstaller();
+    return this.availableItems().find(item => item.platform.toLowerCase() === platform && item.packageKind === 'server')?.fileName
+      ?? 'RelaxKonOS-server.zip';
+  });
 
   readonly installerCommand = computed(() => {
     const base = `${this.installerOrigin}/relaxkonos/stable/latest`;
@@ -56,6 +61,13 @@ export class DownloadsComponent {
     return this.selectedInstaller() === 'windows'
       ? `& ([scriptblock]::Create((irm ${base}/uninstall.ps1))) -UninstallerArguments '-RemoveData'`
       : `curl -fsSL ${base}/bootstrap/uninstall-relaxkonos.sh | sudo bash -s -- --remove-data`;
+  });
+
+  readonly offlineInstallCommand = computed(() => {
+    const archive = this.offlineServerArchive();
+    return this.selectedInstaller() === 'windows'
+      ? `Expand-Archive .\\${archive} .\\RelaxKonOS-server\n& .\\RelaxKonOS-server\\deployment\\bootstrap\\Install-RelaxKonOS.ps1 -BundlePath .\\${archive}`
+      : `unzip ${archive} -d RelaxKonOS-server\nsudo bash ./RelaxKonOS-server/deployment/bootstrap/install-relaxkonos.sh --bundle ./${archive}`;
   });
 
   constructor() {
@@ -83,7 +95,18 @@ export class DownloadsComponent {
     return translation === `downloads.platform.${platform.toLowerCase()}` ? platform : translation;
   }
 
-  async copy(value: string, type: 'installer' | 'uninstaller' | 'checksum'): Promise<void> {
+  packageKindLabel(packageKind: DownloadInfo['packageKind']): string {
+    return packageKind ? this.i18n.t(`downloads.packageKind.${packageKind}`) : this.i18n.t('downloads.packageKind.archive');
+  }
+
+  clientLaunchCommand(item: DownloadInfo): string {
+    const archive = item.fileName ?? 'RelaxKonOS-client.zip';
+    return item.platform.toLowerCase() === 'windows'
+      ? `Expand-Archive .\\${archive} .\\RelaxKonOS-client\n& .\\RelaxKonOS-client\\payload\\windows\\client\\RelaxKonOS.Client.Desktop.exe`
+      : `unzip ${archive} -d RelaxKonOS-client\n./RelaxKonOS-client/payload/linux/client/RelaxKonOS.Client.Desktop`;
+  }
+
+  async copy(value: string, type: 'installer' | 'uninstaller' | 'offline' | 'client' | 'checksum'): Promise<void> {
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(value);

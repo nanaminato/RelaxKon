@@ -32,6 +32,13 @@
 .uninstall-card__foot summary { color: var(--rk-primary); cursor: pointer; font-size: .84rem; font-weight: 700; }
 .uninstall-card__foot p { margin-top: .6rem; }
 .uninstall-card__foot .command-box { margin-top: .7rem; }
+.offline-section { border-top: 1px solid var(--rk-border); }
+.offline-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; padding: 0; margin: 0; list-style: none; }
+.offline-steps li { display: flex; gap: .75rem; padding: .9rem 0; }
+.offline-steps li > span { color: var(--rk-primary); font-family: var(--rk-font-mono); font-size: .78rem; font-weight: 800; }
+.offline-steps strong { font-size: .9rem; }
+.offline-steps p { margin: .1rem 0 0; color: var(--rk-text-secondary); font-size: .82rem; line-height: 1.5; }
+.offline-command { margin-bottom: 0; }
 .groups { gap: 2.5rem; }
 .group__head { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem; }
 .group__head h3 { margin: 0; font-size: 1.35rem; }
@@ -46,9 +53,13 @@
 .download__checksum button { justify-self: start; padding: 0; color: var(--rk-primary); font-size: .78rem; font-weight: 700; }
 .download__checksum button:hover { color: var(--rk-primary-hover); text-decoration: underline; }
 .download .btn { align-self: flex-start; }
+.client-run { margin-top: -.15rem; }
+.client-run summary { color: var(--rk-primary); cursor: pointer; font-size: .82rem; font-weight: 700; }
+.client-run p { margin: .55rem 0 0; color: var(--rk-text-secondary); font-size: .8rem; line-height: 1.5; }
+.client-run .command-box { margin: .65rem 0 0; }
 
 @media (max-width: 760px) {
-  .installer-layout, .install-steps, .uninstall-card { grid-template-columns: 1fr; }
+  .installer-layout, .install-steps, .offline-steps, .uninstall-card { grid-template-columns: 1fr; }
   .installer-picker { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
