@@ -3,11 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { I18nService, SITE_LANGUAGES, SiteLanguage } from '../../core/i18n/i18n.service';
 import { ThemePreference, ThemeService } from '../../core/theme/theme.service';
+import { GithubLinkComponent } from '../../shared/components/github-link/github-link.component';
 import { SearchOverlayComponent } from '../search/search-overlay.component';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive, FormsModule, SearchOverlayComponent],
+  imports: [RouterLink, RouterLinkActive, FormsModule, GithubLinkComponent, SearchOverlayComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })

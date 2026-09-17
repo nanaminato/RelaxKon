@@ -7,9 +7,10 @@ import { ContentApiService } from '../../core/api/content-api.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { DownloadInfo } from '../../core/models/content.models';
 import { SeoService } from '../../core/seo/seo.service';
+import { GithubLinkComponent } from '../../shared/components/github-link/github-link.component';
 
 @Component({
-  imports: [LocalizedDatePipe, RouterLink],
+  imports: [LocalizedDatePipe, RouterLink, GithubLinkComponent],
   templateUrl: './downloads.component.html',
   styleUrl: './downloads.component.scss',
 })
@@ -22,7 +23,7 @@ export class DownloadsComponent {
   readonly loading = signal(true);
   readonly items = signal<DownloadInfo[]>([]);
   readonly selectedInstaller = signal<'windows' | 'linux'>(this.detectInstallerPlatform());
-  readonly copied = signal<'installer' | 'uninstaller' | 'offline' | 'client' | 'checksum' | null>(null);
+  readonly copied = signal<'installer' | 'uninstaller' | 'offline' | 'client' | 'userMode' | 'checksum' | null>(null);
   readonly installerOrigin = this.getCurrentOrigin();
 
   readonly groups = computed(() => {
@@ -74,6 +75,21 @@ export class DownloadsComponent {
       : `unzip ${archive} -d RelaxKonOS-server\nsudo bash ./RelaxKonOS-server/deployment/bootstrap/install-relaxkonos.sh --bundle ./${archive}`;
   });
 
+  /**
+   * User Mode needs the `user-server` bundle rather than the plain server ZIP,
+   * so the command is spelled out with the published naming pattern instead of
+   * being derived from the download feed.
+   */
+  readonly userModeCommand = computed(() =>
+    [
+      'unzip RelaxKonOS-<version>-linux-x64-user-server.zip -d RelaxKonOS-user-server',
+      './RelaxKonOS-user-server/deployment/user/install-relaxkonos.sh --mode user --bundle ./RelaxKonOS-user-server',
+    ].join('\n'),
+  );
+
+  /** User Mode is documented per language, so the link follows the site language. */
+  readonly userModeDocLink = computed(() => ['/docs', this.i18n.language(), 'latest', 'getting-started', 'user-mode']);
+
   constructor() {
     inject(SeoService).apply({
       title: 'Downloads — RelaxKon',
@@ -110,7 +126,7 @@ export class DownloadsComponent {
       : `unzip ${archive} -d RelaxKonOS-client\n./RelaxKonOS-client/payload/linux/client/RelaxKonOS.Client.Desktop`;
   }
 
-  async copy(value: string, type: 'installer' | 'uninstaller' | 'offline' | 'client' | 'checksum'): Promise<void> {
+  async copy(value: string, type: 'installer' | 'uninstaller' | 'offline' | 'client' | 'userMode' | 'checksum'): Promise<void> {
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(value);

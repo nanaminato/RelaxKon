@@ -9,6 +9,9 @@ import { DocumentContent, DocumentHeading, LanguageInfo, NavigationNode, SearchR
 import { MarkdownService } from '../../core/services/markdown.service';
 import { SeoService } from '../../core/seo/seo.service';
 
+/** Mirrors `DocumentService.DefaultLanguage`: a fallback article is always English. */
+const DEFAULT_DOCUMENT_LANGUAGE = 'en-US';
+
 @Component({
   imports: [RouterLink, FormsModule],
   templateUrl: './docs.component.html',
@@ -47,9 +50,22 @@ export class DocsComponent {
     return item ? this.markdown.render(item.content, this.copyLabels()) : '';
   });
 
+  /**
+   * Language the article body is really written in. The response echoes the
+   * requested language, so an untranslated page — one the server served from the
+   * default language — has to be reported as that default instead.
+   */
+  readonly articleLanguage = computed(() => {
+    const item = this.document();
+    if (!item) return null;
+    return item.isFallback ? DEFAULT_DOCUMENT_LANGUAGE : item.language;
+  });
+
   private observer: IntersectionObserver | null = null;
 
   constructor() {
+    this.destroyRef.onDestroy(() => this.i18n.setContentLanguage(null));
+
     this.router.events
       .pipe(
         filter((event): event is NavigationEnd => event instanceof NavigationEnd),
@@ -118,6 +134,9 @@ export class DocsComponent {
     const { language, version, slug } = this.context();
     this.language.set(language);
     this.version.set(version);
+    // The route already names the intended article language; the response below
+    // corrects this when the server substitutes the default language instead.
+    this.i18n.setContentLanguage(language);
     this.loading.set(true);
     this.results.set([]);
     this.query.set('');
@@ -136,6 +155,7 @@ export class DocsComponent {
     this.api.getDocument(language, version, slug).subscribe({
       next: document => {
         this.document.set(document);
+        this.i18n.setContentLanguage(this.articleLanguage());
         this.headings.set(document.headings?.length ? document.headings : this.markdown.headings(document.content));
         this.loading.set(false);
         this.seo.apply({
@@ -147,6 +167,7 @@ export class DocsComponent {
       },
       error: () => {
         this.document.set(null);
+        this.i18n.setContentLanguage(null);
         this.headings.set([]);
         this.loading.set(false);
       },

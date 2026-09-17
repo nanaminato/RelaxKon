@@ -107,7 +107,9 @@
         <p class="notice mt-0">{{ i18n.t('docs.fallbackNotice', { language: fallbackLanguageName() }) }}</p>
       }
 
-      <article #article class="prose" [innerHTML]="html()"></article>
+      <!-- The article carries its own `lang`: the surrounding chrome is in the UI
+           language, and the two differ whenever a reader browses another language. -->
+      <article #article class="prose" [attr.lang]="articleLanguage()" [innerHTML]="html()"></article>
 
       <nav class="pager">
         @if (item.previous) {

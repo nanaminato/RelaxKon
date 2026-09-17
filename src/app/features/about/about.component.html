@@ -53,7 +53,10 @@
       <h2>{{ i18n.t('about.contactTitle') }}</h2>
       <p>{{ i18n.t('about.contactText') }}</p>
       <p><span class="mono badge">{{ i18n.t('brand.domain') }}</span></p>
-      <a class="btn btn--secondary" routerLink="/docs/en-US/latest/concepts/architecture">{{ i18n.t('footer.linkArchitecture') }}</a>
+      <div class="btn-row">
+        <app-github-link variant="secondary" labelKey="github.viewRepository" />
+        <a class="btn btn--secondary" routerLink="/docs/en-US/latest/concepts/architecture">{{ i18n.t('footer.linkArchitecture') }}</a>
+      </div>
     </div>
   </div>
 </section>

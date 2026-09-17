@@ -79,6 +79,23 @@
         </div>
       </details>
     </article>
+    <article class="user-mode-card" aria-labelledby="user-mode-title">
+      <div>
+        <span class="badge badge--accent">{{ i18n.t('downloads.userMode.eyebrow') }}</span>
+        <h3 id="user-mode-title">{{ i18n.t('downloads.userMode.title') }}</h3>
+        <p>{{ i18n.t('downloads.userMode.lead') }}</p>
+      </div>
+      <div class="command-box">
+        <code>{{ userModeCommand() }}</code>
+        <button type="button" class="command-box__copy" (click)="copy(userModeCommand(), 'userMode')">
+          {{ copied() === 'userMode' ? i18n.t('common.copied') : i18n.t('common.copy') }}
+        </button>
+      </div>
+      <div class="user-mode-card__foot">
+        <a class="btn btn--primary btn--sm" [routerLink]="userModeDocLink()">{{ i18n.t('downloads.userMode.docCta') }}</a>
+        <app-github-link variant="secondary" size="sm" labelKey="github.viewRepository" />
+      </div>
+    </article>
   </div>
 </section>
 

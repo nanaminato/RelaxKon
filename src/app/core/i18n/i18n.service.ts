@@ -1,5 +1,5 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { Injectable, PLATFORM_ID, computed, inject, signal } from '@angular/core';
+import { Injectable, PLATFORM_ID, computed, effect, inject, signal } from '@angular/core';
 
 export type SiteLanguage = 'en-US' | 'zh-CN' | 'ja-JP';
 
@@ -22,6 +22,11 @@ const MANUAL_LANGUAGE_STORAGE_KEY = 'rk-language';
  * The UI follows the browser/system language until a visitor explicitly chooses a
  * language. A manual choice is remembered; all non-Chinese and non-Japanese
  * locales resolve to English.
+ *
+ * `<html lang>` is not simply the UI language: a documentation article can be
+ * served in a language of its own, and assistive technology reads the body with
+ * whatever `lang` says. `htmlLanguage` therefore prefers the content language
+ * reported by the page that is on screen and falls back to the UI language.
  */
 @Injectable({ providedIn: 'root' })
 export class I18nService {
@@ -34,8 +39,22 @@ export class I18nService {
   readonly ready = signal(false);
   readonly current = computed(() => SITE_LANGUAGES.find(item => item.code === this.language()) ?? SITE_LANGUAGES[0]);
 
+  /**
+   * Language of the page body currently on screen, when it differs from the UI
+   * language. Documentation routes serve one article per language while the
+   * chrome around it stays in the visitor's UI language, so the two can differ.
+   */
+  private readonly contentLanguage = signal<SiteLanguage | null>(null);
+
+  /** The value kept on `<html lang>`. */
+  readonly htmlLanguage = computed(() => this.contentLanguage() ?? this.language());
+
   constructor() {
     if (this.isBrowser) {
+      effect(() => {
+        this.document.documentElement.lang = this.htmlLanguage();
+      });
+
       window.addEventListener('languagechange', () => {
         if (this.hasManualLanguageChoice()) return;
         const language = this.detectSystemLanguage();
@@ -53,9 +72,16 @@ export class I18nService {
   async setLanguage(language: SiteLanguage): Promise<void> {
     if (this.isBrowser) localStorage.setItem(MANUAL_LANGUAGE_STORAGE_KEY, language);
     if (language === this.language() && this.ready()) return;
-    this.document.documentElement.lang = language;
     this.language.set(language);
     await this.load(language);
+  }
+
+  /**
+   * Points `<html lang>` at the language of the body text on screen. Pass `null`
+   * (or a language the site does not serve) to fall back to the UI language.
+   */
+  setContentLanguage(language: string | null): void {
+    this.contentLanguage.set(isSiteLanguage(language) ? language : null);
   }
 
   /** Translates a dotted key with optional `{placeholder}` interpolation. */
@@ -80,7 +106,8 @@ export class I18nService {
       }
       this.messages.set({});
     } finally {
-      this.document.documentElement.lang = language;
+      // `<html lang>` is applied by the `htmlLanguage` effect, so it also tracks
+      // the content language while a documentation article is on screen.
       this.ready.set(true);
     }
   }

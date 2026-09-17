@@ -5,6 +5,12 @@
     "tagline": "Desktops beyond devices.",
     "domain": "relaxkon.com"
   },
+  "github": {
+    "title": "View the RelaxKonOS source on GitHub",
+    "cta": "View source on GitHub",
+    "viewRepository": "GitHub repository",
+    "issues": "Report an issue"
+  },
   "nav": {
     "products": "Products",
     "allProducts": "All products",
@@ -276,6 +282,12 @@
       "uninstallDataTitle": "Remove data as well (irreversible)",
       "uninstallWindowsData": "This permanently removes the database, configuration, and installation state.",
       "uninstallLinuxData": "This permanently removes the database, configuration, and installation state."
+    },
+    "userMode": {
+      "eyebrow": "No sudo",
+      "title": "Install under an ordinary Linux account (User Mode)",
+      "lead": "User Mode needs no root and writes nothing into system directories; the server listens on 127.0.0.1 only, so remote access goes through SSH local forwarding. It requires a *-user-server.zip release bundle.",
+      "docCta": "Read the User Mode guide"
     },
     "packageKind": {
       "client": "Client",

@@ -1,0 +1,90 @@
+:host {
+  display: inline-flex;
+}
+
+.gh {
+  align-items: center;
+  gap: .4rem;
+  text-decoration: none;
+  color: var(--rk-text-secondary);
+  transition: color var(--rk-transition), background var(--rk-transition), border-color var(--rk-transition);
+}
+
+.gh__mark {
+  flex: none;
+  display: block;
+}
+
+.gh__label {
+  white-space: nowrap;
+}
+
+.gh__external {
+  font-size: .8em;
+  line-height: 1;
+  opacity: .7;
+}
+
+/* Text link mirroring the header/footer navigation items. */
+.gh--nav {
+  display: inline-flex;
+  padding: .48rem .7rem;
+  border-radius: var(--rk-radius-sm);
+  font-size: .92rem;
+  font-weight: 620;
+}
+
+.gh--nav:hover {
+  color: var(--rk-text);
+  background: var(--rk-surface-secondary);
+}
+
+/* Plain link used inside paragraphs and list items. */
+.gh--inline {
+  display: inline-flex;
+  color: var(--rk-primary);
+  font-weight: 620;
+}
+
+.gh--inline:hover {
+  color: var(--rk-primary-hover);
+  text-decoration: underline;
+}
+
+/* Compact square target for the header control row. */
+.gh--icon-only {
+  display: inline-flex;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--rk-border);
+  border-radius: var(--rk-radius-pill);
+  background: var(--rk-surface);
+  color: var(--rk-text-secondary);
+}
+
+.gh--icon-only:hover {
+  border-color: var(--rk-border-strong);
+  color: var(--rk-text);
+}
+
+/* Button variants lean on the global `.btn` classes; only the icon gap is local. */
+.gh.btn .gh__mark {
+  margin-top: -1px;
+}
+
+/*
+ * Inside a footer column the surrounding stylesheet already gives links a muted
+ * colour that turns primary on hover, so the nav variant drops its own surface.
+ */
+:host-context(.footer__col) .gh--nav {
+  padding: 0;
+  border-radius: 0;
+  font-size: .92rem;
+}
+
+:host-context(.footer__col) .gh--nav:hover {
+  background: none;
+  color: var(--rk-primary);
+}

@@ -33,6 +33,7 @@
       <a class="nav__link" routerLink="/downloads" routerLinkActive="is-active" (click)="closeAll()">{{ i18n.t('nav.downloads') }}</a>
       <a class="nav__link" routerLink="/releases" routerLinkActive="is-active" (click)="closeAll()">{{ i18n.t('nav.releases') }}</a>
       <a class="nav__link" routerLink="/about" routerLinkActive="is-active" (click)="closeAll()">{{ i18n.t('nav.about') }}</a>
+      <app-github-link labelKey="github.viewRepository" (navigated)="closeAll()" />
 
       <div class="nav__controls">
         <button class="search-trigger" type="button" (click)="openSearch()">
@@ -61,5 +62,11 @@
     </nav>
   </div>
 </header>
+
+<!-- Kept outside <header>: `backdrop-filter` on the sticky bar turns it into the
+     containing block for fixed descendants, which would pin the scrim to the bar. -->
+@if (mobileOpen()) {
+  <div class="nav-scrim" (click)="closeAll()" aria-hidden="true"></div>
+}
 
 <app-search-overlay [open]="searchOpen()" (closed)="searchOpen.set(false)" />

@@ -5,6 +5,12 @@
     "tagline": "让桌面跨越设备。",
     "domain": "relaxkon.com"
   },
+  "github": {
+    "title": "在 GitHub 上查看 RelaxKonOS 源码",
+    "cta": "查看 GitHub 源码",
+    "viewRepository": "GitHub 仓库",
+    "issues": "问题反馈"
+  },
   "nav": {
     "products": "产品",
     "allProducts": "全部产品",
@@ -276,6 +282,12 @@
       "uninstallDataTitle": "同时删除数据（不可恢复）",
       "uninstallWindowsData": "此操作会删除数据库、配置与安装状态，且无法恢复。",
       "uninstallLinuxData": "此操作会删除数据库、配置与安装状态，且无法恢复。"
+    },
+    "userMode": {
+      "eyebrow": "无需 sudo",
+      "title": "在普通 Linux 账号下安装（用户模式）",
+      "lead": "用户模式不需要 root，也不会写入系统目录；服务只监听 127.0.0.1，远程访问通过 SSH 本地转发。需要使用 *-user-server.zip 发布包。",
+      "docCta": "阅读用户模式安装文档"
     },
     "packageKind": {
       "client": "客户端",

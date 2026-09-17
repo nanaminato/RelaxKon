@@ -89,6 +89,7 @@
   font-size: .86rem;
 }
 .icon-btn { display: none; }
+.nav-scrim { display: none; }
 .menu-btn {
   margin-left: auto;
   width: 40px; height: 40px;
@@ -125,9 +126,23 @@
     border-bottom: 1px solid var(--rk-border);
     background: var(--rk-bg-elevated);
     box-shadow: var(--rk-shadow-md);
+    /* Bound the panel to the viewport so the last controls stay reachable on
+       short screens; without this the panel is clipped by the viewport edge. */
+    max-height: calc(100vh - var(--rk-header-height));
+    max-height: calc(100dvh - var(--rk-header-height) - env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
     display: none;
   }
   .nav.is-open { display: flex; }
+  /* Below the sticky bar and behind it, so the bar stays usable while open. */
+  .nav-scrim {
+    display: block;
+    position: fixed;
+    inset: var(--rk-header-height) 0 0;
+    z-index: 1;
+    background: var(--rk-overlay);
+  }
   .nav__link { padding: .7rem .5rem; font-size: 1rem; }
   .dropdown { position: static; width: auto; margin: .4rem 0 .6rem; box-shadow: none; }
   .nav__controls { flex-wrap: wrap; gap: .8rem; margin: 1rem 0 0; }
