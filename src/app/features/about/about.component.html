@@ -54,6 +54,7 @@
       <p>{{ i18n.t('about.contactText') }}</p>
       <p><span class="mono badge">{{ i18n.t('brand.domain') }}</span></p>
       <div class="btn-row">
+        <a class="btn btn--primary mono" [href]="contactEmailUrl">{{ contactEmail }}</a>
         <app-github-link variant="secondary" labelKey="github.viewRepository" />
         <a class="btn btn--secondary" [routerLink]="architectureLink()">{{ i18n.t('footer.linkArchitecture') }}</a>
       </div>

@@ -1,5 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { CONTACT_EMAIL, CONTACT_EMAIL_URL } from '../../core/config/site-links';
 import { docsUrl } from '../../core/docs/docs-link';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { SeoService } from '../../core/seo/seo.service';
@@ -12,6 +13,10 @@ import { GithubLinkComponent } from '../../shared/components/github-link/github-
 })
 export class AboutComponent {
   readonly i18n = inject(I18nService);
+
+  /** Maintainer contact address, shown in the contact section. */
+  readonly contactEmail = CONTACT_EMAIL;
+  readonly contactEmailUrl = CONTACT_EMAIL_URL;
 
   readonly principles = [1, 2, 3].map(index => ({
     titleKey: `about.principle${index}Title`,

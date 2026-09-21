@@ -28,6 +28,7 @@
         <a routerLink="/about">{{ i18n.t('footer.linkAbout') }}</a>
         <app-github-link labelKey="github.viewRepository" [showExternalMark]="false" />
         <a [href]="issuesUrl" target="_blank" rel="noopener noreferrer">{{ i18n.t('github.issues') }}</a>
+        <a [href]="contactEmailUrl">{{ contactEmail }}</a>
         <span class="muted small">{{ i18n.t('brand.domain') }}</span>
       </div>
     </nav>
