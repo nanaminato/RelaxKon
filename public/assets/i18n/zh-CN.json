@@ -186,7 +186,7 @@
       "card1Title": "快速开始",
       "card1Text": "安装客户端与服务端，使用宿主凭据登录，并完成第一次体验。",
       "card2Title": "应用程序",
-      "card2Text": "终端、文件管理器、浏览器、Docker、防火墙、任务管理器等应用的指南。",
+      "card2Text": "终端、文件管理器、Docker、Web Server、证书、Git、隧道与代理管理等应用的指南。",
       "card3Title": "核心概念",
       "card3Text": "工作区、会话、应用模型、协议设计与安全模型。"
     },
@@ -228,8 +228,12 @@
     "statusLead": "桌面 Shell、运行时、协议与服务端平台服务均已就位，各平台构建在验证通过后逐一发布。",
     "statusItem1": "桌面 Shell、窗口管理器与应用运行时已实现",
     "statusItem2": "服务端工作空间、存储与同步已实现",
-    "statusItem3": "Docker、防火墙、证书、Git、隧道与代理管理已实现 MVP",
-    "statusItem4": "Windows、Linux 与 macOS 安装包正在准备中"
+    "statusItem3": "Docker、防火墙、证书、Git、隧道、代理、Web Server、应用部署与注册表均有可用实现",
+    "statusItem4": "Windows、Linux 与 macOS 安装包正在准备中",
+    "limitsTitle": "关于成熟度的说明",
+    "limitsText": "本站按实际状态描述能力：已上线、已实现待验证与尚未实现会明确区分。部分与宿主权限相关的功能需要在安装时显式授权，真实运行环境验收未完成的项目不会写成已全面可用。",
+    "limitsDocsLink": "阅读应用模型",
+    "limitsInspectorLink": "网络诊断器（开发者工具）"
   },
   "products": {
     "eyebrow": "产品",
@@ -407,6 +411,7 @@
     "registry": "配置注册表",
     "proxyManager": "代理管理器",
     "appInstaller": "应用安装器",
+    "applicationDeployments": "应用部署",
     "fileServices": "文件服务"
   },
   "search": {

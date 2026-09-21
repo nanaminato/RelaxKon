@@ -19,8 +19,8 @@
       <div class="footer__col">
         <h3>{{ i18n.t('footer.resources') }}</h3>
         <a routerLink="/docs">{{ i18n.t('footer.linkDocs') }}</a>
-        <a routerLink="/docs/en-US/latest/concepts/architecture">{{ i18n.t('footer.linkArchitecture') }}</a>
-        <a routerLink="/docs/en-US/latest/concepts/security">{{ i18n.t('footer.linkSecurity') }}</a>
+        <a [routerLink]="architectureLink()">{{ i18n.t('footer.linkArchitecture') }}</a>
+        <a [routerLink]="securityLink()">{{ i18n.t('footer.linkSecurity') }}</a>
         <a routerLink="/faq">{{ i18n.t('footer.linkFaq') }}</a>
       </div>
       <div class="footer__col">

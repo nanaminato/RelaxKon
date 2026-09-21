@@ -4,19 +4,30 @@
     <h1>{{ i18n.t('os.title') }}</h1>
     <p class="lead">{{ i18n.t('os.lead') }}</p>
     <div class="btn-row mt-2">
-      <a class="btn btn--primary btn--lg" routerLink="/docs/en-US/latest/concepts/architecture">{{ i18n.t('os.ctaPrimary') }}</a>
+      <a class="btn btn--primary btn--lg" [routerLink]="architectureLink()">{{ i18n.t('os.ctaPrimary') }}</a>
       <a class="btn btn--secondary btn--lg" routerLink="/downloads">{{ i18n.t('os.ctaSecondary') }}</a>
     </div>
   </div>
 </section>
 
-<!-- Positioning: what it is not -->
+<!-- Positioning: what it is not, and what is not yet verified -->
 <section class="section">
-  <div class="container">
+  <div class="container stack">
     <div class="notice notice--warning">
       <div>
         <strong>{{ i18n.t('os.notRemoteTitle') }}</strong>
         <p class="mb-0">{{ i18n.t('os.notRemoteText') }}</p>
+      </div>
+    </div>
+    <div class="notice">
+      <div>
+        <strong>{{ i18n.t('os.limitsTitle') }}</strong>
+        <p>{{ i18n.t('os.limitsText') }}</p>
+        <p class="mb-0 small">
+          <a class="notice__link" [routerLink]="applicationModelLink()">{{ i18n.t('os.limitsDocsLink') }}</a>
+          &nbsp;·&nbsp;
+          <a class="notice__link" [routerLink]="networkInspectorLink()">{{ i18n.t('os.limitsInspectorLink') }}</a>
+        </p>
       </div>
     </div>
   </div>
@@ -50,12 +61,14 @@
       <p class="lead">{{ i18n.t('os.appsLead') }}</p>
     </div>
     <div class="apps">
-      @for (group of appGroups; track group.titleKey) {
+      @for (group of appGroups(); track group.titleKey) {
         <div class="apps__group">
           <h3 class="apps__group-title">{{ i18n.t(group.titleKey) }}</h3>
           <ul class="apps__list">
-            @for (app of group.apps; track app) {
-              <li class="apps__item">{{ i18n.t('appNames.' + app) }}</li>
+            @for (app of group.apps; track app.key) {
+              <li class="apps__item">
+                <a class="apps__link" [routerLink]="app.link">{{ i18n.t('appNames.' + app.key) }}</a>
+              </li>
             }
           </ul>
         </div>
@@ -124,7 +137,7 @@
       <p class="eyebrow">{{ i18n.t('os.extendEyebrow') }}</p>
       <h2>{{ i18n.t('os.extendTitle') }}</h2>
       <p class="lead">{{ i18n.t('os.extendLead') }}</p>
-      <a class="btn btn--secondary" routerLink="/docs/en-US/latest/concepts/application-model">{{ i18n.t('os.extendCta') }}</a>
+      <a class="btn btn--secondary" [routerLink]="applicationModelLink()">{{ i18n.t('os.extendCta') }}</a>
     </div>
     <div class="code-sample">
       <div class="code-sample__bar" aria-hidden="true">

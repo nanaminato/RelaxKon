@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { docsUrl } from '../../core/docs/docs-link';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { SeoService } from '../../core/seo/seo.service';
 import { GithubLinkComponent } from '../../shared/components/github-link/github-link.component';
@@ -41,11 +42,17 @@ export class HomeComponent {
     textKey: `home.philosophy.principle${index}Text`,
   }));
 
-  readonly docCards = [
-    { titleKey: 'home.docs.card1Title', textKey: 'home.docs.card1Text', link: '/docs/en-US/latest/getting-started/introduction' },
-    { titleKey: 'home.docs.card2Title', textKey: 'home.docs.card2Text', link: '/docs/en-US/latest/apps/terminal' },
-    { titleKey: 'home.docs.card3Title', textKey: 'home.docs.card3Text', link: '/docs/en-US/latest/concepts/architecture' },
-  ];
+  /** Rebuilt per language so visitors are never sent to another language's docs. */
+  readonly docCards = computed(() => {
+    const language = this.i18n.language();
+    return [
+      { titleKey: 'home.docs.card1Title', textKey: 'home.docs.card1Text', link: docsUrl(language, 'getting-started/introduction') },
+      { titleKey: 'home.docs.card2Title', textKey: 'home.docs.card2Text', link: docsUrl(language, 'apps/terminal') },
+      { titleKey: 'home.docs.card3Title', textKey: 'home.docs.card3Text', link: docsUrl(language, 'concepts/architecture') },
+    ];
+  });
+
+  readonly appsDocsLink = computed(() => docsUrl(this.i18n.language(), 'apps/terminal'));
 
   constructor() {
     const seo = inject(SeoService);

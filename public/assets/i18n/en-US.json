@@ -186,7 +186,7 @@
       "card1Title": "Getting started",
       "card1Text": "Install the client and server, sign in with host credentials and take the first tour.",
       "card2Title": "Applications",
-      "card2Text": "Guides for the terminal, file manager, browser, Docker, firewall, task manager and more.",
+      "card2Text": "Guides for the terminal, file manager, Docker, web servers, certificates, Git, tunnels, proxies and more.",
       "card3Title": "Concepts",
       "card3Text": "Workspaces, sessions, the application model, protocol design and the security model."
     },
@@ -228,8 +228,12 @@
     "statusLead": "The desktop shell, runtime, protocol and server-side platform services are in place. Releases are published as each platform build is verified.",
     "statusItem1": "Desktop shell, window manager and application runtime implemented",
     "statusItem2": "Server-side workspace, storage and synchronisation implemented",
-    "statusItem3": "Docker, firewall, certificates, Git, tunnels and proxy management implemented as MVPs",
-    "statusItem4": "Download artifacts in preparation for Windows, Linux and macOS"
+    "statusItem3": "Docker, firewall, certificates, Git, tunnels, proxies, web servers, application deployments and the registry all have working implementations",
+    "statusItem4": "Download artifacts in preparation for Windows, Linux and macOS",
+    "limitsTitle": "About maturity",
+    "limitsText": "This site describes capabilities by their actual state: shipped, implemented but not yet verified, and not implemented are kept distinct. Some host-privileged features require explicit authorization at install time, and items whose real-environment acceptance is outstanding are never presented as fully available.",
+    "limitsDocsLink": "Read the application model",
+    "limitsInspectorLink": "Network Inspector (developer tool)"
   },
   "products": {
     "eyebrow": "Products",
@@ -407,6 +411,7 @@
     "registry": "Registry",
     "proxyManager": "Proxy Manager",
     "appInstaller": "App Installer",
+    "applicationDeployments": "Application Deployments",
     "fileServices": "File Services"
   },
   "search": {

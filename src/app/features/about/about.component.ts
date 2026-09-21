@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { docsUrl } from '../../core/docs/docs-link';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { SeoService } from '../../core/seo/seo.service';
 import { GithubLinkComponent } from '../../shared/components/github-link/github-link.component';
@@ -22,6 +23,9 @@ export class AboutComponent {
     { name: 'RelaxKonServer', textKey: 'about.project2Text' },
     { name: 'RelaxKonOS', textKey: 'about.project3Text' },
   ];
+
+  /** Architecture link follows the language the visitor is reading. */
+  readonly architectureLink = computed(() => docsUrl(this.i18n.language(), 'concepts/architecture'));
 
   constructor() {
     inject(SeoService).apply({

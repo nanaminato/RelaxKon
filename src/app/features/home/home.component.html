@@ -78,7 +78,7 @@
         <h2>{{ i18n.t('home.apps.title') }}</h2>
         <p class="lead">{{ i18n.t('home.apps.lead') }}</p>
       </div>
-      <a class="btn btn--secondary" routerLink="/docs/en-US/latest/apps/terminal">{{ i18n.t('home.apps.cta') }}</a>
+      <a class="btn btn--secondary" [routerLink]="appsDocsLink()">{{ i18n.t('home.apps.cta') }}</a>
     </div>
 
     <div class="apps">
@@ -191,7 +191,7 @@
       <a class="btn btn--primary" routerLink="/docs">{{ i18n.t('home.docs.cta') }}</a>
     </div>
     <div class="grid grid--3">
-      @for (card of docCards; track card) {
+      @for (card of docCards(); track card.titleKey) {
         <a class="card card--hover doc-card" [routerLink]="card.link">
           <h3>{{ i18n.t(card.titleKey) }}</h3>
           <p>{{ i18n.t(card.textKey) }}</p>

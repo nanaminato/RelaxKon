@@ -4,7 +4,7 @@
 .apps__group-title { margin-bottom: .8rem; color: var(--rk-text-muted); font-size: .76rem; font-weight: 760; letter-spacing: .12em; text-transform: uppercase; }
 .apps__list { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0; padding: 0; list-style: none; }
 .apps__item {
-  padding: .4rem .8rem;
+  padding: 0;
   border: 1px solid var(--rk-border);
   border-radius: var(--rk-radius-pill);
   background: var(--rk-surface);
@@ -12,7 +12,11 @@
   font-size: .86rem;
   font-weight: 600;
 }
+/* The whole pill is the link target, so the padding lives on the anchor. */
+.apps__link { display: block; padding: .4rem .8rem; color: inherit; text-decoration: none; }
 .apps__item:hover { border-color: var(--rk-primary); color: var(--rk-primary); }
+.apps__link:focus-visible { outline: 2px solid var(--rk-primary); outline-offset: 2px; }
+.notice__link { color: var(--rk-primary); font-weight: 600; }
 .code-sample { overflow: hidden; border: 1px solid var(--rk-border); border-radius: var(--rk-radius-lg); background: var(--rk-code-bg); box-shadow: var(--rk-shadow-md); }
 .code-sample__bar { display: flex; align-items: center; gap: .4rem; padding: .6rem .85rem; border-bottom: 1px solid rgb(255 255 255 / 8%); }
 .code-sample__bar span { width: 10px; height: 10px; border-radius: 50%; background: rgb(255 255 255 / 22%); }
