@@ -164,7 +164,7 @@
                     }
                   </dl>
                   @if (item.fileName) { <p class="mono small muted mb-0">{{ item.fileName }}</p> }
-                  @if (item.packageKind === 'client') {
+                  @if (item.packageKind === 'client' && item.platform.toLowerCase() !== 'android') {
                     <details class="client-run">
                       <summary>{{ i18n.t('downloads.clientRunTitle') }}</summary>
                       <p>{{ i18n.t('downloads.clientRunHint') }}</p>
