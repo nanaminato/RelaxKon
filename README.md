@@ -90,7 +90,7 @@ public/                   # favicon 全套、brand-mark.png、site.webmanifest�
 
 文档与 FAQ 使用的是**内容语言**，由 API 提供，与 UI 语言相互独立。
 
-`RelaxKonServer/Content/Docs/{en-US,zh-CN,ja-JP}` 当前各 36 篇（入门 4 + 概念 9 + 应用 23），三种语言已完全对齐，因此正常浏览不会触发回退。回退机制本身仍然存在：某个 slug 在目标语言缺失时会取 `en-US` 的版本，并把响应的 `isFallback` 置为 `true`，由界面提示读者。**改动内容语言的文件数时必须让三种语言保持一致**，否则导航会出现回退项。
+`RelaxKonServer/Content/Docs/{en-US,zh-CN,ja-JP}` 当前各 37 篇（入门 4 + 概念 9 + 应用 24），三种语言已完全对齐，因此正常浏览不会触发回退。回退机制本身仍然存在：某个 slug 在目标语言缺失时会取 `en-US` 的版本，并把响应的 `isFallback` 置为 `true`，由界面提示读者。**改动内容语言的文件数时必须让三种语言保持一致**，否则导航会出现回退项。
 
 因此**正文语言与界面语言可以不同**。`<html lang>` 由 `I18nService` 的 `htmlLanguage`（`contentLanguage ?? language`）决定，文档页通过 `i18n.setContentLanguage(...)` 把它指向正文**实际**使用的语言——回退时按实际语言上报，而不是路由上请求的语言；离开 `/docs` 时清空，恢复为 UI 语言。`<article>` 元素另外单独挂了 `lang`，因为外壳（导航、侧栏）始终是 UI 语言。这套机制是为了让屏幕阅读器按正确语言朗读正文，**改动文档页时不要绕过这两个写入点**。注意 API 的 `DocumentResponse.language` 回显的是请求的语言，判断实际语言要用 `isFallback`。
 

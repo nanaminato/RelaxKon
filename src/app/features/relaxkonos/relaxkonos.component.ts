@@ -21,6 +21,7 @@ const APP_DOCS_SLUGS: Record<string, string> = {
   notepad: 'apps/notepad',
   imageViewer: 'apps/image-viewer',
   settings: 'apps/settings',
+  serverCenter: 'apps/server-center',
   taskManager: 'apps/task-manager',
   docker: 'apps/docker',
   processGuardian: 'apps/process-guardian',
@@ -52,7 +53,7 @@ export class RelaxKonOsComponent {
 
   private readonly appGroupKeys: { titleKey: string; apps: string[] }[] = [
     { titleKey: 'home.apps.groupEveryday', apps: ['terminal', 'fileManager', 'browser', 'notepad', 'imageViewer'] },
-    { titleKey: 'home.apps.groupSystem', apps: ['settings', 'taskManager', 'processGuardian', 'docker', 'registry', 'appInstaller', 'welcome'] },
+    { titleKey: 'home.apps.groupSystem', apps: ['settings', 'serverCenter', 'taskManager', 'processGuardian', 'docker', 'registry', 'appInstaller', 'welcome'] },
     { titleKey: 'home.apps.groupNetwork', apps: ['firewall', 'portForwarding', 'tunnels', 'proxyManager', 'webServers', 'certificates', 'fileServices'] },
     { titleKey: 'home.apps.groupDeveloper', apps: ['codeEditor', 'git', 'applicationDeployments'] },
   ];
