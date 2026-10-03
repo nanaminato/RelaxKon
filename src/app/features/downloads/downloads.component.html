@@ -12,84 +12,25 @@
 <section class="section section--tint install-section" aria-labelledby="install-title">
   <div class="container">
     <div class="section__head install-section__head">
-      <p class="eyebrow">{{ i18n.t('downloads.quickInstall.eyebrow') }}</p>
-      <h2 id="install-title">{{ i18n.t('downloads.quickInstall.title') }}</h2>
-      <p class="muted">{{ i18n.t('downloads.quickInstall.lead') }}</p>
+      <p class="eyebrow">{{ i18n.t('downloads.installFlow.eyebrow') }}</p>
+      <h2 id="install-title">{{ i18n.t('downloads.installFlow.title') }}</h2>
+      <p class="muted">{{ i18n.t('downloads.installFlow.lead') }}</p>
     </div>
 
-    <div class="installer-layout">
-      <div class="installer-picker" role="tablist" [attr.aria-label]="i18n.t('downloads.quickInstall.choosePlatform')">
-        <button class="installer-option" type="button" role="tab" [attr.aria-selected]="selectedInstaller() === 'windows'"
-          [class.is-selected]="selectedInstaller() === 'windows'" (click)="selectInstaller('windows')">
-          <span class="installer-option__icon" aria-hidden="true">⊞</span>
-          <span><strong>Windows</strong><small>{{ i18n.t('downloads.quickInstall.windowsHint') }}</small></span>
-        </button>
-        <button class="installer-option" type="button" role="tab" [attr.aria-selected]="selectedInstaller() === 'linux'"
-          [class.is-selected]="selectedInstaller() === 'linux'" (click)="selectInstaller('linux')">
-          <span class="installer-option__icon installer-option__icon--linux" aria-hidden="true">●</span>
-          <span><strong>Linux</strong><small>{{ i18n.t('downloads.quickInstall.linuxHint') }}</small></span>
-        </button>
-      </div>
-
-      <article class="installer-card" role="tabpanel">
-        <div class="installer-card__head">
-          <div>
-            <span class="badge badge--accent">{{ i18n.t('downloads.quickInstall.stable') }}</span>
-            <h3>{{ selectedInstaller() === 'windows' ? i18n.t('downloads.quickInstall.windowsTitle') : i18n.t('downloads.quickInstall.linuxTitle') }}</h3>
-          </div>
-          <span class="installer-card__step">01</span>
-        </div>
-        <p>{{ i18n.t(selectedInstaller() === 'windows' ? 'downloads.quickInstall.windowsDescription' : 'downloads.quickInstall.linuxDescription') }}</p>
-        <div class="command-box">
-          <code>{{ installerCommand() }}</code>
-          <button type="button" class="command-box__copy" (click)="copy(installerCommand(), 'installer')">
-            {{ copied() === 'installer' ? i18n.t('common.copied') : i18n.t('common.copy') }}
-          </button>
-        </div>
-        <p class="installer-card__foot">{{ i18n.t('downloads.quickInstall.verify') }}</p>
-      </article>
-    </div>
-
-    <ol class="install-steps" aria-label="Installation steps">
-      <li><span>01</span><div><strong>{{ i18n.t('downloads.quickInstall.stepOneTitle') }}</strong><p>{{ i18n.t('downloads.quickInstall.stepOneText') }}</p></div></li>
-      <li><span>02</span><div><strong>{{ i18n.t('downloads.quickInstall.stepTwoTitle') }}</strong><p>{{ i18n.t('downloads.quickInstall.stepTwoText') }}</p></div></li>
-      <li><span>03</span><div><strong>{{ i18n.t('downloads.quickInstall.stepThreeTitle') }}</strong><p>{{ i18n.t('downloads.quickInstall.stepThreeText') }}</p></div></li>
+    <ol class="install-steps">
+      <li><span>01</span><div><strong>{{ i18n.t('downloads.installFlow.stepOneTitle') }}</strong><p>{{ i18n.t('downloads.installFlow.stepOneText') }}</p><a href="#packages">{{ i18n.t('downloads.installFlow.downloadCta') }}</a></div></li>
+      <li><span>02</span><div><strong>{{ i18n.t('downloads.installFlow.stepTwoTitle') }}</strong><p>{{ i18n.t('downloads.installFlow.stepTwoText') }}</p></div></li>
+      <li><span>03</span><div><strong>{{ i18n.t('downloads.installFlow.stepThreeTitle') }}</strong><p>{{ i18n.t('downloads.installFlow.stepThreeText') }}</p></div></li>
     </ol>
+    <p class="muted">{{ i18n.t('downloads.installFlow.maintenance') }}</p>
+    <a class="btn btn--primary btn--sm" [routerLink]="installationDocLink()">{{ i18n.t('downloads.installFlow.guideCta') }}</a>
+    <a class="btn btn--secondary btn--sm" [routerLink]="serverCenterDocLink()">{{ i18n.t('downloads.installFlow.serverCenterCta') }}</a>
 
-    <article class="uninstall-card" aria-labelledby="uninstall-title">
-      <div>
-        <span class="badge badge--warning">{{ i18n.t('downloads.quickInstall.uninstallEyebrow') }}</span>
-        <h3 id="uninstall-title">{{ i18n.t('downloads.quickInstall.uninstallTitle') }}</h3>
-        <p>{{ i18n.t('downloads.quickInstall.uninstallLead') }}</p>
-      </div>
-      <div class="command-box">
-        <code>{{ uninstallerCommand() }}</code>
-        <button type="button" class="command-box__copy" (click)="copy(uninstallerCommand(), 'uninstaller')">
-          {{ copied() === 'uninstaller' ? i18n.t('common.copied') : i18n.t('common.copy') }}
-        </button>
-      </div>
-      <details class="uninstall-card__foot">
-        <summary>{{ i18n.t('downloads.quickInstall.uninstallDataTitle') }}</summary>
-        <p>{{ i18n.t(selectedInstaller() === 'windows' ? 'downloads.quickInstall.uninstallWindowsData' : 'downloads.quickInstall.uninstallLinuxData') }}</p>
-        <div class="command-box">
-          <code>{{ purgeDataCommand() }}</code>
-          <button type="button" class="command-box__copy" (click)="copy(purgeDataCommand(), 'uninstaller')">
-            {{ copied() === 'uninstaller' ? i18n.t('common.copied') : i18n.t('common.copy') }}
-          </button>
-        </div>
-      </details>
-    </article>
     <article class="user-mode-card" aria-labelledby="user-mode-title">
       <div>
         <span class="badge badge--accent">{{ i18n.t('downloads.userMode.eyebrow') }}</span>
         <h3 id="user-mode-title">{{ i18n.t('downloads.userMode.title') }}</h3>
         <p>{{ i18n.t('downloads.userMode.lead') }}</p>
-      </div>
-      <div class="command-box">
-        <code>{{ userModeCommand() }}</code>
-        <button type="button" class="command-box__copy" (click)="copy(userModeCommand(), 'userMode')">
-          {{ copied() === 'userMode' ? i18n.t('common.copied') : i18n.t('common.copy') }}
-        </button>
       </div>
       <div class="user-mode-card__foot">
         @if (!userModeItems().length && !loading()) {
@@ -114,12 +55,6 @@
       <li><span>02</span><div><strong>{{ i18n.t('downloads.offline.stepTwoTitle') }}</strong><p>{{ i18n.t('downloads.offline.stepTwoText') }}</p></div></li>
       <li><span>03</span><div><strong>{{ i18n.t('downloads.offline.stepThreeTitle') }}</strong><p>{{ i18n.t('downloads.offline.stepThreeText') }}</p></div></li>
     </ol>
-    <div class="command-box offline-command">
-      <code>{{ offlineInstallCommand() }}</code>
-      <button type="button" class="command-box__copy" (click)="copy(offlineInstallCommand(), 'offline')">
-        {{ copied() === 'offline' ? i18n.t('common.copied') : i18n.t('common.copy') }}
-      </button>
-    </div>
   </div>
 </section>
 

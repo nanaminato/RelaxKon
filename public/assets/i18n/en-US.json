@@ -267,38 +267,12 @@
       "macos": "macOS",
       "android": "Android"
     },
-    "quickInstall": {
-      "eyebrow": "Start here",
-      "title": "Install the server in one command",
-      "lead": "Choose your host operating system. The installer selects the correct stable package, verifies its SHA-256 checksum, and starts the required services.",
-      "choosePlatform": "Choose a server operating system",
-      "windowsHint": "PowerShell with UAC",
-      "linuxHint": "Debian or Ubuntu with sudo",
-      "stable": "Stable channel",
-      "windowsTitle": "Windows Server installation",
-      "linuxTitle": "Linux server installation",
-      "windowsDescription": "Run this in PowerShell. The installer asks for administrator approval when it is needed.",
-      "linuxDescription": "Run this in a terminal. The installer requests sudo and validates the host before making changes.",
-      "verify": "The package is verified before installation. You can also download an offline ZIP below.",
-      "stepOneTitle": "Run the command",
-      "stepOneText": "Use an administrator-capable shell on the machine that will host RelaxKonOS.",
-      "stepTwoTitle": "Confirm the setup",
-      "stepTwoText": "Choose local-only, LAN, or reverse-proxy networking and the file-access scope.",
-      "stepThreeTitle": "Open your server",
-      "stepThreeText": "After the health check, connect the desktop client to the displayed server address.",
-      "uninstallEyebrow": "Uninstall",
-      "uninstallTitle": "Need to remove the server?",
-      "uninstallLead": "Stops and removes RelaxKonOS services and program files. Data is kept by default for a later reinstall or migration.",
-      "uninstallDataTitle": "Remove data as well (irreversible)",
-      "uninstallWindowsData": "This permanently removes the database, configuration, and installation state.",
-      "uninstallLinuxData": "This permanently removes the database, configuration, and installation state."
-    },
     "userMode": {
       "eyebrow": "No sudo",
       "title": "Install under an ordinary Linux account (User Mode)",
-      "lead": "User Mode needs no root and writes nothing into system directories; the server listens on 127.0.0.1 only, so remote access goes through SSH local forwarding. It requires a *-user-server.zip release bundle.",
+      "lead": "User Mode requires no root and listens on 127.0.0.1. Choose Linux User Mode in Server Center; the client manages SSH forwarding. A *-user-server.zip package is required.",
       "docCta": "Read the User Mode guide",
-      "unavailable": "The catalog currently has no user-mode package. Obtain a verified user-server bundle before using these commands; a system server bundle cannot replace it."
+      "unavailable": "No User Mode package is listed yet. Once available, select a local or server-side user-server ZIP in the client. System packages cannot substitute."
     },
     "packageKind": {
       "client": "Client",
@@ -308,14 +282,14 @@
     },
     "offline": {
       "eyebrow": "Offline installation",
-      "title": "Bring only the server package to an offline host",
-      "lead": "Client and server packages are independent. Download the server package, copy it to the target host, and keep the client off the server.",
+      "title": "Select an offline server package in the client",
+      "lead": "The target server needs no internet connection. Select a local ZIP in the client or a ZIP already copied to the server.",
       "stepOneTitle": "Download the server package",
       "stepOneText": "On a connected machine, download the ZIP marked Server and retain its checksum for verification.",
-      "stepTwoTitle": "Copy it to the server",
-      "stepTwoText": "Use trusted removable media, SCP, or an internal share. Do not copy the client package to the server.",
-      "stepThreeTitle": "Extract and run the installer",
-      "stepThreeText": "On the server, extract the Server ZIP and run the command below. The installer validates the original ZIP."
+      "stepTwoTitle": "Choose the installation source",
+      "stepTwoText": "In Server Center, upload a local release ZIP or select a release ZIP already on the server.",
+      "stepThreeTitle": "Review and install",
+      "stepThreeText": "Confirm the mode, port, directories, network, certificates and permissions. Check the operation receipt and health result."
     },
     "packages": {
       "eyebrow": "Direct downloads",
@@ -325,7 +299,22 @@
     "androidTitle": "Install the Android client",
     "androidHint": "Download a published signed APK and confirm installation in Android. Updates must use the same signing certificate. AAB files are for store distribution, not direct installation.",
     "androidUnavailable": "No published Android APK is listed yet. Source implementation does not imply public package availability.",
-    "androidDocs": "Android features and connection guide"
+    "androidDocs": "Android features and connection guide",
+    "installFlow": {
+      "eyebrow": "Get started",
+      "title": "Install the server from the client",
+      "lead": "Install the client, then connect to the target host through Server Center.",
+      "stepOneTitle": "Download and open the client",
+      "stepOneText": "Install the matching client on your computer or Android device.",
+      "downloadCta": "Choose a client package",
+      "stepTwoTitle": "Connect to the target host",
+      "stepTwoText": "Open Server Center, enter the SSH address, port and account, verify the host key and run preflight.",
+      "stepThreeTitle": "Review options and install",
+      "stepThreeText": "Choose the source and mode, configure ports, directories, network, certificates and permissions, then wait for health verification.",
+      "maintenance": "Use Server Center for updates, repair, rollback and uninstall. Uninstall retains data by default.",
+      "guideCta": "Read the installation guide",
+      "serverCenterCta": "Explore Server Center"
+    }
   },
   "releases": {
     "eyebrow": "Releases",

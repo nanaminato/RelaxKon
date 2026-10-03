@@ -267,38 +267,12 @@
       "macos": "macOS",
       "android": "Android"
     },
-    "quickInstall": {
-      "eyebrow": "快速开始",
-      "title": "一条命令安装服务端",
-      "lead": "选择服务器的操作系统。安装器会选择正确的稳定版、验证 SHA-256 校验和，并启动所需服务。",
-      "choosePlatform": "选择服务器操作系统",
-      "windowsHint": "通过 PowerShell 与 UAC",
-      "linuxHint": "Debian 或 Ubuntu，使用 sudo",
-      "stable": "稳定通道",
-      "windowsTitle": "Windows Server 安装",
-      "linuxTitle": "Linux 服务端安装",
-      "windowsDescription": "在 PowerShell 中运行。需要时安装器会请求管理员授权。",
-      "linuxDescription": "在终端中运行。安装器会请求 sudo，并在变更前验证主机环境。",
-      "verify": "安装前会验证程序包。也可以在下方下载离线 ZIP 包。",
-      "stepOneTitle": "运行命令",
-      "stepOneText": "在将要运行 RelaxKonOS 的机器上，使用可获取管理员权限的终端。",
-      "stepTwoTitle": "确认安装选项",
-      "stepTwoText": "选择仅本机、局域网或反向代理网络模式，以及文件访问范围。",
-      "stepThreeTitle": "连接服务端",
-      "stepThreeText": "健康检查通过后，让桌面客户端连接页面显示的服务端地址。",
-      "uninstallEyebrow": "卸载",
-      "uninstallTitle": "需要移除服务端？",
-      "uninstallLead": "停止并删除 RelaxKonOS 服务与程序文件。默认保留数据，便于之后重新安装或迁移。",
-      "uninstallDataTitle": "同时删除数据（不可恢复）",
-      "uninstallWindowsData": "此操作会删除数据库、配置与安装状态，且无法恢复。",
-      "uninstallLinuxData": "此操作会删除数据库、配置与安装状态，且无法恢复。"
-    },
     "userMode": {
       "eyebrow": "无需 sudo",
       "title": "在普通 Linux 账号下安装（用户模式）",
-      "lead": "用户模式不需要 root，也不会写入系统目录；服务只监听 127.0.0.1，远程访问通过 SSH 本地转发。需要使用 *-user-server.zip 发布包。",
+      "lead": "用户模式不需要 root，服务只监听 127.0.0.1。请在服务器中心选择 Linux 用户模式，客户端会管理 SSH 转发。需要 *-user-server.zip 发布包。",
       "docCta": "阅读用户模式安装文档",
-      "unavailable": "当前目录尚无用户模式包。请取得经校验的 user-server 发布包后再使用以下命令；系统服务端包不能替代。"
+      "unavailable": "当前目录尚无用户模式包。取得可用的 user-server 发布包后，可在客户端选择本地包或服务器上的包；系统包不能替代。"
     },
     "packageKind": {
       "client": "客户端",
@@ -308,14 +282,14 @@
     },
     "offline": {
       "eyebrow": "离线安装",
-      "title": "将服务端包带到无网络服务器",
-      "lead": "客户端与服务端包彼此独立。只需下载服务端包并复制到目标服务器；客户端无需放到服务器上。",
+      "title": "通过客户端选择离线服务端包",
+      "lead": "目标服务器无需连接互联网；在客户端选择本地 ZIP，或选择已经复制到服务器上的 ZIP。",
       "stepOneTitle": "下载服务端包",
       "stepOneText": "在有网络的设备上下载标有「服务端」的 ZIP，并保留校验和以供核验。",
-      "stepTwoTitle": "复制到目标服务器",
-      "stepTwoText": "通过受信任的 U 盘、SCP 或内部文件共享传输 ZIP；不要下载客户端包到服务器。",
-      "stepThreeTitle": "解压并执行安装器",
-      "stepThreeText": "在服务器上解压服务端 ZIP，并从解压目录运行下方命令。安装器会对原始 ZIP 进行校验。"
+      "stepTwoTitle": "选择安装来源",
+      "stepTwoText": "在服务器中心选择「本地发布包」上传 ZIP，或选择「服务器上的发布包」直接读取服务器文件。",
+      "stepThreeTitle": "确认并安装",
+      "stepThreeText": "检查模式、端口、目录、网络、证书与权限后确认；以操作回执和健康检查判断结果。"
     },
     "packages": {
       "eyebrow": "直接下载",
@@ -325,7 +299,22 @@
     "androidTitle": "安装 Android 客户端",
     "androidHint": "下载已发布的签名 APK，在 Android 系统安装界面确认安装。更新必须使用同一签名证书；AAB 用于商店发布，不作为直接安装包。",
     "androidUnavailable": "尚未列出已发布的 Android APK；源码实现状态不代表安装包已公开。",
-    "androidDocs": "Android 功能与连接指南"
+    "androidDocs": "Android 功能与连接指南",
+    "installFlow": {
+      "eyebrow": "快速开始",
+      "title": "在客户端中安装服务端",
+      "lead": "先安装客户端，再通过服务器中心连接目标主机并完成安装。",
+      "stepOneTitle": "下载并打开客户端",
+      "stepOneText": "在自己的电脑或 Android 设备上安装与平台匹配的客户端。",
+      "downloadCta": "选择客户端包",
+      "stepTwoTitle": "连接目标主机",
+      "stepTwoText": "打开服务器中心，填写 SSH 地址、端口和账号，核对主机密钥并完成环境检查。",
+      "stepThreeTitle": "选择选项并安装",
+      "stepThreeText": "选择来源与安装模式，设置端口、目录、网络、证书和权限，确认后等待健康检查通过。",
+      "maintenance": "更新、修复、回滚与卸载也在服务器中心完成；卸载默认保留数据。",
+      "guideCta": "阅读安装指南",
+      "serverCenterCta": "了解服务器中心"
+    }
   },
   "releases": {
     "eyebrow": "发行说明",

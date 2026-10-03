@@ -267,38 +267,12 @@
       "macos": "macOS",
       "android": "Android"
     },
-    "quickInstall": {
-      "eyebrow": "はじめに",
-      "title": "1 コマンドでサーバーをインストール",
-      "lead": "サーバー OS を選択してください。インストーラーが適切な安定版を選び、SHA-256 を検証して必要なサービスを起動します。",
-      "choosePlatform": "サーバー OS を選択",
-      "windowsHint": "PowerShell と UAC",
-      "linuxHint": "sudo を使う Debian または Ubuntu",
-      "stable": "安定チャネル",
-      "windowsTitle": "Windows Server へのインストール",
-      "linuxTitle": "Linux サーバーへのインストール",
-      "windowsDescription": "PowerShell で実行します。必要な場合はインストーラーが管理者承認を要求します。",
-      "linuxDescription": "ターミナルで実行します。インストーラーは sudo を要求し、変更前にホストを検証します。",
-      "verify": "インストール前にパッケージを検証します。下からオフライン ZIP をダウンロードすることもできます。",
-      "stepOneTitle": "コマンドを実行",
-      "stepOneText": "RelaxKonOS をホストするマシン上で、管理者権限を得られるシェルを使います。",
-      "stepTwoTitle": "セットアップを確認",
-      "stepTwoText": "ローカル、LAN、リバースプロキシのネットワークと、ファイルアクセス範囲を選択します。",
-      "stepThreeTitle": "サーバーを開く",
-      "stepThreeText": "ヘルスチェック後、デスクトップ クライアントを表示されたサーバーアドレスへ接続します。",
-      "uninstallEyebrow": "アンインストール",
-      "uninstallTitle": "サーバーを削除しますか？",
-      "uninstallLead": "RelaxKonOS のサービスとプログラムファイルを停止・削除します。データは再インストールや移行に備えて既定で保持されます。",
-      "uninstallDataTitle": "データも削除する（元に戻せません）",
-      "uninstallWindowsData": "データベース、構成、インストール状態を完全に削除します。",
-      "uninstallLinuxData": "データベース、構成、インストール状態を完全に削除します。"
-    },
     "userMode": {
       "eyebrow": "sudo 不要",
       "title": "一般 Linux アカウントでのインストール（ユーザーモード）",
-      "lead": "ユーザーモードは root を必要とせず、システムディレクトリにも書き込みません。サーバーは 127.0.0.1 のみを待ち受けるため、リモート接続は SSH のローカル転送を使います。*-user-server.zip リリースバンドルが必要です。",
+      "lead": "ユーザーモードは root 不要で、127.0.0.1 のみを使用します。サーバーセンターで Linux ユーザーモードを選択すると、SSH 転送を管理します。*-user-server.zip が必要です。",
       "docCta": "ユーザーモードの手順を読む",
-      "unavailable": "一覧には現在ユーザーモードのパッケージがありません。以下のコマンドには検証済み user-server パッケージが必要で、システムサーバーのパッケージでは代用できません。"
+      "unavailable": "ユーザーモードパッケージはまだ掲載されていません。入手後、クライアントでローカルまたはサーバー上の user-server ZIP を選択してください。システム用パッケージは代用できません。"
     },
     "packageKind": {
       "client": "クライアント",
@@ -308,14 +282,14 @@
     },
     "offline": {
       "eyebrow": "オフラインインストール",
-      "title": "オフラインホストへはサーバーパッケージだけを持ち込む",
-      "lead": "クライアントとサーバーのパッケージは独立しています。サーバーパッケージだけを対象ホストへコピーし、クライアントはサーバーに置きません。",
+      "title": "クライアントでオフラインパッケージを選ぶ",
+      "lead": "対象サーバーのインターネット接続は不要です。ローカル ZIP またはサーバーにコピー済みの ZIP を選択します。",
       "stepOneTitle": "サーバーパッケージをダウンロード",
       "stepOneText": "ネットワーク接続された端末で「サーバー」と表示された ZIP をダウンロードし、検証用にチェックサムを保管します。",
-      "stepTwoTitle": "対象サーバーへコピー",
-      "stepTwoText": "信頼できるリムーバブルメディア、SCP、または社内共有を使います。クライアントパッケージはサーバーへコピーしません。",
-      "stepThreeTitle": "展開してインストーラーを実行",
-      "stepThreeText": "サーバー上で Server ZIP を展開し、下のコマンドを実行します。インストーラーは元の ZIP を検証します。"
+      "stepTwoTitle": "インストール元を選ぶ",
+      "stepTwoText": "サーバーセンターでローカルのリリース ZIP をアップロードするか、サーバー上の ZIP を選択します。",
+      "stepThreeTitle": "確認してインストール",
+      "stepThreeText": "モード、ポート、ディレクトリ、ネットワーク、証明書、権限を確認し、操作結果と正常性を確認します。"
     },
     "packages": {
       "eyebrow": "直接ダウンロード",
@@ -325,7 +299,22 @@
     "androidTitle": "Android クライアントをインストール",
     "androidHint": "公開済みの署名付き APK をダウンロードし、Android のインストール画面で確認します。更新には同じ署名証明書が必要です。AAB はストア配布用で、直接インストールするファイルではありません。",
     "androidUnavailable": "公開済み Android APK はまだ掲載されていません。ソース実装済みでもインストールパッケージの公開を意味しません。",
-    "androidDocs": "Android 機能と接続ガイド"
+    "androidDocs": "Android 機能と接続ガイド",
+    "installFlow": {
+      "eyebrow": "はじめに",
+      "title": "クライアントからサーバーをインストール",
+      "lead": "クライアントをインストールし、サーバーセンターから対象ホストに接続します。",
+      "stepOneTitle": "クライアントをダウンロードして開く",
+      "stepOneText": "パソコンまたは Android 端末に対応するクライアントをインストールします。",
+      "downloadCta": "クライアントパッケージを選ぶ",
+      "stepTwoTitle": "対象ホストに接続",
+      "stepTwoText": "サーバーセンターで SSH のアドレス、ポート、アカウントを入力し、ホスト鍵を確認して事前チェックを実行します。",
+      "stepThreeTitle": "設定を確認してインストール",
+      "stepThreeText": "入手元とモードを選び、ポート、ディレクトリ、ネットワーク、証明書、権限を設定して正常性の確認を待ちます。",
+      "maintenance": "更新、修復、ロールバック、アンインストールもサーバーセンターで行います。既定ではデータを保持します。",
+      "guideCta": "インストールガイド",
+      "serverCenterCta": "サーバーセンターを見る"
+    }
   },
   "releases": {
     "eyebrow": "リリースノート",

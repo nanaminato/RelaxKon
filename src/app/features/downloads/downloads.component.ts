@@ -23,9 +23,7 @@ export class DownloadsComponent {
 
   readonly loading = signal(true);
   readonly items = signal<DownloadInfo[]>([]);
-  readonly selectedInstaller = signal<'windows' | 'linux'>(this.detectInstallerPlatform());
-  readonly copied = signal<'installer' | 'uninstaller' | 'offline' | 'client' | 'userMode' | 'checksum' | null>(null);
-  readonly installerOrigin = this.getCurrentOrigin();
+  readonly copied = signal<'client' | 'checksum' | null>(null);
 
   readonly groups = computed(() => {
     const map = new Map<string, DownloadInfo[]>();
@@ -46,51 +44,8 @@ export class DownloadsComponent {
   readonly userModeItems = computed(() => this.availableItems().filter(item => item.packageKind === 'user-server'));
   readonly androidDocLink = computed(() => docsUrl(this.i18n.language(), 'getting-started/android'));
 
-  readonly offlineServerArchive = computed(() => {
-    const platform = this.selectedInstaller();
-    return this.availableItems().find(item => item.platform.toLowerCase() === platform && item.packageKind === 'server')?.fileName
-      ?? 'RelaxKonOS-server.zip';
-  });
-
-  readonly installerCommand = computed(() => {
-    const base = `${this.installerOrigin}/relaxkonos/stable/latest`;
-    return this.selectedInstaller() === 'windows'
-      ? `irm ${base}/install.ps1 | iex`
-      : `curl -fsSL ${base}/bootstrap/install-relaxkonos.sh | sudo bash -s -- --release-catalog-base ${base}`;
-  });
-
-  readonly uninstallerCommand = computed(() => {
-    const base = `${this.installerOrigin}/relaxkonos/stable/latest`;
-    return this.selectedInstaller() === 'windows'
-      ? `irm ${base}/uninstall.ps1 | iex`
-      : `curl -fsSL ${base}/bootstrap/uninstall-relaxkonos.sh | sudo bash`;
-  });
-
-  readonly purgeDataCommand = computed(() => {
-    const base = `${this.installerOrigin}/relaxkonos/stable/latest`;
-    return this.selectedInstaller() === 'windows'
-      ? `& ([scriptblock]::Create((irm ${base}/uninstall.ps1))) -UninstallerArguments '-RemoveData'`
-      : `curl -fsSL ${base}/bootstrap/uninstall-relaxkonos.sh | sudo bash -s -- --remove-data`;
-  });
-
-  readonly offlineInstallCommand = computed(() => {
-    const archive = this.offlineServerArchive();
-    return this.selectedInstaller() === 'windows'
-      ? `Expand-Archive .\\${archive} .\\RelaxKonOS-server\n& .\\RelaxKonOS-server\\deployment\\bootstrap\\Install-RelaxKonOS.ps1 -BundlePath .\\${archive}`
-      : `unzip ${archive} -d RelaxKonOS-server\nsudo bash ./RelaxKonOS-server/deployment/bootstrap/install-relaxkonos.sh --bundle ./${archive}`;
-  });
-
-  /**
-   * User Mode needs the `user-server` bundle rather than the plain server ZIP,
-   * so the command is spelled out with the published naming pattern instead of
-   * being derived from the download feed.
-   */
-  readonly userModeCommand = computed(() =>
-    [
-      'unzip RelaxKonOS-<version>-linux-x64-user-server.zip -d RelaxKonOS-user-server',
-      './RelaxKonOS-user-server/deployment/user/install-relaxkonos.sh --mode user --bundle ./RelaxKonOS-user-server',
-    ].join('\n'),
-  );
+  readonly installationDocLink = computed(() => docsUrl(this.i18n.language(), 'getting-started/installation'));
+  readonly serverCenterDocLink = computed(() => docsUrl(this.i18n.language(), 'apps/server-center'));
 
   /** User Mode is documented per language, so the link follows the site language. */
   readonly userModeDocLink = computed(() => ['/docs', this.i18n.language(), 'latest', 'getting-started', 'user-mode']);
@@ -111,10 +66,6 @@ export class DownloadsComponent {
       });
   }
 
-  selectInstaller(platform: 'windows' | 'linux'): void {
-    this.selectedInstaller.set(platform);
-  }
-
   platformLabel(platform: string): string {
     const translation = this.i18n.t(`downloads.platform.${platform.toLowerCase()}`);
     return translation === `downloads.platform.${platform.toLowerCase()}` ? platform : translation;
@@ -132,7 +83,7 @@ export class DownloadsComponent {
       : `unzip ${archive} -d RelaxKonOS-client\n./RelaxKonOS-client/payload/linux/client/RelaxKonOS.Client.Desktop`;
   }
 
-  async copy(value: string, type: 'installer' | 'uninstaller' | 'offline' | 'client' | 'userMode' | 'checksum'): Promise<void> {
+  async copy(value: string, type: 'client' | 'checksum'): Promise<void> {
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(value);
@@ -168,15 +119,4 @@ export class DownloadsComponent {
     }
   }
 
-  private detectInstallerPlatform(): 'windows' | 'linux' {
-    if (!this.isBrowser) return 'windows';
-    return navigator.userAgent.toLowerCase().includes('linux') ? 'linux' : 'windows';
-  }
-
-  private getCurrentOrigin(): string {
-    // Shell download commands require an absolute URL, unlike browser anchors.
-    // Deriving it at runtime keeps both relaxkon.com and downloads.relaxkon.com
-    // on the same deployment without a hard-coded host.
-    return this.isBrowser ? window.location.origin : '';
-  }
 }
