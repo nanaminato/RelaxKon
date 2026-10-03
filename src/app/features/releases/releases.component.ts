@@ -21,7 +21,7 @@ export class ReleasesComponent {
 
   constructor() {
     inject(SeoService).apply({
-      title: 'Releases — RelaxKon',
+      titleKey: 'pageTitles.releases',
       description: 'RelaxKonOS release notes with highlights, changes and known limitations.',
       path: '/releases',
     });

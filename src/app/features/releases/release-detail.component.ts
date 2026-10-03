@@ -41,7 +41,8 @@ export class ReleaseDetailComponent {
         this.release.set(item);
         this.loading.set(false);
         seo.apply({
-          title: item ? `${item.title} — RelaxKon Releases` : 'Release — RelaxKon',
+          titleKey: item ? 'pageTitles.releaseDetail' : 'pageTitles.release',
+          titleParams: { title: item?.title ?? '' },
           description: item?.summary,
           path: `/releases/${version}`,
         });

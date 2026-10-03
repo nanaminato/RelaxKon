@@ -1,4 +1,17 @@
 {
+  "pageTitles": {
+    "home": "RelaxKon — Desktops beyond devices",
+    "products": "Products — RelaxKon",
+    "relaxkonos": "RelaxKonOS — A modern remote workspace operating environment",
+    "downloads": "Downloads — RelaxKon",
+    "releases": "Releases — RelaxKon",
+    "release": "Release — RelaxKon",
+    "faq": "FAQ — RelaxKon",
+    "about": "About — RelaxKon",
+    "notFound": "404 — RelaxKon",
+    "document": "{title} — RelaxKonOS Documentation — RelaxKon",
+    "releaseDetail": "{title} — RelaxKon Releases"
+  },
   "brand": {
     "name": "RelaxKon",
     "product": "RelaxKonOS",

@@ -60,7 +60,7 @@ export class HomeComponent {
   constructor() {
     const seo = inject(SeoService);
     seo.apply({
-      title: 'RelaxKon — Desktops beyond devices',
+      titleKey: 'pageTitles.home',
       description:
         'RelaxKonOS is a cross-platform remote workspace operating environment with local UI rendering, persistent applications and server-managed workspaces. Not RDP, VNC or pixel streaming.',
       path: '/',

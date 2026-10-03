@@ -34,7 +34,7 @@ export class AboutComponent {
 
   constructor() {
     inject(SeoService).apply({
-      title: 'About — RelaxKon',
+      titleKey: 'pageTitles.about',
       description:
         'RelaxKon builds workspace software where the interface stays local and durable capabilities stay remote.',
       path: '/about',

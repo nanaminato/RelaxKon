@@ -13,7 +13,7 @@ export class ProductsComponent {
 
   constructor() {
     inject(SeoService).apply({
-      title: 'Products — RelaxKon',
+      titleKey: 'pageTitles.products',
       description: 'RelaxKon software products: RelaxKonOS, a cross-platform cloud-native desktop operating environment.',
       path: '/products',
     });

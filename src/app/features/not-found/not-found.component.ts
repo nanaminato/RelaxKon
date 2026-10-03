@@ -12,6 +12,6 @@ export class NotFoundComponent {
   readonly i18n = inject(I18nService);
 
   constructor() {
-    inject(SeoService).apply({ title: '404 — RelaxKon', description: 'Page not found.' });
+    inject(SeoService).apply({ titleKey: 'pageTitles.notFound', description: 'Page not found.' });
   }
 }

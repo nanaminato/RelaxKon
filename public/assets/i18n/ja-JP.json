@@ -1,4 +1,17 @@
 {
+  "pageTitles": {
+    "home": "RelaxKon — デバイスを超えるデスクトップ",
+    "products": "製品 — RelaxKon",
+    "relaxkonos": "RelaxKonOS — モダンなリモートワークスペース実行環境",
+    "downloads": "ダウンロード — RelaxKon",
+    "releases": "リリースノート — RelaxKon",
+    "release": "リリース詳細 — RelaxKon",
+    "faq": "よくある質問 — RelaxKon",
+    "about": "概要 — RelaxKon",
+    "notFound": "404 — RelaxKon",
+    "document": "{title} — RelaxKonOS ドキュメント — RelaxKon",
+    "releaseDetail": "{title} — RelaxKon リリースノート"
+  },
   "brand": {
     "name": "RelaxKon",
     "product": "RelaxKonOS",

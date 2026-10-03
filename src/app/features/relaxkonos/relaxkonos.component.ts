@@ -118,7 +118,7 @@ public sealed class MyApp : IExternalRemoteApplication
   constructor() {
     const seo = inject(SeoService);
     seo.apply({
-      title: 'RelaxKonOS — A modern remote workspace operating environment',
+      titleKey: 'pageTitles.relaxkonos',
       description:
         'RelaxKonOS is a cross-platform, cloud-native desktop operating environment with local UI rendering, persistent applications, server-managed workspaces and twenty-plus built-in applications.',
       path: '/products/relaxkonos',

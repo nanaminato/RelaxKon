@@ -159,7 +159,8 @@ export class DocsComponent {
         this.headings.set(document.headings?.length ? document.headings : this.markdown.headings(document.content));
         this.loading.set(false);
         this.seo.apply({
-          title: `${document.title} — RelaxKonOS Documentation — RelaxKon`,
+          titleKey: 'pageTitles.document',
+          titleParams: { title: document.title },
           description: document.description,
           path: this.router.url.split('?')[0],
         });

@@ -1,4 +1,17 @@
 {
+  "pageTitles": {
+    "home": "RelaxKon — 跨越设备的桌面",
+    "products": "产品 — RelaxKon",
+    "relaxkonos": "RelaxKonOS — 现代远程工作区运行环境",
+    "downloads": "下载 — RelaxKon",
+    "releases": "发行说明 — RelaxKon",
+    "release": "发行详情 — RelaxKon",
+    "faq": "常见问题 — RelaxKon",
+    "about": "关于 — RelaxKon",
+    "notFound": "404 — RelaxKon",
+    "document": "{title} — RelaxKonOS 文档 — RelaxKon",
+    "releaseDetail": "{title} — RelaxKon 发行说明"
+  },
   "brand": {
     "name": "RelaxKon",
     "product": "RelaxKonOS",

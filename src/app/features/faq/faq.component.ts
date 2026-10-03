@@ -31,7 +31,7 @@ export class FaqComponent {
 
   constructor() {
     inject(SeoService).apply({
-      title: 'FAQ — RelaxKon',
+      titleKey: 'pageTitles.faq',
       description: 'Answers about the RelaxKonOS product, architecture, security model and extensibility.',
       path: '/faq',
     });

@@ -1,8 +1,11 @@
-import { DOCUMENT, Injectable, inject } from '@angular/core';
+import { DOCUMENT, Injectable, effect, inject, signal } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
+import { I18nService } from '../i18n/i18n.service';
 
 export interface PageMeta {
-  title: string;
+  title?: string;
+  titleKey?: string;
+  titleParams?: Record<string, string | number>;
   description?: string;
   path?: string;
 }
@@ -18,15 +21,31 @@ export class SeoService {
   private readonly document = inject(DOCUMENT);
   private readonly origin = 'https://relaxkon.com';
 
+  private readonly i18n = inject(I18nService);
+  private readonly page = signal<PageMeta | null>(null);
+
+  constructor() {
+    effect(() => {
+      const page = this.page();
+      if (page) this.update(page);
+    });
+  }
+
   apply(page: PageMeta): void {
-    this.title.setTitle(page.title);
+    this.page.set(page);
+    this.update(page);
+  }
+
+  private update(page: PageMeta): void {
+    const title = page.titleKey ? this.i18n.t(page.titleKey, page.titleParams) : page.title ?? 'RelaxKon';
+    this.title.setTitle(title);
     this.setMeta('name', 'description', page.description);
-    this.setMeta('property', 'og:title', page.title);
+    this.setMeta('property', 'og:title', title);
     this.setMeta('property', 'og:description', page.description);
     this.setMeta('property', 'og:type', 'website');
     this.setMeta('property', 'og:site_name', 'RelaxKon');
     this.setMeta('name', 'twitter:card', 'summary_large_image');
-    this.setMeta('name', 'twitter:title', page.title);
+    this.setMeta('name', 'twitter:title', title);
     this.setMeta('name', 'twitter:description', page.description);
     this.setCanonical(page.path);
   }
