@@ -95,7 +95,7 @@
       "items": {
         "0": {
           "title": "Local UI rendering",
-          "text": "The interface is drawn on the client with Avalonia. Text, tables and images stay crisp at any resolution and interaction latency stays local."
+          "text": "Desktop clients use Avalonia and Android uses Kotlin/Compose to render locally, keeping text and controls native and sharp."
         },
         "1": {
           "title": "Persistent applications",
@@ -107,22 +107,22 @@
         },
         "3": {
           "title": "Cross-platform",
-          "text": "One desktop shell for Windows, macOS and Linux. The server runs on Ubuntu and Windows Server."
+          "text": "Desktop clients target Windows, macOS and Linux, alongside a native Android client. The download catalog lists the platforms and architectures actually published."
         },
         "4": {
           "title": "Security by delegation",
-          "text": "Identity and file permissions come from the host operating system. RelaxKonOS never stores your password."
+          "text": "Execution identity and file permissions come from the host OS. System and Alias sign-ins bind to the same user; privileged operations require separate authorization."
         },
         "5": {
           "title": "Extensible by design",
-          "text": "Applications implement one interface and receive the same window, lifecycle and capability APIs as the built-ins."
+          "text": "Desktop packages implement IExternalRemoteApplication for scoped capabilities, windows and lifecycle. Android has a separate native application model."
         }
       }
     },
     "apps": {
       "eyebrow": "Built-in applications",
       "title": "A complete workbench, not an empty desktop.",
-      "lead": "Every application talks to the server through the same protocol and follows the same design conventions, so the shell feels consistent from files to firewalls.",
+      "lead": "Desktop apps access server capabilities through shared contracts. Android provides native screens; availability depends on server mode, permissions and platform.",
       "groupEveryday": "Everyday",
       "groupSystem": "System",
       "groupNetwork": "Network and services",
@@ -134,7 +134,7 @@
       "title": "Three layers with one job each.",
       "lead": "A client that renders, a protocol that defines, and a server that owns the workspace.",
       "clientTitle": "Client",
-      "clientText": "Desktop shell, window manager, application runtime and SDK. Owns presentation and input, never durable state.",
+      "clientText": "The Avalonia desktop shell and Compose Android client handle presentation and input. Themes, credentials and SSH settings have local storage boundaries; workspace preferences sync through the server.",
       "protocolTitle": "Protocol",
       "protocolText": "REST routes, SignalR hub contracts and DTOs in a shared assembly with zero third-party dependencies.",
       "serverTitle": "Server",
@@ -146,23 +146,25 @@
       "title": "Your workspace, on every device you use.",
       "lead": "The same workspace follows you between a workstation, a laptop and a server console.",
       "windows": "Windows",
-      "windowsText": "WebView2 for browsing, LogonUser for sign-in and native ConPTY terminals.",
+      "windowsText": "Avalonia desktop client; Windows hosts support LogonUser and ConPTY. See the download catalog for published architectures.",
       "linux": "Linux",
-      "linuxText": "PAM and NSS identity, forkpty terminals and full UFW firewall management.",
+      "linuxText": "Avalonia desktop client; Linux hosts support PAM/NSS and PTYs. Management features such as UFW depend on server mode and authorization.",
       "macos": "macOS",
-      "macosText": "WKWebView browsing with the same shell, runtime and application set.",
-      "serverNote": "Server deployments target Ubuntu 20.04+ and Windows Server 2016+."
+      "macosText": "The Avalonia desktop client uses WKWebView. Check the download catalog for published macOS packages.",
+      "serverNote": "Servers target Linux and Windows. Client platform support, source implementation and published package availability are documented separately.",
+      "android": "Android",
+      "androidText": "Native Kotlin/Compose client for phones and tablets, with Server/SSH connections, file transfers and service management. See the mobile guide for verification status."
     },
     "security": {
       "eyebrow": "Security",
       "title": "Secure because it delegates, not because it reinvents.",
-      "lead": "RelaxKonOS builds on the operating system you already trust instead of introducing a parallel account or permission system.",
+      "lead": "Sign-in methods can vary while execution remains bound to a host account. Both application authorization and host permissions must be satisfied.",
       "identityTitle": "Identity from the host",
-      "identityText": "Windows LogonUser and Linux PAM validate every sign-in. RelaxKonOS issues its own token afterwards and never stores passwords.",
+      "identityText": "System sign-in uses Windows LogonUser or Linux PAM. Alias uses an independent password hash bound to the same host user. The server does not persist system sign-in passwords.",
       "permissionTitle": "Permissions from the host",
       "permissionText": "File operations run as the signed-in user. There is no second ACL to drift out of sync with the real one.",
       "elevationTitle": "Isolated elevation",
-      "elevationText": "Privileged work runs through a dedicated, audited helper process and destructive actions always ask for confirmation."
+      "elevationText": "Privileged actions use fixed Helper contracts. System-authenticated administrators are checked dynamically; ordinary users and Alias sessions explicitly authenticate a selected administrator. User mode disables elevation."
     },
     "philosophy": {
       "eyebrow": "Design philosophy",
@@ -192,8 +194,8 @@
     },
     "download": {
       "eyebrow": "Get RelaxKonOS",
-      "title": "Preview builds are on the way.",
-      "lead": "Windows, Linux and macOS artifacts are being prepared. The Downloads page lists every platform, architecture and checksum as soon as a build is published.",
+      "title": "Get published client and server builds.",
+      "lead": "The catalog includes Windows/Linux x64 desktop clients and system server packages with sizes and SHA-256 checksums. Android, macOS and user-mode packages appear only after verification and publication.",
       "cta": "Go to downloads",
       "secondary": "Read the release notes"
     }
@@ -210,7 +212,7 @@
     "capabilitiesTitle": "Everything a server desktop needs, in one shell.",
     "appsEyebrow": "Applications",
     "appsTitle": "Twenty-plus built-in applications.",
-    "appsLead": "Each one is a first-class citizen of the runtime, with the same window management, lifecycle and permission model.",
+    "appsLead": "Desktop apps share a runtime; Android provides separate native screens. Connections, host capabilities and permissions determine available actions.",
     "archEyebrow": "Architecture",
     "archTitle": "Client, protocol, server.",
     "archLead": "A deliberately narrow contract keeps the layers independent and the failure modes obvious.",
@@ -221,19 +223,22 @@
     "securityLead": "Three rules keep the security story short enough to audit.",
     "extendEyebrow": "Extensibility",
     "extendTitle": "Build your own applications.",
-    "extendLead": "Derive from RemoteApplicationBase, package with the developer CLI and ship a .roapp bundle. Your application gets the same window manager and capability APIs as the built-ins.",
+    "extendLead": "Desktop .roapp extensions use IExternalRemoteApplication and the scoped IExternalAppContext, packaged with the developer CLI. Built-in apps have a separate RemoteApplicationBase entry point.",
     "extendCta": "Read the developer guide",
     "statusEyebrow": "Status",
-    "statusTitle": "Preview, with the foundations complete.",
-    "statusLead": "The desktop shell, runtime, protocol and server-side platform services are in place. Releases are published as each platform build is verified.",
+    "statusTitle": "Track implementation, verification and publication separately.",
+    "statusLead": "Guides describe current source capabilities; downloads and release notes record published artifacts. Implemented source does not imply inclusion in a release or verification on every host.",
     "statusItem1": "Desktop shell, window manager and application runtime implemented",
     "statusItem2": "Server-side workspace, storage and synchronisation implemented",
-    "statusItem3": "Docker, firewall, certificates, Git, tunnels, proxies, web servers, application deployments and the registry all have working implementations",
-    "statusItem4": "Download artifacts in preparation for Windows, Linux and macOS",
+    "statusItem3": "Service management is implemented; real-host verification for Docker, FRP, proxy and deployments is tracked in each guide",
+    "statusItem4": "Windows/Linux x64 packages are in the catalog; other platforms list only verified published artifacts",
     "limitsTitle": "About maturity",
     "limitsText": "This site describes capabilities by their actual state: shipped, implemented but not yet verified, and not implemented are kept distinct. Some host-privileged features require explicit authorization at install time, and items whose real-environment acceptance is outstanding are never presented as fully available.",
     "limitsDocsLink": "Read the application model",
-    "limitsInspectorLink": "Network Inspector (developer tool)"
+    "limitsInspectorLink": "Network Inspector (developer tool)",
+    "mobileCta": "Read the Android guide",
+    "operationsCta": "Events and alerts",
+    "backupCta": "Backup and recovery boundaries"
   },
   "products": {
     "eyebrow": "Products",
@@ -249,17 +254,18 @@
     "eyebrow": "Downloads",
     "title": "Product downloads",
     "lead": "Every published build, by platform and architecture, with its size and checksum.",
-    "note": "No public artifacts have been published yet. The list below shows the builds currently in preparation.",
+    "note": "There are currently no downloadable artifacts. Check the catalog again later.",
     "latest": "Latest",
     "prerelease": "Preview",
     "empty": "No downloads are configured yet.",
-    "serverHint": "Client and server are separate archives; an offline host needs only the Server package.",
+    "serverHint": "Desktop clients, system servers and user-mode servers are different packages; Android uses signed APKs. Offline servers need only the appropriate server bundle.",
     "clientRunTitle": "Run the client after downloading",
     "clientRunHint": "The client does not belong on the server. Download it to your own device, extract it, then run the command below.",
     "platform": {
       "windows": "Windows",
       "linux": "Linux",
-      "macos": "macOS"
+      "macos": "macOS",
+      "android": "Android"
     },
     "quickInstall": {
       "eyebrow": "Start here",
@@ -291,12 +297,14 @@
       "eyebrow": "No sudo",
       "title": "Install under an ordinary Linux account (User Mode)",
       "lead": "User Mode needs no root and writes nothing into system directories; the server listens on 127.0.0.1 only, so remote access goes through SSH local forwarding. It requires a *-user-server.zip release bundle.",
-      "docCta": "Read the User Mode guide"
+      "docCta": "Read the User Mode guide",
+      "unavailable": "The catalog currently has no user-mode package. Obtain a verified user-server bundle before using these commands; a system server bundle cannot replace it."
     },
     "packageKind": {
       "client": "Client",
       "server": "Server",
-      "archive": "Archive"
+      "archive": "Archive",
+      "user-server": "User-mode server"
     },
     "offline": {
       "eyebrow": "Offline installation",
@@ -313,7 +321,11 @@
       "eyebrow": "Direct downloads",
       "title": "Packages and checksums",
       "lead": "Use a direct archive for offline installs, controlled rollouts, or a manual checksum review."
-    }
+    },
+    "androidTitle": "Install the Android client",
+    "androidHint": "Download a published signed APK and confirm installation in Android. Updates must use the same signing certificate. AAB files are for store distribution, not direct installation.",
+    "androidUnavailable": "No published Android APK is listed yet. Source implementation does not imply public package availability.",
+    "androidDocs": "Android features and connection guide"
   },
   "releases": {
     "eyebrow": "Releases",

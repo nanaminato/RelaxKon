@@ -1,4 +1,6 @@
 import { provideHttpClient } from '@angular/common/http';
+import { signal } from '@angular/core';
+import { ThemeService } from './core/theme/theme.service';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { App } from './app';
@@ -7,7 +9,9 @@ describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideHttpClient(), provideRouter([])],
+      providers: [provideHttpClient(), provideRouter([]),
+        { provide: ThemeService, useValue: { preference: signal('system'), set: () => {} } },
+      ],
     })
       .compileComponents();
   });

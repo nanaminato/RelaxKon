@@ -36,7 +36,8 @@ const walk = (dir) => {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) walk(full);
-    else if (/\.(ts|html)$/.test(entry.name)) files.push(full);
+    // Test fixtures contain file names and expectation strings, not shipped UI lookups.
+    else if (!entry.name.endsWith('.spec.ts') && /\.(ts|html)$/.test(entry.name)) files.push(full);
   }
 };
 walk(srcDir);

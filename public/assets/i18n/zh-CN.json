@@ -95,7 +95,7 @@
       "items": {
         "0": {
           "title": "本地 UI 渲染",
-          "text": "界面由客户端使用 Avalonia 绘制。文字、表格与图片在任何分辨率下都保持清晰，交互延迟也留在本地。"
+          "text": "桌面客户端使用 Avalonia，Android 使用 Kotlin/Compose 在本地绘制界面；文字和操作界面保持原生清晰。"
         },
         "1": {
           "title": "应用可持续运行",
@@ -107,22 +107,22 @@
         },
         "3": {
           "title": "跨平台",
-          "text": "同一套桌面 Shell 支持 Windows、macOS 与 Linux；服务端运行于 Ubuntu 与 Windows Server。"
+          "text": "桌面客户端面向 Windows、macOS 与 Linux，另有 Android 原生客户端。实际可下载的平台与架构以下载目录为准。"
         },
         "4": {
           "title": "安全靠委托",
-          "text": "身份与文件权限来自宿主操作系统，RelaxKonOS 从不保存你的密码。"
+          "text": "执行身份与文件权限来自宿主 OS；系统登录与 Alias 登录绑定同一用户，特权操作另行授权。"
         },
         "5": {
           "title": "原生可扩展",
-          "text": "应用只需实现一个接口，就能获得与内置应用相同的窗口、生命周期与能力 API。"
+          "text": "桌面扩展包通过 IExternalRemoteApplication 接入受限能力、窗口与生命周期；Android 使用独立的原生应用模型。"
         }
       }
     },
     "apps": {
       "eyebrow": "内置应用",
       "title": "开箱即用的工作台，而不是一张空桌面。",
-      "lead": "所有应用通过同一套协议访问服务端，并遵循统一的设计约定，因此从文件管理到防火墙，操作体验始终一致。",
+      "lead": "桌面应用通过统一能力与协议访问服务端；Android 提供对应的原生页面，实际功能随服务器模式、权限与平台而变化。",
       "groupEveryday": "日常使用",
       "groupSystem": "系统",
       "groupNetwork": "网络与服务",
@@ -134,7 +134,7 @@
       "title": "三层职责，各司其职。",
       "lead": "负责渲染的客户端、负责定义的协议、以及拥有工作空间的服务端。",
       "clientTitle": "客户端",
-      "clientText": "桌面 Shell、窗口管理器、应用运行时与 SDK。只负责呈现与输入，不保存持久状态。",
+      "clientText": "Avalonia 桌面 Shell 与 Compose Android 客户端负责呈现和输入。主题、凭据及 SSH 配置有各自的本机存储边界，工作区偏好由服务端同步。",
       "protocolTitle": "协议",
       "protocolText": "REST 路由、SignalR Hub 契约与 DTO 集中在共享程序集，且不含任何第三方依赖。",
       "serverTitle": "服务端",
@@ -146,23 +146,25 @@
       "title": "同一个工作空间，跟着你到每一台设备。",
       "lead": "在工作站、笔记本与服务器控制台之间，工作空间始终一致。",
       "windows": "Windows",
-      "windowsText": "使用 WebView2 浏览、LogonUser 登录，并支持原生 ConPTY 终端。",
+      "windowsText": "Avalonia 桌面客户端；Windows 宿主支持 LogonUser 与 ConPTY。已发布架构见下载目录。",
       "linux": "Linux",
-      "linuxText": "PAM 与 NSS 身份、forkpty 终端，以及完整的 UFW 防火墙管理。",
+      "linuxText": "Avalonia 桌面客户端；Linux 宿主支持 PAM/NSS 与 PTY，UFW 等管理功能受服务器模式与授权约束。",
       "macos": "macOS",
-      "macosText": "使用 WKWebView 浏览，Shell、运行时与应用集完全一致。",
-      "serverNote": "服务端部署支持 Ubuntu 20.04+ 与 Windows Server 2016+。"
+      "macosText": "Avalonia 桌面客户端使用 WKWebView；macOS 包的发布情况以下载目录为准。",
+      "serverNote": "服务端面向 Linux 与 Windows；客户端平台支持、源码实现与发布包可用性分别说明，不能互相替代。",
+      "android": "Android",
+      "androidText": "Kotlin/Compose 原生手机和平板客户端，支持 Server/SSH 连接、文件传输与服务管理；各功能验收状态见移动端指南。"
     },
     "security": {
       "eyebrow": "安全",
       "title": "安全的理由是「委托」，而不是「重造」。",
-      "lead": "RelaxKonOS 建立在你已经信任的操作系统之上，而不是另建一套账号与权限体系。",
+      "lead": "登录方式可以变化，执行身份仍绑定宿主账号；应用授权与宿主权限必须同时满足。",
       "identityTitle": "身份来自宿主",
-      "identityText": "Windows LogonUser 与 Linux PAM 校验每一次登录。RelaxKonOS 之后才签发自己的令牌，且从不保存密码。",
+      "identityText": "系统登录通过 Windows LogonUser 或 Linux PAM 验证；Alias 使用独立密码哈希并绑定同一宿主用户。服务端不持久保存系统登录密码。",
       "permissionTitle": "权限来自宿主",
       "permissionText": "文件操作以登录用户的身份执行，不存在第二套可能与真实权限脱节的 ACL。",
       "elevationTitle": "提权被隔离",
-      "elevationText": "特权操作由专用且经过审计的 Helper 进程执行，危险操作始终需要显式确认。"
+      "elevationText": "特权动作经固定 Helper 契约执行；系统认证管理员会话动态核验资格，普通用户与 Alias 需明确认证所选管理员，用户模式禁用提权。"
     },
     "philosophy": {
       "eyebrow": "设计理念",
@@ -192,8 +194,8 @@
     },
     "download": {
       "eyebrow": "获取 RelaxKonOS",
-      "title": "预览版本即将发布。",
-      "lead": "Windows、Linux 与 macOS 安装包正在准备中。构建一旦发布，下载页会列出平台、架构与校验和。",
+      "title": "获取已发布的客户端与服务端。",
+      "lead": "下载目录已提供 Windows/Linux x64 桌面客户端与系统服务端包，附大小和 SHA-256。Android、macOS 与用户模式包仅在验证并发布后列出。",
       "cta": "前往下载页",
       "secondary": "查看发行说明"
     }
@@ -210,7 +212,7 @@
     "capabilitiesTitle": "服务器桌面需要的一切，都在这一个 Shell 里。",
     "appsEyebrow": "应用程序",
     "appsTitle": "二十多个内置应用。",
-    "appsLead": "每一个都是运行时中的一等公民，享有相同的窗口管理、生命周期与权限模型。",
+    "appsLead": "桌面应用接入统一运行时；Android 提供独立原生页面。入口与操作按连接模式、宿主能力和权限显示。",
     "archEyebrow": "架构",
     "archTitle": "客户端、协议、服务端。",
     "archLead": "刻意收窄的契约让层次彼此独立，也让故障边界一目了然。",
@@ -221,19 +223,22 @@
     "securityLead": "三条规则，让安全模型短到可以完整审计。",
     "extendEyebrow": "可扩展性",
     "extendTitle": "开发你自己的应用。",
-    "extendLead": "继承 RemoteApplicationBase，使用开发者 CLI 打包为 .roapp，即可获得与内置应用相同的窗口管理与能力 API。",
+    "extendLead": "桌面 .roapp 扩展使用 IExternalRemoteApplication 与受限 IExternalAppContext，通过开发者 CLI 打包；内置应用的 RemoteApplicationBase 是独立入口。",
     "extendCta": "阅读开发者指南",
     "statusEyebrow": "当前状态",
-    "statusTitle": "预览阶段，基础能力完备。",
-    "statusLead": "桌面 Shell、运行时、协议与服务端平台服务均已就位，各平台构建在验证通过后逐一发布。",
+    "statusTitle": "按实现、验收与发布分别追踪。",
+    "statusLead": "指南介绍当前源码能力，下载目录与发行说明记录实际发布物；源码已实现不代表已在发布版本或全部宿主上验收。",
     "statusItem1": "桌面 Shell、窗口管理器与应用运行时已实现",
     "statusItem2": "服务端工作空间、存储与同步已实现",
-    "statusItem3": "Docker、防火墙、证书、Git、隧道、代理、Web Server、应用部署与注册表均有可用实现",
-    "statusItem4": "Windows、Linux 与 macOS 安装包正在准备中",
+    "statusItem3": "服务管理已有实现；Docker、FRP、代理与部署的真实宿主验收按各指南单独追踪",
+    "statusItem4": "下载目录已有 Windows/Linux x64 包；其他平台仅展示已验证发布物",
     "limitsTitle": "关于成熟度的说明",
     "limitsText": "本站按实际状态描述能力：已上线、已实现待验证与尚未实现会明确区分。部分与宿主权限相关的功能需要在安装时显式授权，真实运行环境验收未完成的项目不会写成已全面可用。",
     "limitsDocsLink": "阅读应用模型",
-    "limitsInspectorLink": "网络诊断器（开发者工具）"
+    "limitsInspectorLink": "网络诊断器（开发者工具）",
+    "mobileCta": "阅读 Android 指南",
+    "operationsCta": "事件与告警",
+    "backupCta": "备份与恢复边界"
   },
   "products": {
     "eyebrow": "产品",
@@ -249,17 +254,18 @@
     "eyebrow": "下载",
     "title": "产品下载",
     "lead": "按平台与架构列出每一个已发布的构建，并附带大小与校验和。",
-    "note": "目前尚未发布公开安装包。以下为正在准备的构建。",
+    "note": "当前没有可下载的发布物，请稍后查看下载目录。",
     "latest": "最新",
     "prerelease": "预览",
     "empty": "尚未配置任何下载项。",
-    "serverHint": "客户端与服务端以相互独立的压缩包分发；离线服务器只需服务端包。",
+    "serverHint": "桌面客户端、系统服务端与用户模式服务端是不同的包；Android 使用签名 APK。离线服务器只需对应的服务端包。",
     "clientRunTitle": "下载后直接运行客户端",
     "clientRunHint": "客户端不需要安装到服务器。下载到自己的电脑后解压，并执行下方命令。",
     "platform": {
       "windows": "Windows",
       "linux": "Linux",
-      "macos": "macOS"
+      "macos": "macOS",
+      "android": "Android"
     },
     "quickInstall": {
       "eyebrow": "快速开始",
@@ -291,12 +297,14 @@
       "eyebrow": "无需 sudo",
       "title": "在普通 Linux 账号下安装（用户模式）",
       "lead": "用户模式不需要 root，也不会写入系统目录；服务只监听 127.0.0.1，远程访问通过 SSH 本地转发。需要使用 *-user-server.zip 发布包。",
-      "docCta": "阅读用户模式安装文档"
+      "docCta": "阅读用户模式安装文档",
+      "unavailable": "当前目录尚无用户模式包。请取得经校验的 user-server 发布包后再使用以下命令；系统服务端包不能替代。"
     },
     "packageKind": {
       "client": "客户端",
       "server": "服务端",
-      "archive": "归档包"
+      "archive": "归档包",
+      "user-server": "用户模式服务端"
     },
     "offline": {
       "eyebrow": "离线安装",
@@ -313,7 +321,11 @@
       "eyebrow": "直接下载",
       "title": "安装包与校验和",
       "lead": "适合离线安装、受控发布，或需要手动核验校验和的场景。"
-    }
+    },
+    "androidTitle": "安装 Android 客户端",
+    "androidHint": "下载已发布的签名 APK，在 Android 系统安装界面确认安装。更新必须使用同一签名证书；AAB 用于商店发布，不作为直接安装包。",
+    "androidUnavailable": "尚未列出已发布的 Android APK；源码实现状态不代表安装包已公开。",
+    "androidDocs": "Android 功能与连接指南"
   },
   "releases": {
     "eyebrow": "发行说明",

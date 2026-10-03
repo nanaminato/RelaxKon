@@ -20,15 +20,18 @@ export class HomeComponent {
 
   readonly appGroups: { titleKey: string; apps: string[] }[] = [
     { titleKey: 'home.apps.groupEveryday', apps: ['terminal', 'fileManager', 'browser', 'notepad', 'imageViewer'] },
-    { titleKey: 'home.apps.groupSystem', apps: ['settings', 'taskManager', 'processGuardian', 'docker', 'registry', 'appInstaller', 'welcome'] },
+    { titleKey: 'home.apps.groupSystem', apps: ['settings', 'serverCenter', 'taskManager', 'processGuardian', 'docker', 'registry', 'appInstaller', 'welcome'] },
     { titleKey: 'home.apps.groupNetwork', apps: ['firewall', 'portForwarding', 'tunnels', 'proxyManager', 'webServers', 'certificates', 'fileServices'] },
-    { titleKey: 'home.apps.groupDeveloper', apps: ['codeEditor', 'git'] },
+    { titleKey: 'home.apps.groupDeveloper', apps: ['codeEditor', 'git', 'applicationDeployments'] },
   ];
+
+  readonly mobileLink = computed(() => docsUrl(this.i18n.language(), 'getting-started/android'));
 
   readonly platforms = [
     { key: 'windows', textKey: 'windowsText' },
     { key: 'linux', textKey: 'linuxText' },
     { key: 'macos', textKey: 'macosText' },
+    { key: 'android', textKey: 'androidText' },
   ];
 
   readonly security = [

@@ -75,10 +75,13 @@ export class RelaxKonOsComponent {
   readonly networkInspectorLink = computed(() => docsUrl(this.i18n.language(), 'apps/network-inspector'));
   readonly applicationDeploymentsLink = computed(() => docsUrl(this.i18n.language(), 'apps/application-deployments'));
 
+  readonly mobileLink = computed(() => docsUrl(this.i18n.language(), 'getting-started/android'));
+
   readonly platforms = [
     { key: 'windows', textKey: 'windowsText' },
     { key: 'linux', textKey: 'linuxText' },
     { key: 'macos', textKey: 'macosText' },
+    { key: 'android', textKey: 'androidText' },
   ];
 
   readonly security = [
@@ -87,16 +90,28 @@ export class RelaxKonOsComponent {
     { titleKey: 'home.security.elevationTitle', textKey: 'home.security.elevationText' },
   ];
 
+  readonly eventsLink = computed(() => docsUrl(this.i18n.language(), 'apps/event-alerts'));
+  readonly backupLink = computed(() => docsUrl(this.i18n.language(), 'apps/backup-recovery'));
+
   readonly statusItems = ['os.statusItem1', 'os.statusItem2', 'os.statusItem3', 'os.statusItem4'];
 
-  readonly sampleCode = `public class MyApp : RemoteApplicationBase
-{
-    public override string Id => "com.example.myapp";
-    public override string DisplayName => "My Application";
+  readonly sampleCode = `using Avalonia.Controls;
+using RelaxKonOS.AppSDK;
+using RelaxKonOS.Core.Applications;
+using System.Threading;
+using System.Threading.Tasks;
 
-    public override void Activate(AppContext context)
+public sealed class MyApp : IExternalRemoteApplication
+{
+    public ApplicationManifest Manifest { get; } = new(
+        new AppId("com.example.myapp"), "My Application");
+
+    public Task ActivateAsync(IExternalAppContext context,
+        CancellationToken cancellationToken = default)
     {
-        context.ShowWindow("My Window", contentFactory: () => new MyView());
+        context.Windows.ShowWindow("My Window",
+            new TextBlock { Text = "Hello, RelaxKonOS!" });
+        return Task.CompletedTask;
     }
 }`;
 

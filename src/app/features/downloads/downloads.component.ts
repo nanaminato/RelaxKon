@@ -1,3 +1,4 @@
+import { docsUrl } from '../../core/docs/docs-link';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Component, PLATFORM_ID, computed, inject, signal } from '@angular/core';
 import { LocalizedDatePipe } from '../../core/pipes/localized-date.pipe';
@@ -41,6 +42,10 @@ export class DownloadsComponent {
   });
 
   readonly availableItems = computed(() => this.items().filter(item => item.isAvailable && !!item.url));
+  readonly androidItems = computed(() => this.availableItems().filter(item => item.platform === 'android' && item.fileName?.endsWith('.apk')));
+  readonly userModeItems = computed(() => this.availableItems().filter(item => item.packageKind === 'user-server'));
+  readonly androidDocLink = computed(() => docsUrl(this.i18n.language(), 'getting-started/android'));
+
   readonly offlineServerArchive = computed(() => {
     const platform = this.selectedInstaller();
     return this.availableItems().find(item => item.platform.toLowerCase() === platform && item.packageKind === 'server')?.fileName
@@ -93,7 +98,7 @@ export class DownloadsComponent {
   constructor() {
     inject(SeoService).apply({
       title: 'Downloads — RelaxKon',
-      description: 'Download RelaxKonOS builds for Windows, Linux and macOS with checksums and release dates.',
+      description: 'Download published RelaxKonOS desktop, Android and server packages with checksums and release dates.',
       path: '/downloads',
     });
 
@@ -121,7 +126,8 @@ export class DownloadsComponent {
 
   clientLaunchCommand(item: DownloadInfo): string {
     const archive = item.fileName ?? 'RelaxKonOS-client.zip';
-    return item.platform.toLowerCase() === 'windows'
+    if (!['windows', 'linux'].includes(item.platform)) return '';
+    return item.platform === 'windows'
       ? `Expand-Archive .\\${archive} .\\RelaxKonOS-client\n& .\\RelaxKonOS-client\\payload\\windows\\client\\RelaxKonOS.Client.Desktop.exe`
       : `unzip ${archive} -d RelaxKonOS-client\n./RelaxKonOS-client/payload/linux/client/RelaxKonOS.Client.Desktop`;
   }

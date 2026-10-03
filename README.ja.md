@@ -81,7 +81,7 @@ public/                   # favicon 一式、brand-mark.png、site.webmanifest�
 
 実行時の文言は `public/assets/i18n/{en-US,zh-CN,ja-JP}.json` にネストしたオブジェクトとして置かれ、読み込み時にドット区切りのキーへ平坦化されるため、テンプレートでは `t('home.hero.title')` で参照します（`{placeholder}` の補間に対応）。手動選択前は UI がブラウザー／システムの優先言語に従い、中国語は `zh-CN`、日本語は `ja-JP`、それ以外はすべて `en-US` になります。ブラウザーの `languagechange` にも追従します。ヘッダーで手動選択した場合だけ LocalStorage の `rk-language` キーへ保存され、以後はこちらが優先されます。
 
-3 つの辞書はキーが完全に一致している必要があります（現在は各 354 件）。欠けたキーはキー名がそのまま表示されます。変更後は `node tools/verify-i18n-keys.mjs` で再確認し、さらに `node tools/verify-i18n-usage.mjs` でテンプレートが参照しているキーが実在するかを確認してください（欠けたキーはビルドを失敗させず、ページ上にキー名として現れるだけです）。**UI 言語を追加する**には：
+3 つの辞書はキーが完全に一致している必要があります（現在は各 367 件）。欠けたキーはキー名がそのまま表示されます。変更後は `node tools/verify-i18n-keys.mjs` で再確認し、さらに `node tools/verify-i18n-usage.mjs` でテンプレートが参照しているキーが実在するかを確認してください（欠けたキーはビルドを失敗させず、ページ上にキー名として現れるだけです）。**UI 言語を追加する**には：
 
 1. `public/assets/i18n/<code>.json` を追加する
 2. `core/i18n/i18n.service.ts` の `SiteLanguage` ユニオン型と `SITE_LANGUAGES` を拡張する
@@ -90,7 +90,7 @@ public/                   # favicon 一式、brand-mark.png、site.webmanifest�
 
 ドキュメントと FAQ は API が提供する**コンテンツ言語**を使い、UI 言語とは独立しています。
 
-`RelaxKonServer/Content/Docs/{en-US,zh-CN,ja-JP}` は現在どの言語も 37 件（はじめに 4 + 概念 9 + アプリケーション 24）で、3 言語が完全に揃っているため通常の閲覧でフォールバックは発生しません。ただしフォールバックの仕組み自体は残っています。要求された言語に slug が無い場合は `en-US` の版が返り、レスポンスの `isFallback` が `true` になるので UI 側でその旨を伝えられます。**コンテンツファイルを増減するときは 3 言語の件数を揃えてください。** 揃っていないとナビゲーションにフォールバック項目が現れます。
+`RelaxKonServer/Content/Docs/{en-US,zh-CN,ja-JP}` は現在どの言語も 42 件（はじめに 6 + 概念 9 + アプリケーション 27）で、3 言語が完全に揃っているため通常の閲覧でフォールバックは発生しません。ただしフォールバックの仕組み自体は残っています。要求された言語に slug が無い場合は `en-US` の版が返り、レスポンスの `isFallback` が `true` になるので UI 側でその旨を伝えられます。**コンテンツファイルを増減するときは 3 言語の件数を揃えてください。** 揃っていないとナビゲーションにフォールバック項目が現れます。
 
 そのため本文の言語と UI 言語は異なることがあります。`<html lang>` は `I18nService` の `htmlLanguage`（`contentLanguage ?? language`）が決め、ドキュメントページは `i18n.setContentLanguage(...)` で本文が**実際に**使っている言語（フォールバック時はルートで要求した言語ではなく提供された言語）を指し、`/docs` を離れるときにクリアして UI 言語へ戻します。`<article>` 要素にも個別に `lang` を付けています。これは周囲の外殻（ナビゲーション、サイドバー）が UI 言語のままであるためです。スクリーンリーダーが本文を正しい言語で読むための仕組みなので、**ドキュメントページを変更するときはこの 2 つの書き込み点を迂回しないでください**。なお API の `DocumentResponse.language` は要求した言語をそのまま返すため、実際の言語は `isFallback` で判定します。
 
@@ -105,3 +105,14 @@ public/                   # favicon 一式、brand-mark.png、site.webmanifest�
 ## プロジェクト境界
 
 このプロジェクトは公式サイトのフロントエンドを置く唯一の場所です。`RelaxKonServer` にサイト UI を追加しないでください（あちらは API 専用です）。ワークスペース全体の境界ルールは [`../WEBSITE_ARCHITECTURE.ja.md`](../WEBSITE_ARCHITECTURE.ja.md) を参照してください。
+
+## コンテンツ更新と検証
+
+ガイドは現在のソース・実検証・公開パッケージを区別します。Android 詳細仕様の正本は製品の `Client/RelaxKonOS.Client.Android/docs/` で、サイトは利用者向け要約とリンクを提供します。Android・アカウント認証・転送再開・アラート・復元ガイドを追加し、FAQ は 16 件です。0.1.2 リリース記録は既存の四つの成果物から作成し、最近のソース機能の収録を推定しません。
+
+```bash
+node tools/verify-i18n-keys.mjs
+node tools/verify-i18n-usage.mjs
+npm test -- --watch=false
+npm run build
+```

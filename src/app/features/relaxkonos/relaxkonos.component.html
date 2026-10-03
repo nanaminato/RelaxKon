@@ -6,6 +6,7 @@
     <div class="btn-row mt-2">
       <a class="btn btn--primary btn--lg" [routerLink]="architectureLink()">{{ i18n.t('os.ctaPrimary') }}</a>
       <a class="btn btn--secondary btn--lg" routerLink="/downloads">{{ i18n.t('os.ctaSecondary') }}</a>
+      <a class="btn btn--ghost" [routerLink]="mobileLink()">{{ i18n.t('os.mobileCta') }}</a>
     </div>
   </div>
 </section>
@@ -168,6 +169,8 @@
     <div class="btn-row mt-2">
       <a class="btn btn--primary" routerLink="/downloads">{{ i18n.t('home.download.cta') }}</a>
       <a class="btn btn--ghost" routerLink="/releases">{{ i18n.t('home.download.secondary') }}</a>
+      <a class="btn btn--ghost" [routerLink]="eventsLink()">{{ i18n.t('os.operationsCta') }}</a>
+      <a class="btn btn--ghost" [routerLink]="backupLink()">{{ i18n.t('os.backupCta') }}</a>
     </div>
   </div>
 </section>

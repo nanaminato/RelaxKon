@@ -92,6 +92,9 @@
         </button>
       </div>
       <div class="user-mode-card__foot">
+        @if (!userModeItems().length && !loading()) {
+          <p class="muted">{{ i18n.t('downloads.userMode.unavailable') }}</p>
+        }
         <a class="btn btn--primary btn--sm" [routerLink]="userModeDocLink()">{{ i18n.t('downloads.userMode.docCta') }}</a>
         <app-github-link variant="secondary" size="sm" labelKey="github.viewRepository" />
       </div>
@@ -117,6 +120,19 @@
         {{ copied() === 'offline' ? i18n.t('common.copied') : i18n.t('common.copy') }}
       </button>
     </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="android-title">
+  <div class="container">
+    <article class="card">
+      <h2 id="android-title">{{ i18n.t('downloads.androidTitle') }}</h2>
+      <p>{{ i18n.t('downloads.androidHint') }}</p>
+      @if (!loading() && !androidItems().length) {
+        <p class="muted">{{ i18n.t('downloads.androidUnavailable') }}</p>
+      }
+      <a class="btn btn--secondary" [routerLink]="androidDocLink()">{{ i18n.t('downloads.androidDocs') }}</a>
+    </article>
   </div>
 </section>
 
@@ -164,7 +180,11 @@
                     }
                   </dl>
                   @if (item.fileName) { <p class="mono small muted mb-0">{{ item.fileName }}</p> }
-                  @if (item.packageKind === 'client' && item.platform.toLowerCase() !== 'android') {
+                  @if (item.platform === 'android') {
+                    <p class="muted small">{{ i18n.t('downloads.androidHint') }}</p>
+                    <a [routerLink]="androidDocLink()">{{ i18n.t('downloads.androidDocs') }}</a>
+                  }
+                  @if (item.packageKind === 'client' && ['windows', 'linux'].includes(item.platform)) {
                     <details class="client-run">
                       <summary>{{ i18n.t('downloads.clientRunTitle') }}</summary>
                       <p>{{ i18n.t('downloads.clientRunHint') }}</p>

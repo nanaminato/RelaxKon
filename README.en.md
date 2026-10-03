@@ -81,7 +81,7 @@ All colours, spacing, radii and shadows are CSS custom properties (`--rk-*`) def
 
 Runtime translations live in `public/assets/i18n/{en-US,zh-CN,ja-JP}.json` as nested objects. They are flattened to dotted keys at load time, so templates call `t('home.hero.title')`, with `{placeholder}` interpolation. Until a visitor manually selects a language, the UI follows the browser/system preferred language: Chinese becomes `zh-CN`, Japanese becomes `ja-JP`, and every other language becomes `en-US`; it also follows a browser `languagechange` event. Only a manual header selection is persisted under the `rk-language` LocalStorage key and takes precedence.
 
-The three dictionaries must stay key-for-key identical (354 keys each today); a missing key renders as the key itself. After changing them, re-check with `node tools/verify-i18n-keys.mjs`, then run `node tools/verify-i18n-usage.mjs` to confirm every key referenced from the templates actually exists — a missing key never fails the build, it just shows up as the key name on the page. **Add a UI language** by:
+The three dictionaries must stay key-for-key identical (367 keys each today); a missing key renders as the key itself. After changing them, re-check with `node tools/verify-i18n-keys.mjs`, then run `node tools/verify-i18n-usage.mjs` to confirm every key referenced from the templates actually exists — a missing key never fails the build, it just shows up as the key name on the page. **Add a UI language** by:
 
 1. Adding `public/assets/i18n/<code>.json`
 2. Extending the `SiteLanguage` union and `SITE_LANGUAGES` in `core/i18n/i18n.service.ts`
@@ -90,7 +90,7 @@ The three dictionaries must stay key-for-key identical (354 keys each today); a 
 
 Documentation and FAQ use **content** languages supplied by the API, which are independent of the UI language.
 
-`RelaxKonServer/Content/Docs/{en-US,zh-CN,ja-JP}` currently holds 37 documents per language (4 getting-started + 9 concepts + 24 applications), so all three are fully aligned and normal browsing never falls back. The fallback mechanism itself remains: when a slug is missing in the requested language it is served from `en-US` and the response sets `isFallback` so the UI can say so. **Keep the three languages in step when you add or remove content files**, otherwise fallback entries appear in the navigation.
+`RelaxKonServer/Content/Docs/{en-US,zh-CN,ja-JP}` currently holds 42 documents per language (6 getting-started + 9 concepts + 27 applications), so all three are fully aligned and normal browsing never falls back. The fallback mechanism itself remains: when a slug is missing in the requested language it is served from `en-US` and the response sets `isFallback` so the UI can say so. **Keep the three languages in step when you add or remove content files**, otherwise fallback entries appear in the navigation.
 
 The body language can therefore differ from the UI language. `<html lang>` comes from `I18nService.htmlLanguage` (`contentLanguage ?? language`); documentation pages call `i18n.setContentLanguage(...)` to point it at the language the article is **actually** written in — for a fallback page that is the served language, not the one requested in the route — and clear it when leaving `/docs`, which restores the UI language. The `<article>` element carries its own `lang` as well, because the surrounding chrome (navigation, sidebar) stays in the UI language. This is what lets a screen reader pronounce the body correctly, so **do not bypass either write point when changing documentation pages**. Note that the API's `DocumentResponse.language` echoes the requested language; use `isFallback` to detect the real one.
 
@@ -105,3 +105,14 @@ The body language can therefore differ from the UI language. `<html lang>` comes
 ## Project boundary
 
 This project is the only home for the website frontend. Do not add website UI to `RelaxKonServer`; it is an API-only application. See [`../WEBSITE_ARCHITECTURE.en.md`](../WEBSITE_ARCHITECTURE.en.md) for the workspace-wide boundary rules.
+
+## Content updates and verification
+
+Guides distinguish current source, actual verification and published packages. Detailed Android specifications remain in the product project at `Client/RelaxKonOS.Client.Android/docs/`; the website provides user-facing summaries and links. Android, account sign-in, upload resumption, alerts and recovery guides are included, with 16 FAQ entries. The 0.1.2 release record derives from four existing artifacts, not an inferred changelog for recent source features.
+
+```bash
+node tools/verify-i18n-keys.mjs
+node tools/verify-i18n-usage.mjs
+npm test -- --watch=false
+npm run build
+```
