@@ -99,7 +99,7 @@
         },
         "1": {
           "title": "应用可持续运行",
-          "text": "终端会话、被守护的工作负载与远程服务持续运行在服务端，网络瞬断不再等于会话丢失。"
+          "text": "终端会话、守护程序与远程服务持续运行在服务端，网络瞬断不再等于会话丢失。"
         },
         "2": {
           "title": "边界清晰",
@@ -111,7 +111,7 @@
         },
         "4": {
           "title": "安全靠委托",
-          "text": "执行身份与文件权限来自宿主 OS；系统登录与 Alias 登录绑定同一用户，特权操作另行授权。"
+          "text": "执行身份与文件权限来自服务器操作系统；系统登录与 Alias 登录绑定同一用户，特权操作另行授权。"
         },
         "5": {
           "title": "原生可扩展",
@@ -146,9 +146,9 @@
       "title": "同一个工作空间，跟着你到每一台设备。",
       "lead": "在工作站、笔记本与服务器控制台之间，工作空间始终一致。",
       "windows": "Windows",
-      "windowsText": "Avalonia 桌面客户端；Windows 宿主支持 LogonUser 与 ConPTY。已发布架构见下载目录。",
+      "windowsText": "Avalonia 桌面客户端；Windows 服务器支持 LogonUser 与 ConPTY。已发布架构见下载目录。",
       "linux": "Linux",
-      "linuxText": "Avalonia 桌面客户端；Linux 宿主支持 PAM/NSS 与 PTY，UFW 等管理功能受服务器模式与授权约束。",
+      "linuxText": "Avalonia 桌面客户端；Linux 服务器支持 PAM/NSS 与 PTY，UFW 等管理功能受服务器模式与授权约束。",
       "macos": "macOS",
       "macosText": "Avalonia 桌面客户端使用 WKWebView；macOS 包的发布情况以下载目录为准。",
       "serverNote": "服务端面向 Linux 与 Windows；客户端平台支持、源码实现与发布包可用性分别说明，不能互相替代。",
@@ -158,10 +158,10 @@
     "security": {
       "eyebrow": "安全",
       "title": "安全的理由是「委托」，而不是「重造」。",
-      "lead": "登录方式可以变化，执行身份仍绑定宿主账号；应用授权与宿主权限必须同时满足。",
-      "identityTitle": "身份来自宿主",
-      "identityText": "系统登录通过 Windows LogonUser 或 Linux PAM 验证；Alias 使用独立密码哈希并绑定同一宿主用户。服务端不持久保存系统登录密码。",
-      "permissionTitle": "权限来自宿主",
+      "lead": "登录方式可以变化，执行身份仍绑定服务器账号；应用授权与服务器权限必须同时满足。",
+      "identityTitle": "身份来自服务器",
+      "identityText": "系统登录通过 Windows LogonUser 或 Linux PAM 验证；Alias 使用独立密码哈希并绑定同一服务器用户。服务端不持久保存系统登录密码。",
+      "permissionTitle": "权限来自服务器",
       "permissionText": "文件操作以登录用户的身份执行，不存在第二套可能与真实权限脱节的 ACL。",
       "elevationTitle": "提权被隔离",
       "elevationText": "特权动作经固定 Helper 契约执行；系统认证管理员会话动态核验资格，普通用户与 Alias 需明确认证所选管理员，用户模式禁用提权。"
@@ -175,7 +175,7 @@
       "principle1Text": "凡是能在客户端渲染的，就在客户端渲染。",
       "principle2Title": "显式契约",
       "principle2Text": "没有业务代码直接发起原始 HTTP 或 WebSocket 调用。",
-      "principle3Title": "委托宿主",
+      "principle3Title": "委托服务器操作系统",
       "principle3Text": "用户、权限与既有工具都属于操作系统。",
       "principle4Title": "诚实降级",
       "principle4Text": "不支持的能力会明确说明，而不是伪造数值。"
@@ -186,7 +186,7 @@
       "lead": "快速开始指南、应用参考与背后的概念文档——全部由支撑本网站的同一套内容 API 提供。",
       "cta": "打开文档中心",
       "card1Title": "快速开始",
-      "card1Text": "安装客户端与服务端，使用宿主凭据登录，并完成第一次体验。",
+      "card1Text": "安装客户端与服务端，使用服务器凭据登录，并完成第一次体验。",
       "card2Title": "应用程序",
       "card2Text": "终端、文件管理器、Docker、Web Server、证书、Git、隧道与代理管理等应用的指南。",
       "card3Title": "核心概念",
@@ -212,7 +212,7 @@
     "capabilitiesTitle": "服务器桌面需要的一切，都在这一个 Shell 里。",
     "appsEyebrow": "应用程序",
     "appsTitle": "二十多个内置应用。",
-    "appsLead": "桌面应用接入统一运行时；Android 提供独立原生页面。入口与操作按连接模式、宿主能力和权限显示。",
+    "appsLead": "桌面应用接入统一运行时；Android 提供独立原生页面。入口与操作按连接模式、服务器能力和权限显示。",
     "archEyebrow": "架构",
     "archTitle": "客户端、协议、服务端。",
     "archLead": "刻意收窄的契约让层次彼此独立，也让故障边界一目了然。",
@@ -227,13 +227,13 @@
     "extendCta": "阅读开发者指南",
     "statusEyebrow": "当前状态",
     "statusTitle": "按实现、验收与发布分别追踪。",
-    "statusLead": "指南介绍当前源码能力，下载目录与发行说明记录实际发布物；源码已实现不代表已在发布版本或全部宿主上验收。",
+    "statusLead": "指南介绍当前源码能力，下载目录与发行说明记录实际发布物；源码已实现不代表已在发布版本或全部服务器平台上验收。",
     "statusItem1": "桌面 Shell、窗口管理器与应用运行时已实现",
     "statusItem2": "服务端工作空间、存储与同步已实现",
-    "statusItem3": "服务管理已有实现；Docker、FRP、代理与部署的真实宿主验收按各指南单独追踪",
+    "statusItem3": "服务管理已有实现；Docker、FRP、代理与部署的真实服务器环境验收按各指南单独追踪",
     "statusItem4": "下载目录已有 Windows/Linux x64 包；其他平台仅展示已验证发布物",
     "limitsTitle": "关于成熟度的说明",
-    "limitsText": "本站按实际状态描述能力：已上线、已实现待验证与尚未实现会明确区分。部分与宿主权限相关的功能需要在安装时显式授权，真实运行环境验收未完成的项目不会写成已全面可用。",
+    "limitsText": "本站按实际状态描述能力：已上线、已实现待验证与尚未实现会明确区分。部分与服务器权限相关的功能需要在安装时显式授权，真实运行环境验收未完成的项目不会写成已全面可用。",
     "limitsDocsLink": "阅读应用模型",
     "limitsInspectorLink": "网络诊断器（开发者工具）",
     "mobileCta": "阅读 Android 指南",
@@ -289,7 +289,7 @@
       "stepTwoTitle": "选择安装来源",
       "stepTwoText": "在服务器中心选择「本地发布包」上传 ZIP，或选择「服务器上的发布包」直接读取服务器文件。",
       "stepThreeTitle": "确认并安装",
-      "stepThreeText": "检查模式、端口、目录、网络、证书与权限后确认；以操作回执和健康检查判断结果。"
+      "stepThreeText": "检查模式、端口、目录、网络、证书与权限后确认；以操作结果记录和健康检查判断结果。"
     },
     "packages": {
       "eyebrow": "直接下载",
@@ -343,7 +343,7 @@
     "principle2Title": "显式优于隐式",
     "principle2Text": "每一份契约都写在共享的协议程序集里。",
     "principle3Title": "委托系统层",
-    "principle3Text": "身份、权限与既有工具都属于宿主操作系统。",
+    "principle3Text": "身份、权限与既有工具都属于服务器操作系统。",
     "projectsTitle": "项目结构",
     "project1Name": "RelaxKon",
     "project1Text": "官网客户端：路由、布局、主题、运行时语言切换与 API 客户端。",
