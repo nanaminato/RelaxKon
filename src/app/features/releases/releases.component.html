@@ -29,8 +29,11 @@
                 }
                 <time class="muted small">{{ item.releaseDate | rkDate: 'long' : i18n.language() }}</time>
               </div>
-              <h2>{{ item.title }}</h2>
-              <p>{{ item.summary }}</p>
+              @if (item.isFallback) {
+                <p class="small" role="status">{{ i18n.t('releases.fallbackNotice') }}</p>
+              }
+              <h2 [attr.lang]="item.language">{{ item.title }}</h2>
+              <p [attr.lang]="item.language">{{ item.summary }}</p>
               <span class="entry__cta">{{ i18n.t('common.learnMore') }} →</span>
             </a>
           </li>

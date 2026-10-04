@@ -336,7 +336,8 @@
     "empty": "リリースはまだありません。",
     "backToList": "すべてのリリース",
     "highlights": "ハイライト",
-    "prerelease": "プレリリース"
+    "prerelease": "プレリリース",
+    "fallbackNotice": "このリリースノートには選択した言語の翻訳がまだないため、英語で表示しています。"
   },
   "faq": {
     "eyebrow": "FAQ",

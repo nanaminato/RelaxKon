@@ -5,7 +5,10 @@
     @if (loading()) {
       <div class="skeleton" style="height: 260px; margin-top: 1.5rem"></div>
     } @else if (release(); as item) {
-      <header class="release__head">
+      @if (item.isFallback) {
+        <p class="notice" role="status">{{ i18n.t('releases.fallbackNotice') }}</p>
+      }
+      <header class="release__head" [attr.lang]="item.language">
         <p class="eyebrow">{{ i18n.t('releases.title') }}</p>
         <h1>{{ item.title }}</h1>
         <div class="release__meta">
@@ -17,7 +20,7 @@
       </header>
 
       @if (item.highlights.length) {
-        <section class="highlights">
+        <section class="highlights" [attr.lang]="item.language">
           <h2>{{ i18n.t('releases.highlights') }}</h2>
           <ul>
             @for (highlight of item.highlights; track highlight) {
@@ -27,7 +30,7 @@
         </section>
       }
 
-      <article class="prose" [innerHTML]="html()"></article>
+      <article [attr.lang]="item.language" class="prose" [innerHTML]="html()"></article>
     } @else {
       <div class="notice notice--warning" style="margin-top: 1.5rem">
         <div>

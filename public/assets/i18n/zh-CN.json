@@ -336,7 +336,8 @@
     "empty": "尚未发布任何版本。",
     "backToList": "全部版本",
     "highlights": "亮点",
-    "prerelease": "预发布"
+    "prerelease": "预发布",
+    "fallbackNotice": "此发行说明暂无当前语言的翻译，现显示英文内容。"
   },
   "faq": {
     "eyebrow": "常见问题",

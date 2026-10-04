@@ -40,12 +40,14 @@ export class ReleaseDetailComponent {
     effect((onCleanup) => {
       const language = this.i18n.language();
       this.loading.set(true);
+      this.i18n.setContentLanguage(null);
       const subscription = this.api
         .release(version, language)
         .pipe(catchError(() => of<ReleaseDetails | null>(null)))
         .subscribe((item) => {
           this.release.set(item);
           this.loading.set(false);
+          this.i18n.setContentLanguage(item?.language ?? null);
           seo.apply({
             titleKey: item ? 'pageTitles.releaseDetail' : 'pageTitles.release',
             titleParams: { title: item?.title ?? '' },
@@ -53,7 +55,10 @@ export class ReleaseDetailComponent {
             path: `/releases/${version}`,
           });
         });
-      onCleanup(() => subscription.unsubscribe());
+      onCleanup(() => {
+        subscription.unsubscribe();
+        this.i18n.setContentLanguage(null);
+      });
     });
   }
 }

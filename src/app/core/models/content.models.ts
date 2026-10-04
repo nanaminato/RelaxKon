@@ -56,6 +56,8 @@ export interface DownloadInfo {
 }
 
 export interface ReleaseSummary {
+  language: string;
+  isFallback: boolean;
   version: string;
   title: string;
   summary: string;

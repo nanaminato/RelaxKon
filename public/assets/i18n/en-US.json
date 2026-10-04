@@ -336,7 +336,8 @@
     "empty": "No releases have been published yet.",
     "backToList": "All releases",
     "highlights": "Highlights",
-    "prerelease": "Pre-release"
+    "prerelease": "Pre-release",
+    "fallbackNotice": "This release note is not yet translated into the selected language. English is shown."
   },
   "faq": {
     "eyebrow": "FAQ",
