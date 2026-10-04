@@ -82,8 +82,8 @@
   "home": {
     "hero": {
       "eyebrow": "RelaxKonOS",
-      "title": "现代化的远程工作空间操作系统环境。",
-      "lead": "一个跨平台桌面 Shell：界面在本地渲染，工作空间、运行时与服务留在你自己的服务器上。应用可以持久运行，远程能力安全可控，架构边界清晰明确——而且不传输任何一个桌面像素。",
+      "title": "桌面与手机，共用你的服务器工作区。",
+      "lead": "RelaxKonOS 在 Windows、macOS、Linux 桌面与 Android 手机上本地渲染界面，通过状态同步访问你自己的服务器。集中管理文件、终端、Docker、网站、证书、Git、隧道与代理；支持直连 Server、通过 SSH 隧道登录 Server，以及独立 SSH 工作台。",
       "ctaPrimary": "了解 RelaxKonOS",
       "ctaSecondary": "阅读文档",
       "note": "不是 RDP，不是 VNC，也不是像素流。",
@@ -216,7 +216,7 @@
   "os": {
     "eyebrow": "产品 / RelaxKonOS",
     "title": "让桌面跨越设备。",
-    "lead": "RelaxKonOS 是跨平台的云原生桌面操作系统环境。它同步的是状态与操作意图，而不是像素，因此你在服务器上构建的工作空间始终清晰、流畅、随处可用。",
+    "lead": "RelaxKonOS 提供 Avalonia 桌面客户端与 Kotlin/Compose Android 客户端，界面在本地渲染，工作区状态与运行服务留在服务器。可以直连 Server、通过 SSH 隧道访问回环服务，或使用 SSH 终端与 SFTP 工作台。",
     "ctaPrimary": "阅读架构指南",
     "ctaSecondary": "查看下载",
     "notRemoteTitle": "它不是什么",
@@ -258,7 +258,7 @@
     "title": "以清晰的架构中心构建的软件。",
     "lead": "RelaxKon 构建的工作空间软件，让界面留在本地，让持久能力留在远程。",
     "cardTitle": "RelaxKonOS",
-    "cardText": "跨平台的云原生桌面操作系统环境，具备本地 UI 渲染、持久化应用与服务端管理工作空间。",
+    "cardText": "跨平台服务器工作区，提供本地界面、持久终端与服务管理，支持 Server 直连、SSH 隧道登录和独立 SSH 工作台。",
     "cardHref": "了解 RelaxKonOS",
     "comingTitle": "更多产品",
     "comingText": "更多工作空间工具将在可用时在此公布。"

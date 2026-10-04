@@ -82,8 +82,8 @@
   "home": {
     "hero": {
       "eyebrow": "RelaxKonOS",
-      "title": "A modern remote workspace operating environment.",
-      "lead": "A cross-platform desktop shell that renders its interface locally and keeps workspaces, runtimes and services on your own server. Persistent applications, secure remote capabilities and clear architectural boundaries — without streaming a single desktop pixel.",
+      "title": "Your server workspace, on desktop and mobile.",
+      "lead": "RelaxKonOS renders locally on Windows, macOS and Linux desktops and Android devices, using state synchronization to access your own server. Manage files, terminals, Docker, websites, certificates, Git, tunnels and proxies. Connect directly to Server, sign in to Server through an SSH tunnel, or use a separate SSH workbench.",
       "ctaPrimary": "Explore RelaxKonOS",
       "ctaSecondary": "Read the documentation",
       "note": "Not RDP. Not VNC. Not pixel streaming.",
@@ -216,7 +216,7 @@
   "os": {
     "eyebrow": "Product / RelaxKonOS",
     "title": "Desktops beyond devices.",
-    "lead": "RelaxKonOS is a cross-platform, cloud-native desktop operating environment. It synchronises state and intent instead of streaming pixels, so the workspace you build on your server stays sharp, responsive and available everywhere.",
+    "lead": "RelaxKonOS combines an Avalonia desktop client and a Kotlin/Compose Android client with locally rendered interfaces, server-side workspace state and running services. Connect directly to Server, reach its loopback service through an SSH tunnel, or use an SSH terminal and SFTP workbench.",
     "ctaPrimary": "Read the architecture guide",
     "ctaSecondary": "See downloads",
     "notRemoteTitle": "What it is not",
@@ -258,7 +258,7 @@
     "title": "Software built around a clear architectural centre.",
     "lead": "RelaxKon builds workspace software where the interface stays local and the durable capabilities stay remote.",
     "cardTitle": "RelaxKonOS",
-    "cardText": "A cross-platform, cloud-native desktop operating environment with local UI rendering, persistent applications and server-managed workspaces.",
+    "cardText": "A cross-platform server workspace with local interfaces, persistent terminals and service management, supporting direct Server connections, SSH tunnel sign-in and a separate SSH workbench.",
     "cardHref": "Explore RelaxKonOS",
     "comingTitle": "More products",
     "comingText": "Additional workspace tools will be announced here as they become available."
