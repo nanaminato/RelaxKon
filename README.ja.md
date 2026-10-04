@@ -15,6 +15,8 @@
 
 ## コマンド
 
+教程画像は `public/assets/docs/screenshots/` に置き、`npm run verify:doc-images` で一覧と三言語の一致を検査します。[撮影・置き換え手順](./docs/documentation-screenshots.md)も参照してください。本文はバックエンドが提供するため、画像付き文書の更新時はフロントエンドの静的成果物も同時に配置します。
+
 依存バージョンは Angular 22.2.1、TypeScript 6.0.3、RxJS 7.8.2、Vitest 5.0.3、jsdom 30.1.2 です。Angular は TypeScript `>=6.0 <6.1` を要求します。新規チェックアウトは `npm ci`、更新時は `npm outdated`、`package.json` の編集、`npm update` の順で実行し、ロックファイルも更新します。`npm run build` と `npm test -- --watch=false` で確認してください。[公式サイトの開発チュートリアル](https://relaxkon.com/docs/ja-JP/latest/getting-started/development)も参照できます。
 
 | コマンド | 内容 |

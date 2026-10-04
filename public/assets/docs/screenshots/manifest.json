@@ -1,0 +1,485 @@
+{
+  "schemaVersion": 1,
+  "images": [
+    {
+      "language": "zh-CN",
+      "slot": "remote-host",
+      "document": "getting-started/remote-installation",
+      "url": "/assets/docs/screenshots/zh-CN/remote-host.svg",
+      "caption": "截图位置：SSH 主机表单和首次信任对话框；展示地址、端口、账号与指纹，遮盖真实地址和凭据。",
+      "status": "placeholder"
+    },
+    {
+      "language": "zh-CN",
+      "slot": "remote-preflight",
+      "document": "getting-started/remote-installation",
+      "url": "/assets/docs/screenshots/zh-CN/remote-preflight.svg",
+      "caption": "截图位置：主机预检结果与模式选择；展示 OS、架构、权限、依赖和已安装状态。",
+      "status": "placeholder"
+    },
+    {
+      "language": "zh-CN",
+      "slot": "remote-source",
+      "document": "getting-started/remote-installation",
+      "url": "/assets/docs/screenshots/zh-CN/remote-source.svg",
+      "caption": "截图位置：四种安装来源及选中的包；保留包类型、版本、架构，隐藏带凭据的 URL。",
+      "status": "placeholder"
+    },
+    {
+      "language": "zh-CN",
+      "slot": "remote-options",
+      "document": "getting-started/remote-installation",
+      "url": "/assets/docs/screenshots/zh-CN/remote-options.svg",
+      "caption": "截图位置：安装选项；展示端口、目录、监听范围、TLS 与文件权限，遮盖证书密码。",
+      "status": "placeholder"
+    },
+    {
+      "language": "zh-CN",
+      "slot": "remote-review",
+      "document": "getting-started/remote-installation",
+      "url": "/assets/docs/screenshots/zh-CN/remote-review.svg",
+      "caption": "截图位置：最终审阅页；展示主机、安装模式、包来源、目录和端口摘要。",
+      "status": "placeholder"
+    },
+    {
+      "language": "zh-CN",
+      "slot": "remote-result",
+      "document": "getting-started/remote-installation",
+      "url": "/assets/docs/screenshots/zh-CN/remote-result.svg",
+      "caption": "截图位置：安装结果与健康核验；展示操作 ID、阶段、回执、安装状态和健康检查。",
+      "status": "placeholder"
+    },
+    {
+      "language": "zh-CN",
+      "slot": "maintenance-status",
+      "document": "apps/server-maintenance",
+      "url": "/assets/docs/screenshots/zh-CN/maintenance-status.svg",
+      "caption": "截图位置：已安装主机状态；展示安装标识、模式、当前与前一版本、目录、端口、健康状态。",
+      "status": "placeholder"
+    },
+    {
+      "language": "zh-CN",
+      "slot": "maintenance-update",
+      "document": "apps/server-maintenance",
+      "url": "/assets/docs/screenshots/zh-CN/maintenance-update.svg",
+      "caption": "截图位置：更新审阅与结果；展示原安装身份、当前和目标版本、保留目录与核验结果。",
+      "status": "placeholder"
+    },
+    {
+      "language": "zh-CN",
+      "slot": "maintenance-repair",
+      "document": "apps/server-maintenance",
+      "url": "/assets/docs/screenshots/zh-CN/maintenance-repair.svg",
+      "caption": "截图位置：修复选项与维护确认；展示是否重新生成证书、证书名称和可选防火墙规则，隐藏秘密。",
+      "status": "placeholder"
+    },
+    {
+      "language": "zh-CN",
+      "slot": "maintenance-rollback",
+      "document": "apps/server-maintenance",
+      "url": "/assets/docs/screenshots/zh-CN/maintenance-rollback.svg",
+      "caption": "截图位置：回退确认；展示当前版本、记录的前一版本、目标安装及维护影响。",
+      "status": "placeholder"
+    },
+    {
+      "language": "zh-CN",
+      "slot": "maintenance-uninstall",
+      "document": "apps/server-maintenance",
+      "url": "/assets/docs/screenshots/zh-CN/maintenance-uninstall.svg",
+      "caption": "截图位置：卸载确认和完成状态；展示保留／删除数据选项、服务器名称确认、回执和未安装状态。",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "remote-host",
+      "document": "getting-started/remote-installation",
+      "url": "/assets/docs/screenshots/en-US/remote-host.svg",
+      "caption": "Capture: SSH host form and first-trust dialog. Show address, port, account and fingerprint; redact real addresses and credentials.",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "remote-preflight",
+      "document": "getting-started/remote-installation",
+      "url": "/assets/docs/screenshots/en-US/remote-preflight.svg",
+      "caption": "Capture: preflight results and mode selection, including OS, architecture, privileges, dependencies and existing installation state.",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "remote-source",
+      "document": "getting-started/remote-installation",
+      "url": "/assets/docs/screenshots/en-US/remote-source.svg",
+      "caption": "Capture: the four sources and selected package. Show kind, version and architecture; hide URLs containing credentials.",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "remote-options",
+      "document": "getting-started/remote-installation",
+      "url": "/assets/docs/screenshots/en-US/remote-options.svg",
+      "caption": "Capture: installation options with port, directories, listening scope, TLS and file permissions; redact certificate passwords.",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "remote-review",
+      "document": "getting-started/remote-installation",
+      "url": "/assets/docs/screenshots/en-US/remote-review.svg",
+      "caption": "Capture: final review with host, mode, source, directories and port summary.",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "remote-result",
+      "document": "getting-started/remote-installation",
+      "url": "/assets/docs/screenshots/en-US/remote-result.svg",
+      "caption": "Capture: result and health verification with operation ID, stage, receipt, installed state and health check.",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "maintenance-status",
+      "document": "apps/server-maintenance",
+      "url": "/assets/docs/screenshots/en-US/maintenance-status.svg",
+      "caption": "Capture: installed-host state with identity, mode, current/previous versions, roots, port and health.",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "maintenance-update",
+      "document": "apps/server-maintenance",
+      "url": "/assets/docs/screenshots/en-US/maintenance-update.svg",
+      "caption": "Capture: update review and result showing existing identity, current/target versions, retained roots and verification.",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "maintenance-repair",
+      "document": "apps/server-maintenance",
+      "url": "/assets/docs/screenshots/en-US/maintenance-repair.svg",
+      "caption": "Capture: repair options and confirmation, including certificate regeneration, identities and optional firewall rules; hide secrets.",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "maintenance-rollback",
+      "document": "apps/server-maintenance",
+      "url": "/assets/docs/screenshots/en-US/maintenance-rollback.svg",
+      "caption": "Capture: rollback confirmation with current/recorded previous versions, target installation and maintenance impact.",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "maintenance-uninstall",
+      "document": "apps/server-maintenance",
+      "url": "/assets/docs/screenshots/en-US/maintenance-uninstall.svg",
+      "caption": "Capture: uninstall confirmation and completion showing retain/delete selection, server-name confirmation, receipt and uninstalled state.",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "remote-host",
+      "document": "getting-started/remote-installation",
+      "url": "/assets/docs/screenshots/ja-JP/remote-host.svg",
+      "caption": "撮影箇所：SSH ホスト入力と初回信頼ダイアログ。アドレス、ポート、アカウント、指紋を示し、実際の接続先と秘密を隠します。",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "remote-preflight",
+      "document": "getting-started/remote-installation",
+      "url": "/assets/docs/screenshots/ja-JP/remote-preflight.svg",
+      "caption": "撮影箇所：事前検査とモード選択。OS、アーキテクチャ、権限、依存関係、既存の導入状態を示します。",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "remote-source",
+      "document": "getting-started/remote-installation",
+      "url": "/assets/docs/screenshots/ja-JP/remote-source.svg",
+      "caption": "撮影箇所：4 種類の入手元と選択パッケージ。種類、版、アーキテクチャを残し、認証情報付き URL を隠します。",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "remote-options",
+      "document": "getting-started/remote-installation",
+      "url": "/assets/docs/screenshots/ja-JP/remote-options.svg",
+      "caption": "撮影箇所：ポート、ディレクトリ、待ち受け、TLS、ファイル権限。証明書パスワードを隠します。",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "remote-review",
+      "document": "getting-started/remote-installation",
+      "url": "/assets/docs/screenshots/ja-JP/remote-review.svg",
+      "caption": "撮影箇所：最終確認。対象ホスト、モード、入手元、ディレクトリ、ポートの要約を示します。",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "remote-result",
+      "document": "getting-started/remote-installation",
+      "url": "/assets/docs/screenshots/ja-JP/remote-result.svg",
+      "caption": "撮影箇所：導入結果と正常性確認。操作 ID、段階、結果記録、導入状態、正常性を示します。",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "maintenance-status",
+      "document": "apps/server-maintenance",
+      "url": "/assets/docs/screenshots/ja-JP/maintenance-status.svg",
+      "caption": "撮影箇所：導入済み状態。識別子、モード、現在・前の版、ディレクトリ、ポート、正常性を示します。",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "maintenance-update",
+      "document": "apps/server-maintenance",
+      "url": "/assets/docs/screenshots/ja-JP/maintenance-update.svg",
+      "caption": "撮影箇所：更新確認と結果。既存識別子、現在・対象版、保持するディレクトリ、検証を示します。",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "maintenance-repair",
+      "document": "apps/server-maintenance",
+      "url": "/assets/docs/screenshots/ja-JP/maintenance-repair.svg",
+      "caption": "撮影箇所：修復設定と確認。証明書再生成、証明書名、任意のファイアウォール規則を示し、秘密は隠します。",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "maintenance-rollback",
+      "document": "apps/server-maintenance",
+      "url": "/assets/docs/screenshots/ja-JP/maintenance-rollback.svg",
+      "caption": "撮影箇所：ロールバック確認。現在・記録された前の版、対象環境、保守の影響を示します。",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "maintenance-uninstall",
+      "document": "apps/server-maintenance",
+      "url": "/assets/docs/screenshots/ja-JP/maintenance-uninstall.svg",
+      "caption": "撮影箇所：削除確認と完了状態。データ保持／削除、サーバー名確認、操作結果、未導入状態を示します。",
+      "status": "placeholder"
+    },
+    {
+      "language": "zh-CN",
+      "slot": "files-navigation",
+      "document": "apps/file-manager",
+      "url": "/assets/docs/screenshots/zh-CN/files-navigation.svg",
+      "caption": "截图位置：文件管理器的导航树、地址栏和文件列表；展示测试目录路径、名称、大小和选中项。",
+      "status": "placeholder"
+    },
+    {
+      "language": "zh-CN",
+      "slot": "files-transfer",
+      "document": "apps/file-manager",
+      "url": "/assets/docs/screenshots/zh-CN/files-transfer.svg",
+      "caption": "截图位置：文件上传进度和刷新后的目标文件；展示完成状态、文件名与大小，遮盖敏感路径。",
+      "status": "placeholder"
+    },
+    {
+      "language": "zh-CN",
+      "slot": "terminal-session",
+      "document": "apps/terminal",
+      "url": "/assets/docs/screenshots/zh-CN/terminal-session.svg",
+      "caption": "截图位置：终端会话状态和主机／身份检查输出；明确 Server、SSH 或本地模式，遮盖真实账号。",
+      "status": "placeholder"
+    },
+    {
+      "language": "zh-CN",
+      "slot": "settings-preferences",
+      "document": "apps/settings",
+      "url": "/assets/docs/screenshots/zh-CN/settings-preferences.svg",
+      "caption": "截图位置：个性化和时间／语言设置；展示主题、语言选择及应用后的桌面变化。",
+      "status": "placeholder"
+    },
+    {
+      "language": "zh-CN",
+      "slot": "docker-engine",
+      "document": "apps/docker",
+      "url": "/assets/docs/screenshots/zh-CN/docker-engine.svg",
+      "caption": "截图位置：Docker 引擎检测与平台状态；展示运行时是否可用及明确的授权／依赖问题。",
+      "status": "placeholder"
+    },
+    {
+      "language": "zh-CN",
+      "slot": "docker-container",
+      "document": "apps/docker",
+      "url": "/assets/docs/screenshots/zh-CN/docker-container.svg",
+      "caption": "截图位置：测试容器的列表、操作确认和刷新后的状态；展示名称、状态及单容器动作。",
+      "status": "placeholder"
+    },
+    {
+      "language": "zh-CN",
+      "slot": "transfer-progress",
+      "document": "apps/file-transfers",
+      "url": "/assets/docs/screenshots/zh-CN/transfer-progress.svg",
+      "caption": "截图位置：传输进度与最终提交状态；展示已传字节、速率、阶段、取消入口及完成结果。",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "files-navigation",
+      "document": "apps/file-manager",
+      "url": "/assets/docs/screenshots/en-US/files-navigation.svg",
+      "caption": "Capture: navigation tree, address bar and file list with a test path, names, sizes and selected item.",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "files-transfer",
+      "document": "apps/file-manager",
+      "url": "/assets/docs/screenshots/en-US/files-transfer.svg",
+      "caption": "Capture: upload progress and the refreshed target file with completion state, name and size; redact sensitive paths.",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "terminal-session",
+      "document": "apps/terminal",
+      "url": "/assets/docs/screenshots/en-US/terminal-session.svg",
+      "caption": "Capture: session state and host/user checks, explicitly showing Server, SSH or local mode; redact real accounts.",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "settings-preferences",
+      "document": "apps/settings",
+      "url": "/assets/docs/screenshots/en-US/settings-preferences.svg",
+      "caption": "Capture: Personalization and Time/Language choices, showing selected theme/language and applied desktop changes.",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "docker-engine",
+      "document": "apps/docker",
+      "url": "/assets/docs/screenshots/en-US/docker-engine.svg",
+      "caption": "Capture: engine detection/platform state, showing runtime availability and explicit authorization/dependency problems.",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "docker-container",
+      "document": "apps/docker",
+      "url": "/assets/docs/screenshots/en-US/docker-container.svg",
+      "caption": "Capture: test container list, action confirmation and refreshed state with its name and single-container action.",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "transfer-progress",
+      "document": "apps/file-transfers",
+      "url": "/assets/docs/screenshots/en-US/transfer-progress.svg",
+      "caption": "Capture: transfer and final commit state with confirmed bytes, rate, stage, cancel entry and completed result.",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "files-navigation",
+      "document": "apps/file-manager",
+      "url": "/assets/docs/screenshots/ja-JP/files-navigation.svg",
+      "caption": "撮影箇所：ナビゲーション、アドレス欄、一覧。テストパス、名前、サイズ、選択項目を示します。",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "files-transfer",
+      "document": "apps/file-manager",
+      "url": "/assets/docs/screenshots/ja-JP/files-transfer.svg",
+      "caption": "撮影箇所：アップロード進捗と更新後の対象。完了状態、名前、サイズを示し、機密パスを隠します。",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "terminal-session",
+      "document": "apps/terminal",
+      "url": "/assets/docs/screenshots/ja-JP/terminal-session.svg",
+      "caption": "撮影箇所：接続・セッション状態とホスト／ユーザー確認。Server、SSH、ローカルを明示し、実際のアカウントを隠します。",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "settings-preferences",
+      "document": "apps/settings",
+      "url": "/assets/docs/screenshots/ja-JP/settings-preferences.svg",
+      "caption": "撮影箇所：個人設定と時刻／言語。テーマ、言語の選択と反映後の画面を示します。",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "docker-engine",
+      "document": "apps/docker",
+      "url": "/assets/docs/screenshots/ja-JP/docker-engine.svg",
+      "caption": "撮影箇所：エンジン検出とプラットフォーム状態。利用可否と認可／依存問題を示します。",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "docker-container",
+      "document": "apps/docker",
+      "url": "/assets/docs/screenshots/ja-JP/docker-container.svg",
+      "caption": "撮影箇所：テストコンテナ一覧、操作確認、更新後の状態。名前と単一コンテナ操作を示します。",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "transfer-progress",
+      "document": "apps/file-transfers",
+      "url": "/assets/docs/screenshots/ja-JP/transfer-progress.svg",
+      "caption": "撮影箇所：転送進捗と最終確定。バイト、速度、段階、キャンセル入口、完了結果を示します。",
+      "status": "placeholder"
+    },
+    {
+      "language": "zh-CN",
+      "slot": "windows-local-mode",
+      "document": "getting-started/windows",
+      "url": "/assets/docs/screenshots/zh-CN/windows-local-mode.svg",
+      "caption": "截图位置：管理本机入口与个人／系统模式选择，展示当前用户与目标模式。",
+      "status": "placeholder"
+    },
+    {
+      "language": "zh-CN",
+      "slot": "windows-device-pairing",
+      "document": "getting-started/windows",
+      "url": "/assets/docs/screenshots/zh-CN/windows-device-pairing.svg",
+      "caption": "截图位置：本机设备授权与配对入口，展示授权结果和设备管理，遮盖有效配对码。",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "windows-local-mode",
+      "document": "getting-started/windows",
+      "url": "/assets/docs/screenshots/en-US/windows-local-mode.svg",
+      "caption": "Capture: Manage this PC and Personal/System selection, showing current user and mode.",
+      "status": "placeholder"
+    },
+    {
+      "language": "en-US",
+      "slot": "windows-device-pairing",
+      "document": "getting-started/windows",
+      "url": "/assets/docs/screenshots/en-US/windows-device-pairing.svg",
+      "caption": "Capture: local authorization and pairing entry, showing result and device management; hide active codes.",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "windows-local-mode",
+      "document": "getting-started/windows",
+      "url": "/assets/docs/screenshots/ja-JP/windows-local-mode.svg",
+      "caption": "撮影箇所：本機管理と個人／システム選択。現在ユーザーと対象モードを示します。",
+      "status": "placeholder"
+    },
+    {
+      "language": "ja-JP",
+      "slot": "windows-device-pairing",
+      "document": "getting-started/windows",
+      "url": "/assets/docs/screenshots/ja-JP/windows-device-pairing.svg",
+      "caption": "撮影箇所：本機認証とペアリング。結果と端末管理を示し、有効なコードは隠します。",
+      "status": "placeholder"
+    }
+  ]
+}

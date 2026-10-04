@@ -15,6 +15,8 @@ The site is deliberately **not** a dashboard. It is a product website for RelaxK
 
 ## Commands
 
+Tutorial images live under `public/assets/docs/screenshots/`. Run `npm run verify:doc-images` to validate their inventory and language alignment. See the [capture and replacement workflow](./docs/documentation-screenshots.md). Documentation text comes from the backend; deploy frontend static assets together with image-bearing tutorial updates.
+
 Dependency baseline: Angular 22.2.1, TypeScript 6.0.3, RxJS 7.8.2, Vitest 5.0.3 and jsdom 30.1.2. Angular requires TypeScript `>=6.0 <6.1`. Use `npm ci` for fresh checkouts. For upgrades, run `npm outdated`, edit `package.json`, run `npm update`, commit the updated lockfile, then run `npm run build` and `npm test -- --watch=false`. See the [website development tutorial](https://relaxkon.com/docs/en-US/latest/getting-started/development).
 
 | Command | Purpose |

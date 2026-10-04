@@ -15,6 +15,8 @@
 
 ## 常用命令
 
+教程图片位于 `public/assets/docs/screenshots/`，截图清单与三语位置由 `npm run verify:doc-images` 检查。真实截图替换方式见[截图维护说明](./docs/documentation-screenshots.md)。文档正文由后端提供，部署教程图片时同步更新官网前端静态资源。
+
 依赖基线：Angular 22.2.1、TypeScript 6.0.3、RxJS 7.8.2、Vitest 5.0.3、jsdom 30.1.2。Angular 要求 TypeScript `>=6.0 <6.1`。新检出使用 `npm ci`；维护版本时先执行 `npm outdated`，修改 `package.json` 后执行 `npm update`，同时更新锁文件，并运行 `npm run build` 与 `npm test -- --watch=false`。完整步骤见[官网开发教程](https://relaxkon.com/docs/zh-CN/latest/getting-started/development)。
 
 | 命令 | 作用 |

@@ -6,7 +6,8 @@
     "start": "ng serve --proxy-config proxy.conf.json",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "verify:doc-images": "node tools/verify-doc-screenshots.mjs"
   },
   "private": true,
   "packageManager": "npm@11.19.1",
