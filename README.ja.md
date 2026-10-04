@@ -4,20 +4,22 @@
 
 ウェブサイト <https://relaxkon.com> · 製品ソースリポジトリ <https://github.com/nanaminato/RelaxKonOS>
 
-`RelaxKon/` は RelaxKon 公式サイトの **Angular 22** クライアントです。レイアウト、ルーティング、ページ、テーマ切り替え、実行時の UI 言語切り替え、型付き API クライアントなど、ブラウザー側の UI をすべて所有します。
+`RelaxKon/` は RelaxKon 公式サイトの **Angular 22.2.1** クライアントです。レイアウト、ルーティング、ページ、テーマ切り替え、実行時の UI 言語切り替え、型付き API クライアントなど、ブラウザー側の UI をすべて所有します。
 
 このサイトは意図的に**管理画面ではありません**。RelaxKonOS の製品サイトであり、視覚言語は `src/styles.scss` に設計トークンとして集約されています。
 
 ## 必要な環境
 
-- **Node.js ≥ 22.22.3、≥ 24.15.0 または ≥ 26**（Angular 22 の CLI がこの下限を強制します。22.22.x 系は 22.22.3 以上が必要）と npm 11+
+- **Node.js ≥ 22.22.3、≥ 24.15.0 または ≥ 26**（Angular 22 の CLI がこの下限を強制します。22.22.x 系は 22.22.3 以上が必要）と npm 11.19.1
 - ドキュメント、リリースノート、ダウンロード、FAQ のコンテンツを提供する `RelaxKonServer` の起動インスタンス
 
 ## コマンド
 
+依存バージョンは Angular 22.2.1、TypeScript 6.0.3、RxJS 7.8.2、Vitest 5.0.3、jsdom 30.1.2 です。Angular は TypeScript `>=6.0 <6.1` を要求します。新規チェックアウトは `npm ci`、更新時は `npm outdated`、`package.json` の編集、`npm update` の順で実行し、ロックファイルも更新します。`npm run build` と `npm test -- --watch=false` で確認してください。[公式サイトの開発チュートリアル](https://relaxkon.com/docs/ja-JP/latest/getting-started/development)も参照できます。
+
 | コマンド | 内容 |
 | --- | --- |
-| `npm install` | 依存関係のインストール |
+| `npm ci` | 依存関係のインストール |
 | `npm start` | 開発サーバー <http://localhost:4200>。`proxy.conf.json` による `/api` プロキシを有効化 |
 | `npm run build` | 本番ビルド。`dist/RelaxKon` に出力 |
 | `npm run watch` | 開発構成のウォッチビルド |

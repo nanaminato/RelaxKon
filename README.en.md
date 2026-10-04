@@ -4,20 +4,22 @@
 
 Website <https://relaxkon.com> · Product source repository <https://github.com/nanaminato/RelaxKonOS>
 
-`RelaxKon/` is the **Angular 22** client for the official RelaxKon website. It owns every piece of browser UI: layouts, routes, pages, theme switching, runtime UI language switching and typed API clients.
+`RelaxKon/` is the **Angular 22.2.1** client for the official RelaxKon website. It owns every piece of browser UI: layouts, routes, pages, theme switching, runtime UI language switching and typed API clients.
 
 The site is deliberately **not** a dashboard. It is a product website for RelaxKonOS, and the visual language is documented as design tokens in `src/styles.scss`.
 
 ## Requirements
 
-- **Node.js ≥ 22.22.3, ≥ 24.15.0 or ≥ 26** (the Angular 22 CLI enforces this minimum, so a 22.22.x release must be at least 22.22.3) and npm 11+
+- **Node.js ≥ 22.22.3, ≥ 24.15.0 or ≥ 26** (the Angular 22 CLI enforces this minimum, so a 22.22.x release must be at least 22.22.3) and npm 11.19.1
 - A running `RelaxKonServer` instance for documentation, releases, downloads and FAQ content
 
 ## Commands
 
+Dependency baseline: Angular 22.2.1, TypeScript 6.0.3, RxJS 7.8.2, Vitest 5.0.3 and jsdom 30.1.2. Angular requires TypeScript `>=6.0 <6.1`. Use `npm ci` for fresh checkouts. For upgrades, run `npm outdated`, edit `package.json`, run `npm update`, commit the updated lockfile, then run `npm run build` and `npm test -- --watch=false`. See the [website development tutorial](https://relaxkon.com/docs/en-US/latest/getting-started/development).
+
 | Command | Purpose |
 | --- | --- |
-| `npm install` | Install dependencies |
+| `npm ci` | Install dependencies |
 | `npm start` | Dev server on <http://localhost:4200> with the `/api` proxy from `proxy.conf.json` |
 | `npm run build` | Production bundle in `dist/RelaxKon` |
 | `npm run watch` | Development build in watch mode |

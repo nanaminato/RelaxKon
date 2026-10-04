@@ -4,20 +4,22 @@
 
 官网 <https://relaxkon.com> · 产品源码仓库 <https://github.com/nanaminato/RelaxKonOS>
 
-`RelaxKon/` 是 RelaxKon 官方网站的 **Angular 22** 客户端，负责全部浏览器侧 UI：布局、路由、页面、主题切换、运行时 UI 语言切换以及类型化 API 客户端。
+`RelaxKon/` 是 RelaxKon 官方网站的 **Angular 22.2.1** 客户端，负责全部浏览器侧 UI：布局、路由、页面、主题切换、运行时 UI 语言切换以及类型化 API 客户端。
 
 站点刻意**不做成后台面板**：它是 RelaxKonOS 的产品官网，视觉语言以设计令牌的形式集中定义在 `src/styles.scss`。
 
 ## 环境要求
 
-- **Node.js ≥ 22.22.3、≥ 24.15.0 或 ≥ 26**（Angular 22 CLI 会强制校验该下限；22.22.x 必须 ≥ 22.22.3）以及 npm 11+
+- **Node.js ≥ 22.22.3、≥ 24.15.0 或 ≥ 26**（Angular 22 CLI 会强制校验该下限；22.22.x 必须 ≥ 22.22.3）以及 npm 11.19.1
 - 一个正在运行的 `RelaxKonServer` 实例，用于提供文档、发布说明、下载与 FAQ 内容
 
 ## 常用命令
 
+依赖基线：Angular 22.2.1、TypeScript 6.0.3、RxJS 7.8.2、Vitest 5.0.3、jsdom 30.1.2。Angular 要求 TypeScript `>=6.0 <6.1`。新检出使用 `npm ci`；维护版本时先执行 `npm outdated`，修改 `package.json` 后执行 `npm update`，同时更新锁文件，并运行 `npm run build` 与 `npm test -- --watch=false`。完整步骤见[官网开发教程](https://relaxkon.com/docs/zh-CN/latest/getting-started/development)。
+
 | 命令 | 作用 |
 | --- | --- |
-| `npm install` | 安装依赖 |
+| `npm ci` | 安装依赖 |
 | `npm start` | 开发服务器 <http://localhost:4200>，并按 `proxy.conf.json` 代理 `/api` |
 | `npm run build` | 生产构建，输出到 `dist/RelaxKon` |
 | `npm run watch` | 以开发配置监听构建 |
