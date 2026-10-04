@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { LocalizedDatePipe } from '../../core/pipes/localized-date.pipe';
 import { RouterLink } from '@angular/router';
 import { catchError, of } from 'rxjs';
@@ -26,12 +26,17 @@ export class ReleasesComponent {
       path: '/releases',
     });
 
-    this.api
-      .releases()
-      .pipe(catchError(() => of<ReleaseSummary[]>([])))
-      .subscribe(items => {
-        this.releases.set(items);
-        this.loading.set(false);
-      });
+    effect((onCleanup) => {
+      const language = this.i18n.language();
+      this.loading.set(true);
+      const subscription = this.api
+        .releases(language)
+        .pipe(catchError(() => of<ReleaseSummary[]>([])))
+        .subscribe((items) => {
+          this.releases.set(items);
+          this.loading.set(false);
+        });
+      onCleanup(() => subscription.unsubscribe());
+    });
   }
 }

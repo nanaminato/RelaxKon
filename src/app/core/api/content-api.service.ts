@@ -14,12 +14,19 @@ export class ContentApiService {
     return this.http.get<DownloadInfo[]>(`${this.baseUrl}/downloads`);
   }
 
-  releases(): Observable<ReleaseSummary[]> {
-    return this.http.get<ReleaseSummary[]>(`${this.baseUrl}/releases`);
+  releases(language: string): Observable<ReleaseSummary[]> {
+    return this.http.get<ReleaseSummary[]>(`${this.baseUrl}/releases`, {
+      params: new HttpParams().set('language', language),
+    });
   }
 
-  release(version: string): Observable<ReleaseDetails> {
-    return this.http.get<ReleaseDetails>(`${this.baseUrl}/releases/${encodeURIComponent(version)}`);
+  release(version: string, language: string): Observable<ReleaseDetails> {
+    return this.http.get<ReleaseDetails>(
+      `${this.baseUrl}/releases/${encodeURIComponent(version)}`,
+      {
+        params: new HttpParams().set('language', language),
+      },
+    );
   }
 
   faq(language: string): Observable<FaqItem[]> {

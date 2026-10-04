@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { LocalizedDatePipe } from '../../core/pipes/localized-date.pipe';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, of } from 'rxjs';
@@ -27,25 +27,33 @@ export class ReleaseDetailComponent {
     if (!item) return '';
     // The API returns the full Markdown body; the H1 is already rendered above.
     const body = item.content.replace(/^#\s+.+$/m, '');
-    return this.markdown.render(body, { copy: this.i18n.t('common.copy'), copied: this.i18n.t('common.copied') });
+    return this.markdown.render(body, {
+      copy: this.i18n.t('common.copy'),
+      copied: this.i18n.t('common.copied'),
+    });
   });
 
   constructor() {
     const version = this.route.snapshot.paramMap.get('version') ?? '';
     const seo = inject(SeoService);
 
-    this.api
-      .release(version)
-      .pipe(catchError(() => of<ReleaseDetails | null>(null)))
-      .subscribe(item => {
-        this.release.set(item);
-        this.loading.set(false);
-        seo.apply({
-          titleKey: item ? 'pageTitles.releaseDetail' : 'pageTitles.release',
-          titleParams: { title: item?.title ?? '' },
-          description: item?.summary,
-          path: `/releases/${version}`,
+    effect((onCleanup) => {
+      const language = this.i18n.language();
+      this.loading.set(true);
+      const subscription = this.api
+        .release(version, language)
+        .pipe(catchError(() => of<ReleaseDetails | null>(null)))
+        .subscribe((item) => {
+          this.release.set(item);
+          this.loading.set(false);
+          seo.apply({
+            titleKey: item ? 'pageTitles.releaseDetail' : 'pageTitles.release',
+            titleParams: { title: item?.title ?? '' },
+            description: item?.summary,
+            path: `/releases/${version}`,
+          });
         });
-      });
+      onCleanup(() => subscription.unsubscribe());
+    });
   }
 }
