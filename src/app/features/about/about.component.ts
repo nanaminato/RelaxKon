@@ -35,8 +35,7 @@ export class AboutComponent {
   constructor() {
     inject(SeoService).apply({
       titleKey: 'pageTitles.about',
-      description:
-        'RelaxKon builds workspace software where the interface stays local and durable capabilities stay remote.',
+      descriptionKey: 'pageDescriptions.about',
       path: '/about',
     });
   }

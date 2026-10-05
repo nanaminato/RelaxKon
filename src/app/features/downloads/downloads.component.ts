@@ -53,7 +53,7 @@ export class DownloadsComponent {
   constructor() {
     inject(SeoService).apply({
       titleKey: 'pageTitles.downloads',
-      description: 'Download published RelaxKonOS desktop, Android and server packages with checksums and release dates.',
+      descriptionKey: 'pageDescriptions.downloads',
       path: '/downloads',
     });
 

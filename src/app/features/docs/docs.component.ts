@@ -1,4 +1,14 @@
-import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  ElementRef,
+  Injector,
+  afterNextRender,
+  computed,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter } from 'rxjs';
@@ -24,6 +34,8 @@ export class DocsComponent {
   private readonly markdown = inject(MarkdownService);
   private readonly seo = inject(SeoService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly injector = inject(Injector);
+  private readonly articleRef = viewChild<ElementRef<HTMLElement>>('article');
 
   readonly navigation = signal<NavigationNode[]>([]);
   readonly document = signal<DocumentContent | null>(null);
@@ -62,6 +74,22 @@ export class DocsComponent {
   });
 
   private observer: IntersectionObserver | null = null;
+
+  /**
+   * Versions change per language and navigation per language+version, so both are
+   * kept for the session: browsing from article to article used to refetch them
+   * even though only the slug had changed. Content changes ship with a deploy,
+   * which reloads the app.
+   */
+  private readonly versionsCache = new Map<string, string[]>();
+  private readonly navigationCache = new Map<string, NavigationNode[]>();
+
+  /**
+   * Bumped by every `load()`. A response that no longer belongs to the newest
+   * navigation is dropped instead of overwriting newer state — clicking through
+   * the pager quickly used to let a slow article win the race.
+   */
+  private requestGeneration = 0;
 
   constructor() {
     this.destroyRef.onDestroy(() => this.i18n.setContentLanguage(null));
@@ -132,6 +160,7 @@ export class DocsComponent {
 
   private load(): void {
     const { language, version, slug } = this.context();
+    const generation = ++this.requestGeneration;
     this.language.set(language);
     this.version.set(version);
     // The route already names the intended article language; the response below
@@ -142,18 +171,12 @@ export class DocsComponent {
     this.query.set('');
     this.drawerOpen.set(false);
 
-    this.api.getVersions(language).subscribe({
-      next: versions => this.versions.set(versions.length ? versions : ['latest']),
-      error: () => this.versions.set(['latest']),
-    });
-
-    this.api.getNavigation(language, version).subscribe({
-      next: navigation => this.navigation.set(navigation),
-      error: () => this.navigation.set([]),
-    });
+    this.loadVersions(language, generation);
+    this.loadNavigation(language, version, generation);
 
     this.api.getDocument(language, version, slug).subscribe({
       next: document => {
+        if (generation !== this.requestGeneration) return;
         this.document.set(document);
         this.i18n.setContentLanguage(this.articleLanguage());
         this.headings.set(document.headings?.length ? document.headings : this.markdown.headings(document.content));
@@ -164,13 +187,54 @@ export class DocsComponent {
           description: document.description,
           path: this.router.url.split('?')[0],
         });
-        setTimeout(() => this.attachInteractions());
+        // The copy buttons and the scroll spy need the rendered article; waiting
+        // on a bare timeout silently skipped them whenever the render ran slower.
+        afterNextRender(() => this.attachInteractions(), { injector: this.injector });
       },
       error: () => {
+        if (generation !== this.requestGeneration) return;
         this.document.set(null);
         this.i18n.setContentLanguage(null);
         this.headings.set([]);
         this.loading.set(false);
+      },
+    });
+  }
+
+  private loadVersions(language: string, generation: number): void {
+    const cached = this.versionsCache.get(language);
+    if (cached) {
+      this.versions.set(cached);
+      return;
+    }
+    this.api.getVersions(language).subscribe({
+      next: versions => {
+        if (generation !== this.requestGeneration) return;
+        const list = versions.length ? versions : ['latest'];
+        this.versionsCache.set(language, list);
+        this.versions.set(list);
+      },
+      error: () => {
+        if (generation === this.requestGeneration) this.versions.set(['latest']);
+      },
+    });
+  }
+
+  private loadNavigation(language: string, version: string, generation: number): void {
+    const key = `${language}/${version}`;
+    const cached = this.navigationCache.get(key);
+    if (cached) {
+      this.navigation.set(cached);
+      return;
+    }
+    this.api.getNavigation(language, version).subscribe({
+      next: navigation => {
+        if (generation !== this.requestGeneration) return;
+        this.navigationCache.set(key, navigation);
+        this.navigation.set(navigation);
+      },
+      error: () => {
+        if (generation === this.requestGeneration) this.navigation.set([]);
       },
     });
   }
@@ -194,7 +258,7 @@ export class DocsComponent {
   // ------------------------------------------------------- interactions ----
 
   private attachInteractions(): void {
-    const article = window.document.querySelector<HTMLElement>('.content .prose');
+    const article = this.articleRef()?.nativeElement;
     if (!article) return;
 
     article.querySelectorAll<HTMLButtonElement>('button[data-copy]').forEach(button => {

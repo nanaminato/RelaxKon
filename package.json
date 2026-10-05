@@ -7,7 +7,10 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "verify:doc-images": "node tools/verify-doc-screenshots.mjs"
+    "verify:i18n": "node tools/verify-i18n-keys.mjs && node tools/verify-i18n-usage.mjs",
+    "verify:doc-images": "node tools/verify-doc-screenshots.mjs",
+    "assets:sitemap": "node tools/generate-sitemap.mjs",
+    "assets:og-image": "node tools/generate-og-image.mjs"
   },
   "private": true,
   "packageManager": "npm@11.19.1",

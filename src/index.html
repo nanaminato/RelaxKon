@@ -5,7 +5,28 @@
   <title>RelaxKon — Desktops beyond devices</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="RelaxKonOS is a cross-platform remote workspace operating environment with local UI rendering, persistent applications and server-managed workspaces.">
+  <meta name="description" content="RelaxKonOS is a cross-platform remote workspace operating environment with local UI rendering, persistent applications and server-managed workspaces. Not RDP, VNC or pixel streaming.">
+
+  <!-- Static share-card defaults, for crawlers that do not run JavaScript. The
+       SeoService rewrites all of these per route and per UI language; no
+       canonical or og:url is written here because the SPA fallback serves this
+       file for every route, and a root-level canonical would be wrong. -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="RelaxKon">
+  <meta property="og:title" content="RelaxKon — Desktops beyond devices">
+  <meta property="og:description" content="RelaxKonOS is a cross-platform remote workspace operating environment with local UI rendering, persistent applications and server-managed workspaces. Not RDP, VNC or pixel streaming.">
+  <meta property="og:image" content="https://relaxkon.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="RelaxKon — Desktops beyond devices">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="zh_CN">
+  <meta property="og:locale:alternate" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="RelaxKon — Desktops beyond devices">
+  <meta name="twitter:description" content="RelaxKonOS is a cross-platform remote workspace operating environment with local UI rendering, persistent applications and server-managed workspaces. Not RDP, VNC or pixel streaming.">
+  <meta name="twitter:image" content="https://relaxkon.com/og-image.png">
+
   <meta name="theme-color" content="#f7f9fc" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)">
   <link rel="icon" type="image/x-icon" href="favicon.ico" sizes="48x48">
@@ -21,13 +42,27 @@
         var preference = stored === 'light' || stored === 'dark' ? stored : 'system';
         var dark = preference === 'dark' || (preference === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
         document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+
         var saved = localStorage.getItem('rk-language');
+        var language;
         if (saved === 'en-US' || saved === 'zh-CN' || saved === 'ja-JP') {
-          document.documentElement.lang = saved;
+          language = saved;
         } else {
           var locale = ((navigator.languages && navigator.languages[0]) || navigator.language || 'en').toLowerCase();
-          document.documentElement.lang = locale.indexOf('zh') === 0 ? 'zh-CN' : locale.indexOf('ja') === 0 ? 'ja-JP' : 'en-US';
+          language = locale.indexOf('zh') === 0 ? 'zh-CN' : locale.indexOf('ja') === 0 ? 'ja-JP' : 'en-US';
         }
+        document.documentElement.lang = language;
+
+        // The app initializer awaits this dictionary before the first paint.
+        // Preloading it here lets the download run alongside the bundle instead
+        // of after it; same-origin `as=fetch` keeps the credentials mode that a
+        // plain fetch() uses, so the request is reused rather than repeated.
+        var preload = document.createElement('link');
+        preload.rel = 'preload';
+        preload.as = 'fetch';
+        preload.crossOrigin = 'anonymous';
+        preload.href = 'assets/i18n/' + language + '.json';
+        document.head.appendChild(preload);
       } catch (error) {
         document.documentElement.dataset.theme = 'light';
       }

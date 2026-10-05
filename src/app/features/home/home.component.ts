@@ -61,8 +61,7 @@ export class HomeComponent {
     const seo = inject(SeoService);
     seo.apply({
       titleKey: 'pageTitles.home',
-      description:
-        'RelaxKonOS is a cross-platform remote workspace operating environment with local UI rendering, persistent applications and server-managed workspaces. Not RDP, VNC or pixel streaming.',
+      descriptionKey: 'pageDescriptions.home',
       path: '/',
     });
   }

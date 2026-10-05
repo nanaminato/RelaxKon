@@ -12,6 +12,16 @@
     "document": "{title} — RelaxKonOS Documentation — RelaxKon",
     "releaseDetail": "{title} — RelaxKon Releases"
   },
+  "pageDescriptions": {
+    "home": "RelaxKonOS is a cross-platform remote workspace operating environment with local UI rendering, persistent applications and server-managed workspaces. Not RDP, VNC or pixel streaming.",
+    "products": "RelaxKon software products: RelaxKonOS, a cross-platform cloud-native desktop operating environment.",
+    "relaxkonos": "RelaxKonOS is a cross-platform, cloud-native desktop operating environment with local UI rendering, persistent applications, server-managed workspaces and twenty-plus built-in applications.",
+    "downloads": "Download published RelaxKonOS desktop, Android and server packages with checksums and release dates.",
+    "releases": "RelaxKonOS release notes with highlights, changes and known limitations.",
+    "faq": "Answers about the RelaxKonOS product, architecture, security model and extensibility.",
+    "about": "RelaxKon builds workspace software where the interface stays local and durable capabilities stay remote.",
+    "notFound": "Page not found."
+  },
   "brand": {
     "name": "RelaxKon",
     "product": "RelaxKonOS",

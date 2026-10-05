@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://relaxkon.com/sitemap.xml

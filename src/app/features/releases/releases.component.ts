@@ -22,7 +22,7 @@ export class ReleasesComponent {
   constructor() {
     inject(SeoService).apply({
       titleKey: 'pageTitles.releases',
-      description: 'RelaxKonOS release notes with highlights, changes and known limitations.',
+      descriptionKey: 'pageDescriptions.releases',
       path: '/releases',
     });
 

@@ -14,7 +14,7 @@ export class ProductsComponent {
   constructor() {
     inject(SeoService).apply({
       titleKey: 'pageTitles.products',
-      description: 'RelaxKon software products: RelaxKonOS, a cross-platform cloud-native desktop operating environment.',
+      descriptionKey: 'pageDescriptions.products',
       path: '/products',
     });
   }

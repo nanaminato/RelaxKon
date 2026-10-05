@@ -12,6 +12,16 @@
     "document": "{title} — RelaxKonOS 文档 — RelaxKon",
     "releaseDetail": "{title} — RelaxKon 发行说明"
   },
+  "pageDescriptions": {
+    "home": "RelaxKonOS 是跨平台的远程工作区运行环境：界面本地渲染、应用持续运行、工作区由服务器管理。它不是 RDP、VNC 或像素流。",
+    "products": "RelaxKon 的产品线：RelaxKonOS——跨平台、云原生的桌面运行环境。",
+    "relaxkonos": "RelaxKonOS 是跨平台、云原生的桌面运行环境：界面本地渲染、应用持续运行、工作区由服务器管理，并内置二十余个应用。",
+    "downloads": "下载已发布的 RelaxKonOS 桌面端、Android 与服务端安装包，附校验码与发布时间。",
+    "releases": "RelaxKonOS 发行说明：版本亮点、变更内容与已知限制。",
+    "faq": "关于 RelaxKonOS 产品、架构、安全模型与可扩展性的常见问题解答。",
+    "about": "RelaxKon 专注开发这样的工作区软件：界面留在本地，持久能力留在远端。",
+    "notFound": "页面不存在。"
+  },
   "brand": {
     "name": "RelaxKon",
     "product": "RelaxKonOS",

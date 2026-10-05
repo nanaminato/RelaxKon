@@ -12,6 +12,16 @@
     "document": "{title} — RelaxKonOS ドキュメント — RelaxKon",
     "releaseDetail": "{title} — RelaxKon リリースノート"
   },
+  "pageDescriptions": {
+    "home": "RelaxKonOS は、UI をローカルで描画し、アプリを持続させ、ワークスペースをサーバーで管理するクロスプラットフォームのリモートワークスペース実行環境です。RDP・VNC・ピクセルストリーミングではありません。",
+    "products": "RelaxKon の製品ラインアップ：クロスプラットフォームでクラウドネイティブなデスクトップ実行環境 RelaxKonOS。",
+    "relaxkonos": "RelaxKonOS は、UI をローカルで描画し、アプリを持続させ、ワークスペースをサーバーで管理する、クロスプラットフォームかつクラウドネイティブなデスクトップ実行環境です。20 以上のアプリを内蔵します。",
+    "downloads": "公開済みの RelaxKonOS デスクトップ版・Android 版・サーバー版パッケージを、チェックサムとリリース日付きでダウンロードできます。",
+    "releases": "RelaxKonOS のリリースノート：ハイライト、変更点、既知の制限。",
+    "faq": "RelaxKonOS の製品・アーキテクチャ・セキュリティモデル・拡張性に関するよくある質問。",
+    "about": "RelaxKon は、UI はローカルに、持続的な機能はリモートに置くワークスペースソフトウェアを作っています。",
+    "notFound": "ページが見つかりません。"
+  },
   "brand": {
     "name": "RelaxKon",
     "product": "RelaxKonOS",

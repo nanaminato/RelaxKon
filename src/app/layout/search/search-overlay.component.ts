@@ -73,12 +73,15 @@ export class SearchOverlayComponent {
     }
     if (event.key === 'ArrowDown') {
       event.preventDefault();
-      this.active.update(index => Math.min(index + 1, this.results().length - 1));
+      // With no results there is nothing to highlight; clamping against
+      // `length - 1` would park the cursor on -1.
+      const count = this.results().length;
+      if (count) this.active.update(index => Math.min(index + 1, count - 1));
       return;
     }
     if (event.key === 'ArrowUp') {
       event.preventDefault();
-      this.active.update(index => Math.max(index - 1, 0));
+      if (this.results().length) this.active.update(index => Math.max(index - 1, 0));
       return;
     }
     if (event.key === 'Enter') {

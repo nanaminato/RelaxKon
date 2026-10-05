@@ -119,8 +119,7 @@ public sealed class MyApp : IExternalRemoteApplication
     const seo = inject(SeoService);
     seo.apply({
       titleKey: 'pageTitles.relaxkonos',
-      description:
-        'RelaxKonOS is a cross-platform, cloud-native desktop operating environment with local UI rendering, persistent applications, server-managed workspaces and twenty-plus built-in applications.',
+      descriptionKey: 'pageDescriptions.relaxkonos',
       path: '/products/relaxkonos',
     });
   }

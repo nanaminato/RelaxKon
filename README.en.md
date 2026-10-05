@@ -26,6 +26,10 @@ Dependency baseline: Angular 22.2.1, TypeScript 6.0.3, RxJS 7.8.2, Vitest 5.0.3 
 | `npm run build` | Production bundle in `dist/RelaxKon` |
 | `npm run watch` | Development build in watch mode |
 | `npm test` | Unit tests (Vitest via `@angular/build:unit-test`) |
+| `npm run verify:i18n` | Dictionary alignment plus referenced-key checks |
+| `npm run verify:doc-images` | Documentation screenshot inventory and captions |
+| `npm run assets:sitemap` | Regenerate `public/sitemap.xml` |
+| `npm run assets:og-image` | Re-render `public/og-image.png` (needs a local Chrome or Edge) |
 
 > `ng serve` reads `proxy.conf.json` once, at startup. **After editing the proxy configuration you must restart `npm start`** — hot reload does not reload it, and `/api/*` will answer 502 until you do.
 
@@ -41,7 +45,7 @@ src/
 │   │   ├── i18n/         # i18n.service.ts (runtime UI language)
 │   │   ├── models/       # content.models.ts (every API response model)
 │   │   ├── pipes/        # localized-date.pipe.ts (rkDate)
-│   │   ├── seo/          # seo.service.ts (title, description, canonical)
+│   │   ├── seo/          # seo.service.ts (title, description, canonical, share card, og:*)
 │   │   ├── services/     # markdown.service.ts (Markdown rendering)
 │   │   └── theme/        # theme.service.ts (system / light / dark)
 │   ├── layout/
@@ -59,10 +63,11 @@ src/
 │       ├── about/
 │       └── not-found/
 ├── environments/         # environment.ts (production) / environment.development.ts
-├── index.html            # theme and language pre-resolution script, favicon links
+├── index.html            # theme and language pre-resolution script (with dictionary preload), favicon and og defaults
 ├── main.ts
 └── styles.scss           # all --rk-* design tokens, light and dark values
-public/                   # favicon set, brand-mark.png, site.webmanifest, assets/i18n/*.json
+public/                   # favicon set, brand-mark.png, og-image.png, robots.txt, sitemap.xml, site.webmanifest, assets/i18n/*.json
+tools/                    # i18n and screenshot checks, sitemap generation, share-card source and render script
 ```
 
 Route table (`app.routes.ts`): `/`, `/products`, `/products/relaxkonos`, `/docs` (redirects to `getting-started/introduction` in the active UI language), `/docs/:language/:version/**`, `/downloads`, `/releases`, `/releases/:version`, `/faq`, `/about`, and a catch-all 404. Every page is a lazy-loaded standalone component.
@@ -85,7 +90,7 @@ All colours, spacing, radii and shadows are CSS custom properties (`--rk-*`) def
 
 Runtime translations live in `public/assets/i18n/{en-US,zh-CN,ja-JP}.json` as nested objects. They are flattened to dotted keys at load time, so templates call `t('home.hero.title')`, with `{placeholder}` interpolation. Until a visitor manually selects a language, the UI follows the browser/system preferred language: Chinese becomes `zh-CN`, Japanese becomes `ja-JP`, and every other language becomes `en-US`; it also follows a browser `languagechange` event. Only a manual header selection is persisted under the `rk-language` LocalStorage key and takes precedence.
 
-The three dictionaries must stay key-for-key identical (367 keys each today); a missing key renders as the key itself. After changing them, re-check with `node tools/verify-i18n-keys.mjs`, then run `node tools/verify-i18n-usage.mjs` to confirm every key referenced from the templates actually exists — a missing key never fails the build, it just shows up as the key name on the page. **Add a UI language** by:
+The three dictionaries must stay key-for-key identical (376 keys each today); a missing key renders as the key itself. After changing them, re-check with `node tools/verify-i18n-keys.mjs`, then run `node tools/verify-i18n-usage.mjs` to confirm every key referenced from the templates actually exists — a missing key never fails the build, it just shows up as the key name on the page. **Add a UI language** by:
 
 1. Adding `public/assets/i18n/<code>.json`
 2. Extending the `SiteLanguage` union and `SITE_LANGUAGES` in `core/i18n/i18n.service.ts`
@@ -94,7 +99,7 @@ The three dictionaries must stay key-for-key identical (367 keys each today); a 
 
 Documentation and FAQ use **content** languages supplied by the API, which are independent of the UI language.
 
-`RelaxKonServer/Content/Docs/{en-US,zh-CN,ja-JP}` currently holds 42 documents per language (6 getting-started + 9 concepts + 27 applications), so all three are fully aligned and normal browsing never falls back. The fallback mechanism itself remains: when a slug is missing in the requested language it is served from `en-US` and the response sets `isFallback` so the UI can say so. **Keep the three languages in step when you add or remove content files**, otherwise fallback entries appear in the navigation.
+`RelaxKonServer/Content/Docs/{en-US,zh-CN,ja-JP}` currently holds 49 documents per language (12 getting-started + 9 concepts + 28 applications), so all three are fully aligned and normal browsing never falls back. The fallback mechanism itself remains: when a slug is missing in the requested language it is served from `en-US` and the response sets `isFallback` so the UI can say so. **Keep the three languages in step when you add or remove content files**, otherwise fallback entries appear in the navigation.
 
 The body language can therefore differ from the UI language. `<html lang>` comes from `I18nService.htmlLanguage` (`contentLanguage ?? language`); documentation pages call `i18n.setContentLanguage(...)` to point it at the language the article is **actually** written in — for a fallback page that is the served language, not the one requested in the route — and clear it when leaving `/docs`, which restores the UI language. The `<article>` element carries its own `lang` as well, because the surrounding chrome (navigation, sidebar) stays in the UI language. This is what lets a screen reader pronounce the body correctly, so **do not bypass either write point when changing documentation pages**. Note that the API's `DocumentResponse.language` echoes the requested language; use `isFallback` to detect the real one.
 
@@ -103,8 +108,18 @@ The body language can therefore differ from the UI language. `<html lang>` comes
 - **One component, three files**: `x.component.ts` / `x.component.html` / `x.component.scss`, with `templateUrl` and `styleUrl` (singular) in `@Component`. Never inline `template:` / `styles:`.
 - **Native `<select>` always uses `[ngModel]` + `[ngValue]`, never `[value]`**: `[value]` is written before `@for` has produced the `<option>` elements, fails, and never retries because the bound expression has not changed.
 - **Never use Angular's `DatePipe`**: its `LOCALE_ID` is fixed and does not follow the site language. Use the `rkDate` pipe (`core/pipes/localized-date.pipe.ts`) and pass the active language; it formats with `timeZone: 'UTC'` so a calendar date never shifts across time zones.
-- **All SEO goes through `SeoService.apply({ title, description, path })`** — do not touch `document.title` or meta tags directly.
+- **All SEO goes through `SeoService.apply(...)`** — titles and descriptions are resolved from the dictionaries through `titleKey` / `descriptionKey` (`pageTitles.*` / `pageDescriptions.*`); only pages whose text comes from the API pass a literal `description`. The share image, canonical link and every `og:*` tag are written there too, so do not scatter them across pages, and do not touch `document.title` or meta tags directly.
 - **The brand mark is an image, not a letter**: the header and footer use `<img class="brand__mark" src="brand-mark.png" …>` (the source file lives in `public/`). Do not fall back to the "gradient rounded square plus white R" placeholder.
+
+## Share card and crawler files
+
+Three files under `public/` are generated or static sharing and crawling assets — **do not edit them by hand**:
+
+- `og-image.png` (1200×630): the card behind `og:image` and `twitter:image`. Its source is `tools/og-card.html`; re-render it with `npm run assets:og-image` (a local Chrome or Edge, or point `CHROME_PATH` at one).
+- `sitemap.xml`: built by `npm run assets:sitemap` from the static routes plus `RelaxKonServer/Content/Docs`. Point `RELAXKON_DOCS_ROOT` at the content tree when it is not in the default relative location; when no content is found the script emits the static routes only and does not fail. Documentation is the only part whose URL carries the language, so `hreflang` alternates appear there and nowhere else.
+- `robots.txt`: static, points at the sitemap.
+
+The share image, canonical link and every `og:*` / `twitter:*` tag are written by `SeoService` on each route; `src/index.html` carries a static default set for crawlers that do not run JavaScript.
 
 ## Project boundary
 

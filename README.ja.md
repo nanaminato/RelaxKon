@@ -26,6 +26,10 @@
 | `npm run build` | 本番ビルド。`dist/RelaxKon` に出力 |
 | `npm run watch` | 開発構成のウォッチビルド |
 | `npm test` | 単体テスト（Vitest、`@angular/build:unit-test`） |
+| `npm run verify:i18n` | 3 言語辞書の整合と参照キーの検証 |
+| `npm run verify:doc-images` | ドキュメント用スクリーンショットの一覧と 3 言語の参照検証 |
+| `npm run assets:sitemap` | `public/sitemap.xml` の再生成 |
+| `npm run assets:og-image` | `public/og-image.png` の再レンダリング（ローカルの Chrome か Edge が必要） |
 
 > `ng serve` が `proxy.conf.json` を読むのは起動時の一度だけです。**プロキシ設定を変更したら `npm start` を再起動してください。** ホットリロードでは再読み込みされず、再起動するまで `/api/*` は 502 を返します。
 
@@ -41,7 +45,7 @@ src/
 │   │   ├── i18n/         # i18n.service.ts（実行時の UI 言語）
 │   │   ├── models/       # content.models.ts（API レスポンスモデル一式）
 │   │   ├── pipes/        # localized-date.pipe.ts（rkDate）
-│   │   ├── seo/          # seo.service.ts（title、description、canonical）
+│   │   ├── seo/          # seo.service.ts（title、description、canonical、共有カード、og:*）
 │   │   ├── services/     # markdown.service.ts（Markdown レンダリング）
 │   │   └── theme/        # theme.service.ts（system / light / dark）
 │   ├── layout/
@@ -59,10 +63,11 @@ src/
 │       ├── about/
 │       └── not-found/
 ├── environments/         # environment.ts（本番）/ environment.development.ts
-├── index.html            # テーマと言語の事前解決スクリプト、favicon の参照
+├── index.html            # テーマと言語の事前解決スクリプト（辞書の preload を含む）、favicon と og の既定値
 ├── main.ts
 └── styles.scss           # `--rk-*` 設計トークン一式（ライト／ダーク両方の値）
-public/                   # favicon 一式、brand-mark.png、site.webmanifest、assets/i18n/*.json
+public/                   # favicon 一式、brand-mark.png、og-image.png、robots.txt、sitemap.xml、site.webmanifest、assets/i18n/*.json
+tools/                    # i18n とスクリーンショットの検証、sitemap 生成、共有カードの原本とレンダリングスクリプト
 ```
 
 ルート定義（`app.routes.ts`）：`/`、`/products`、`/products/relaxkonos`、`/docs`（現在の UI 言語の `getting-started/introduction` へリダイレクト）、`/docs/:language/:version/**`、`/downloads`、`/releases`、`/releases/:version`、`/faq`、`/about`、および 404 のフォールバック。すべてのページは遅延読み込みの standalone コンポーネントです。
@@ -85,7 +90,7 @@ public/                   # favicon 一式、brand-mark.png、site.webmanifest�
 
 実行時の文言は `public/assets/i18n/{en-US,zh-CN,ja-JP}.json` にネストしたオブジェクトとして置かれ、読み込み時にドット区切りのキーへ平坦化されるため、テンプレートでは `t('home.hero.title')` で参照します（`{placeholder}` の補間に対応）。手動選択前は UI がブラウザー／システムの優先言語に従い、中国語は `zh-CN`、日本語は `ja-JP`、それ以外はすべて `en-US` になります。ブラウザーの `languagechange` にも追従します。ヘッダーで手動選択した場合だけ LocalStorage の `rk-language` キーへ保存され、以後はこちらが優先されます。
 
-3 つの辞書はキーが完全に一致している必要があります（現在は各 367 件）。欠けたキーはキー名がそのまま表示されます。変更後は `node tools/verify-i18n-keys.mjs` で再確認し、さらに `node tools/verify-i18n-usage.mjs` でテンプレートが参照しているキーが実在するかを確認してください（欠けたキーはビルドを失敗させず、ページ上にキー名として現れるだけです）。**UI 言語を追加する**には：
+3 つの辞書はキーが完全に一致している必要があります（現在は各 376 件）。欠けたキーはキー名がそのまま表示されます。変更後は `node tools/verify-i18n-keys.mjs` で再確認し、さらに `node tools/verify-i18n-usage.mjs` でテンプレートが参照しているキーが実在するかを確認してください（欠けたキーはビルドを失敗させず、ページ上にキー名として現れるだけです）。**UI 言語を追加する**には：
 
 1. `public/assets/i18n/<code>.json` を追加する
 2. `core/i18n/i18n.service.ts` の `SiteLanguage` ユニオン型と `SITE_LANGUAGES` を拡張する
@@ -94,7 +99,7 @@ public/                   # favicon 一式、brand-mark.png、site.webmanifest�
 
 ドキュメントと FAQ は API が提供する**コンテンツ言語**を使い、UI 言語とは独立しています。
 
-`RelaxKonServer/Content/Docs/{en-US,zh-CN,ja-JP}` は現在どの言語も 42 件（はじめに 6 + 概念 9 + アプリケーション 27）で、3 言語が完全に揃っているため通常の閲覧でフォールバックは発生しません。ただしフォールバックの仕組み自体は残っています。要求された言語に slug が無い場合は `en-US` の版が返り、レスポンスの `isFallback` が `true` になるので UI 側でその旨を伝えられます。**コンテンツファイルを増減するときは 3 言語の件数を揃えてください。** 揃っていないとナビゲーションにフォールバック項目が現れます。
+`RelaxKonServer/Content/Docs/{en-US,zh-CN,ja-JP}` は現在どの言語も 49 件（はじめに 12 + 概念 9 + アプリケーション 28）で、3 言語が完全に揃っているため通常の閲覧でフォールバックは発生しません。ただしフォールバックの仕組み自体は残っています。要求された言語に slug が無い場合は `en-US` の版が返り、レスポンスの `isFallback` が `true` になるので UI 側でその旨を伝えられます。**コンテンツファイルを増減するときは 3 言語の件数を揃えてください。** 揃っていないとナビゲーションにフォールバック項目が現れます。
 
 そのため本文の言語と UI 言語は異なることがあります。`<html lang>` は `I18nService` の `htmlLanguage`（`contentLanguage ?? language`）が決め、ドキュメントページは `i18n.setContentLanguage(...)` で本文が**実際に**使っている言語（フォールバック時はルートで要求した言語ではなく提供された言語）を指し、`/docs` を離れるときにクリアして UI 言語へ戻します。`<article>` 要素にも個別に `lang` を付けています。これは周囲の外殻（ナビゲーション、サイドバー）が UI 言語のままであるためです。スクリーンリーダーが本文を正しい言語で読むための仕組みなので、**ドキュメントページを変更するときはこの 2 つの書き込み点を迂回しないでください**。なお API の `DocumentResponse.language` は要求した言語をそのまま返すため、実際の言語は `isFallback` で判定します。
 
@@ -103,8 +108,18 @@ public/                   # favicon 一式、brand-mark.png、site.webmanifest�
 - **1 コンポーネント = 3 ファイル**：`x.component.ts` / `x.component.html` / `x.component.scss`。`@Component` では `templateUrl` と `styleUrl`（単数）を使います。`template:` / `styles:` のインライン記述は禁止です。
 - **ネイティブの `<select>` は必ず `[ngModel]` + `[ngValue]` を使い、`[value]` は使わない**：`[value]` は `@for` が `<option>` を生成する前に書き込まれて失敗し、バインディング式の値が変わらないため再試行もされません。
 - **Angular の `DatePipe` は使わない**：`LOCALE_ID` が固定でサイト言語に追従しません。`rkDate` パイプ（`core/pipes/localized-date.pipe.ts`）に現在の言語を渡して使います。内部で `timeZone: 'UTC'` として整形するため、暦日がタイムゾーンでずれません。
-- **SEO は必ず `SeoService.apply({ title, description, path })` を通す**：`document.title` や meta タグを直接操作しないでください。
+- **SEO は必ず `SeoService.apply(...)` を通す**：タイトルと説明は `titleKey` / `descriptionKey`（`pageTitles.*` / `pageDescriptions.*`）で辞書から解決し、リテラルの `description` は本文を API から受け取るページだけが渡します。共有画像・canonical・`og:*` もすべてそこで書き込むため、ページ側に散らばせないでください。`document.title` や meta タグの直接操作も禁止です。
 - **ブランドマークは画像であり、文字ではありません**：ヘッダーとフッターは `<img class="brand__mark" src="brand-mark.png" …>`（ソースは `public/`）を使います。「グラデーションの角丸ブロック + 白い R」というプレースホルダー実装へ戻さないでください。
+
+## 共有画像とクローラー向けファイル
+
+`public/` の次の 3 ファイルは共有・クロール用の生成物または静的アセットです。**手で編集しないでください。**
+
+- `og-image.png`（1200×630）：`og:image` と `twitter:image` が指す共有カード。原本は `tools/og-card.html` で、`npm run assets:og-image` で再生成します（ローカルの Chrome か Edge、または `CHROME_PATH` で指定）。
+- `sitemap.xml`：`npm run assets:sitemap` が静的ルートと `RelaxKonServer/Content/Docs` から生成します。コンテンツが既定の相対位置にない場合は `RELAXKON_DOCS_ROOT` を指定してください。見つからない場合は静的ルートのみを出力し、失敗にはしません。言語ごとに URL が変わるのはドキュメントだけなので、`hreflang` はドキュメントのエントリにのみ付けます。
+- `robots.txt`：静的ファイルで、sitemap を指します。
+
+共有画像・canonical・`og:*` / `twitter:*` は `SeoService` が各ルートで書き込みます。`src/index.html` には、JavaScript を実行しないクローラー向けの静的な既定値も置いてあります。
 
 ## プロジェクト境界
 
