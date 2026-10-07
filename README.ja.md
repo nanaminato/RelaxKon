@@ -6,7 +6,7 @@
 
 `RelaxKon/` は RelaxKon 公式サイトの **Angular 22.2.1** クライアントです。レイアウト、ルーティング、ページ、テーマ切り替え、実行時の UI 言語切り替え、型付き API クライアントなど、ブラウザー側の UI をすべて所有します。
 
-このサイトは意図的に**管理画面ではありません**。RelaxKonOS の製品サイトであり、視覚言語は `src/styles.scss` に設計トークンとして集約されています。
+RelaxKonOS の製品サイトです。色や余白などのデザイントークンは `src/styles.scss` にまとめています。
 
 ## 必要な環境
 
@@ -17,7 +17,9 @@
 
 教程画像は `public/assets/docs/screenshots/` に置き、`npm run verify:doc-images` で一覧と三言語の一致を検査します。[撮影・置き換え手順](./docs/documentation-screenshots.md)も参照してください。本文はバックエンドが提供するため、画像付き文書の更新時はフロントエンドの静的成果物も同時に配置します。
 
-依存バージョンは Angular 22.2.1、TypeScript 6.0.3、RxJS 7.8.2、Vitest 5.0.3、jsdom 30.1.2 です。Angular は TypeScript `>=6.0 <6.1` を要求します。新規チェックアウトは `npm ci`、更新時は `npm outdated`、`package.json` の編集、`npm update` の順で実行し、ロックファイルも更新します。`npm run build` と `npm test -- --watch=false` で確認してください。[公式サイトの開発チュートリアル](https://relaxkon.com/docs/ja-JP/latest/getting-started/development)も参照できます。
+依存バージョンは Angular 22.2.1、TypeScript 6.0.3、RxJS 7.8.2、Vitest 5.0.3、jsdom 30.1.2 です。Angular は TypeScript `>=6.0 <6.1` を要求します。新規チェックアウトは `npm ci`、更新時は `npm outdated`、`package.json` の編集、`npm update` の順で実行し、ロックファイルも更新します。
+
+`npm run build` と `npm test -- --watch=false` で確認してください。[公式サイトの開発チュートリアル](https://relaxkon.com/docs/ja-JP/latest/getting-started/development)も参照できます。
 
 | コマンド | 内容 |
 | --- | --- |
@@ -88,7 +90,9 @@ tools/                    # i18n とスクリーンショットの検証、sitem
 
 ## UI 言語
 
-実行時の文言は `public/assets/i18n/{en-US,zh-CN,ja-JP}.json` にネストしたオブジェクトとして置かれ、読み込み時にドット区切りのキーへ平坦化されるため、テンプレートでは `t('home.hero.title')` で参照します（`{placeholder}` の補間に対応）。手動選択前は UI がブラウザー／システムの優先言語に従い、中国語は `zh-CN`、日本語は `ja-JP`、それ以外はすべて `en-US` になります。ブラウザーの `languagechange` にも追従します。ヘッダーで手動選択した場合だけ LocalStorage の `rk-language` キーへ保存され、以後はこちらが優先されます。
+実行時の文言は `public/assets/i18n/{en-US,zh-CN,ja-JP}.json` にネストしたオブジェクトとして置かれ、読み込み時にドット区切りのキーへ平坦化されるため、テンプレートでは `t('home.hero.title')` で参照します（`{placeholder}` の補間に対応）。
+
+手動選択前は UI がブラウザー／システムの優先言語に従い、中国語は `zh-CN`、日本語は `ja-JP`、それ以外はすべて `en-US` になります。ブラウザーの `languagechange` にも追従します。ヘッダーで手動選択した場合だけ LocalStorage の `rk-language` キーへ保存され、以後はこちらが優先されます。
 
 3 つの辞書はキーが完全に一致している必要があります（現在は各 376 件）。欠けたキーはキー名がそのまま表示されます。変更後は `node tools/verify-i18n-keys.mjs` で再確認し、さらに `node tools/verify-i18n-usage.mjs` でテンプレートが参照しているキーが実在するかを確認してください（欠けたキーはビルドを失敗させず、ページ上にキー名として現れるだけです）。**UI 言語を追加する**には：
 
@@ -99,9 +103,15 @@ tools/                    # i18n とスクリーンショットの検証、sitem
 
 ドキュメントと FAQ は API が提供する**コンテンツ言語**を使い、UI 言語とは独立しています。
 
-`RelaxKonServer/Content/Docs/{en-US,zh-CN,ja-JP}` は現在どの言語も 49 件（はじめに 12 + 概念 9 + アプリケーション 28）で、3 言語が完全に揃っているため通常の閲覧でフォールバックは発生しません。ただしフォールバックの仕組み自体は残っています。要求された言語に slug が無い場合は `en-US` の版が返り、レスポンスの `isFallback` が `true` になるので UI 側でその旨を伝えられます。**コンテンツファイルを増減するときは 3 言語の件数を揃えてください。** 揃っていないとナビゲーションにフォールバック項目が現れます。
+`RelaxKonServer/Content/Docs/{en-US,zh-CN,ja-JP}` は現在どの言語も 49 件（はじめに 12 + 概念 9 + アプリケーション 28）で、3 言語が完全に揃っているため通常の閲覧でフォールバックは発生しません。ただしフォールバックの仕組み自体は残っています。
 
-そのため本文の言語と UI 言語は異なることがあります。`<html lang>` は `I18nService` の `htmlLanguage`（`contentLanguage ?? language`）が決め、ドキュメントページは `i18n.setContentLanguage(...)` で本文が**実際に**使っている言語（フォールバック時はルートで要求した言語ではなく提供された言語）を指し、`/docs` を離れるときにクリアして UI 言語へ戻します。`<article>` 要素にも個別に `lang` を付けています。これは周囲の外殻（ナビゲーション、サイドバー）が UI 言語のままであるためです。スクリーンリーダーが本文を正しい言語で読むための仕組みなので、**ドキュメントページを変更するときはこの 2 つの書き込み点を迂回しないでください**。なお API の `DocumentResponse.language` は要求した言語をそのまま返すため、実際の言語は `isFallback` で判定します。
+要求された言語に slug が無い場合は `en-US` の版が返り、レスポンスの `isFallback` が `true` になるので UI 側でその旨を伝えられます。**コンテンツファイルを増減するときは 3 言語の件数を揃えてください。** 揃っていないとナビゲーションにフォールバック項目が現れます。
+
+そのため本文の言語と UI 言語は異なることがあります。`<html lang>` は `I18nService` の `htmlLanguage`（`contentLanguage ?? language`）が決め、ドキュメントページは `i18n.setContentLanguage(...)` で本文が**実際に**使っている言語（フォールバック時はルートで要求した言語ではなく提供された言語）を指し、`/docs` を離れるときにクリアして UI 言語へ戻します。
+
+`<article>` 要素にも個別に `lang` を付けています。これは周囲の外殻（ナビゲーション、サイドバー）が UI 言語のままであるためです。スクリーンリーダーが本文を正しい言語で読むための仕組みなので、**ドキュメントページを変更するときはこの 2 つの書き込み点を迂回しないでください**。
+
+なお API の `DocumentResponse.language` は要求した言語をそのまま返すため、実際の言語は `isFallback` で判定します。
 
 ## コーディング規約
 

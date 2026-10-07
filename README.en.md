@@ -6,7 +6,7 @@ Website <https://relaxkon.com> · Product source repository <https://github.com/
 
 `RelaxKon/` is the **Angular 22.2.1** client for the official RelaxKon website. It owns every piece of browser UI: layouts, routes, pages, theme switching, runtime UI language switching and typed API clients.
 
-The site is deliberately **not** a dashboard. It is a product website for RelaxKonOS, and the visual language is documented as design tokens in `src/styles.scss`.
+This is the RelaxKonOS product website. Design tokens for colors, spacing and other visual properties are defined in `src/styles.scss`.
 
 ## Requirements
 

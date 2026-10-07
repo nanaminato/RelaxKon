@@ -6,7 +6,7 @@
 
 `RelaxKon/` 是 RelaxKon 官方网站的 **Angular 22.2.1** 客户端，负责全部浏览器侧 UI：布局、路由、页面、主题切换、运行时 UI 语言切换以及类型化 API 客户端。
 
-站点刻意**不做成后台面板**：它是 RelaxKonOS 的产品官网，视觉语言以设计令牌的形式集中定义在 `src/styles.scss`。
+本项目是 RelaxKonOS 产品官网。颜色、间距等设计令牌统一定义在 `src/styles.scss`。
 
 ## 环境要求
 
@@ -17,7 +17,9 @@
 
 教程图片位于 `public/assets/docs/screenshots/`，截图清单与三语位置由 `npm run verify:doc-images` 检查。真实截图替换方式见[截图维护说明](./docs/documentation-screenshots.md)。文档正文由后端提供，部署教程图片时同步更新官网前端静态资源。
 
-依赖基线：Angular 22.2.1、TypeScript 6.0.3、RxJS 7.8.2、Vitest 5.0.3、jsdom 30.1.2。Angular 要求 TypeScript `>=6.0 <6.1`。新检出使用 `npm ci`；维护版本时先执行 `npm outdated`，修改 `package.json` 后执行 `npm update`，同时更新锁文件，并运行 `npm run build` 与 `npm test -- --watch=false`。完整步骤见[官网开发教程](https://relaxkon.com/docs/zh-CN/latest/getting-started/development)。
+依赖基线：Angular 22.2.1、TypeScript 6.0.3、RxJS 7.8.2、Vitest 5.0.3、jsdom 30.1.2。Angular 要求 TypeScript `>=6.0 <6.1`。新检出使用 `npm ci`；维护版本时先执行 `npm outdated`，修改 `package.json` 后执行 `npm update`，同时更新锁文件，并运行 `npm run build` 与 `npm test -- --watch=false`。
+
+完整步骤见[官网开发教程](https://relaxkon.com/docs/zh-CN/latest/getting-started/development)。
 
 | 命令 | 作用 |
 | --- | --- |
@@ -101,7 +103,9 @@ tools/                    # i18n 与截图校验、sitemap 生成、分享卡片
 
 `RelaxKonServer/Content/Docs/{en-US,zh-CN,ja-JP}` 当前各 49 篇（入门 12 + 概念 9 + 应用 28），三种语言已完全对齐，因此正常浏览不会触发回退。回退机制本身仍然存在：某个 slug 在目标语言缺失时会取 `en-US` 的版本，并把响应的 `isFallback` 置为 `true`，由界面提示读者。**改动内容语言的文件数时必须让三种语言保持一致**，否则导航会出现回退项。
 
-因此**正文语言与界面语言可以不同**。`<html lang>` 由 `I18nService` 的 `htmlLanguage`（`contentLanguage ?? language`）决定，文档页通过 `i18n.setContentLanguage(...)` 把它指向正文**实际**使用的语言——回退时按实际语言上报，而不是路由上请求的语言；离开 `/docs` 时清空，恢复为 UI 语言。`<article>` 元素另外单独挂了 `lang`，因为外壳（导航、侧栏）始终是 UI 语言。这套机制是为了让屏幕阅读器按正确语言朗读正文，**改动文档页时不要绕过这两个写入点**。注意 API 的 `DocumentResponse.language` 回显的是请求的语言，判断实际语言要用 `isFallback`。
+因此**正文语言与界面语言可以不同**。`<html lang>` 由 `I18nService` 的 `htmlLanguage`（`contentLanguage ?? language`）决定，文档页通过 `i18n.setContentLanguage(...)` 把它指向正文**实际**使用的语言——回退时按实际语言上报，而不是路由上请求的语言；离开 `/docs` 时清空，恢复为 UI 语言。
+
+`<article>` 元素另外单独挂了 `lang`，因为外壳（导航、侧栏）始终是 UI 语言。这套机制是为了让屏幕阅读器按正确语言朗读正文，**改动文档页时不要绕过这两个写入点**。注意 API 的 `DocumentResponse.language` 回显的是请求的语言，判断实际语言要用 `isFallback`。
 
 ## 代码约定
 
@@ -127,7 +131,7 @@ tools/                    # i18n 与截图校验、sitemap 生成、分享卡片
 
 ## 内容更新与验证
 
-官网指南区分当前源码能力、实际验收和已发布包。Android 详细规范以产品工程 `Client/RelaxKonOS.Client.Android/docs/` 为准；官网只保留用户向摘要与链接。当前新增 Android、账户登录、上传续传、事件告警、备份恢复指南，FAQ 共 16 项。0.1.2 发行记录来自现有四个发布包的清单，不推断该包包含近期源码功能。
+官网指南区分当前源码能力、实际验收和已发布包。Android 详细规范以产品工程 `Client/RelaxKonOS.Client.Android/docs/` 为准；官网只保留用户向摘要与链接。指南涵盖 Android、账户登录、上传续传、事件告警和备份恢复，FAQ 共 16 项。0.1.2 发行记录来自现有四个发布包的清单，不推断该包包含近期源码功能。
 
 ```bash
 node tools/verify-i18n-keys.mjs
