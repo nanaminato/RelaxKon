@@ -74,6 +74,12 @@ function renderUrl(url, alternates, lastmod) {
 
 function buildSitemap() {
   const entries = STATIC_ROUTES.map(route => renderUrl(`${ORIGIN}${route}`, [], null));
+  const releaseRoot = path.resolve(docsRoot, '..', 'Releases');
+  if (fs.existsSync(releaseRoot)) {
+    for (const file of fs.readdirSync(releaseRoot).filter(file => /^\d+(?:\.\d+)*(?:-[A-Za-z0-9.-]+)?\.md$/.test(file)).sort()) {
+      entries.push(renderUrl(`${ORIGIN}/releases/${file.slice(0, -3)}`, [], fs.statSync(path.join(releaseRoot, file)).mtime.toISOString().slice(0, 10)));
+    }
+  }
 
   const documents = collectDocuments();
   if (documents.size === 0) {
@@ -82,19 +88,20 @@ function buildSitemap() {
     return entries;
   }
 
-  // Group by slug so the same article can carry alternates across languages, and
-  // so each language keeps whatever version directory it actually ships.
+  // Only translations of the same document version are language alternates.
   const bySlug = new Map(); // slug -> [{ language, version, lastmod }]
   for (const [key, slugs] of documents) {
     const [language, version] = key.split('/');
     for (const [slug, lastmod] of slugs) {
-      if (!bySlug.has(slug)) bySlug.set(slug, []);
-      bySlug.get(slug).push({ language, version, lastmod });
+      const documentKey = `${version}/${slug}`;
+      if (!bySlug.has(documentKey)) bySlug.set(documentKey, []);
+      bySlug.get(documentKey).push({ language, version, lastmod, slug });
     }
   }
 
-  for (const slug of [...bySlug.keys()].sort()) {
-    const variants = bySlug.get(slug).sort((a, b) => a.language.localeCompare(b.language));
+  for (const documentKey of [...bySlug.keys()].sort()) {
+    const variants = bySlug.get(documentKey).sort((a, b) => a.language.localeCompare(b.language));
+    const slug = variants[0].slug;
     const alternates = variants.map(variant => [
       variant.language,
       `${ORIGIN}/docs/${variant.language}/${variant.version}/${slug}`,

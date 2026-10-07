@@ -14,7 +14,7 @@ import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DocumentationApiService } from '../../core/api/documentation-api.service';
-import { I18nService, SITE_LANGUAGES } from '../../core/i18n/i18n.service';
+import { I18nService, SITE_LANGUAGES, isSiteLanguage } from '../../core/i18n/i18n.service';
 import { DocumentContent, DocumentHeading, LanguageInfo, NavigationNode, SearchResult } from '../../core/models/content.models';
 import { MarkdownService } from '../../core/services/markdown.service';
 import { SeoService } from '../../core/seo/seo.service';
@@ -92,7 +92,7 @@ export class DocsComponent {
   private requestGeneration = 0;
 
   constructor() {
-    this.destroyRef.onDestroy(() => this.i18n.setContentLanguage(null));
+    this.destroyRef.onDestroy(() => { ++this.requestGeneration; this.observer?.disconnect(); });
 
     this.router.events
       .pipe(
@@ -114,12 +114,8 @@ export class DocsComponent {
   }
 
   fallbackLanguageName(): string {
-    const code = this.document()?.language ?? 'en-US';
+    const code = this.articleLanguage() ?? 'en-US';
     return this.languages().find(item => item.code === code)?.name ?? code;
-  }
-
-  switchLanguage(language: string): void {
-    void this.router.navigate(['/docs', language, this.version(), ...this.slugParts()]);
   }
 
   switchVersion(version: string): void {
@@ -161,11 +157,9 @@ export class DocsComponent {
   private load(): void {
     const { language, version, slug } = this.context();
     const generation = ++this.requestGeneration;
+    if (isSiteLanguage(language)) void this.i18n.setLanguage(language);
     this.language.set(language);
     this.version.set(version);
-    // The route already names the intended article language; the response below
-    // corrects this when the server substitutes the default language instead.
-    this.i18n.setContentLanguage(language);
     this.loading.set(true);
     this.results.set([]);
     this.query.set('');
@@ -178,14 +172,15 @@ export class DocsComponent {
       next: document => {
         if (generation !== this.requestGeneration) return;
         this.document.set(document);
-        this.i18n.setContentLanguage(this.articleLanguage());
         this.headings.set(document.headings?.length ? document.headings : this.markdown.headings(document.content));
         this.loading.set(false);
         this.seo.apply({
           titleKey: 'pageTitles.document',
           titleParams: { title: document.title },
           description: document.description,
-          path: this.router.url.split('?')[0],
+          path: this.router.url.split(/[?#]/)[0],
+          language: isSiteLanguage(this.articleLanguage()) ? this.articleLanguage() as 'en-US' | 'zh-CN' | 'ja-JP' : undefined,
+          noindex: document.isFallback,
         });
         // The copy buttons and the scroll spy need the rendered article; waiting
         // on a bare timeout silently skipped them whenever the render ran slower.
@@ -194,9 +189,9 @@ export class DocsComponent {
       error: () => {
         if (generation !== this.requestGeneration) return;
         this.document.set(null);
-        this.i18n.setContentLanguage(null);
         this.headings.set([]);
         this.loading.set(false);
+        this.seo.apply({ titleKey: 'pageTitles.notFound', descriptionKey: 'pageDescriptions.notFound', path: this.router.url.split(/[?#]/)[0], noindex: true });
       },
     });
   }
@@ -240,7 +235,7 @@ export class DocsComponent {
   }
 
   private context(): { language: string; version: string; slug: string } {
-    const parts = this.router.url.split('?')[0].split('/').filter(Boolean);
+    const parts = this.router.url.split(/[?#]/)[0].split('/').filter(Boolean);
     const language = parts[1] ?? 'en-US';
     const version = parts[2] ?? 'latest';
     const slug = parts.slice(3).join('/') || 'getting-started/introduction';

@@ -44,3 +44,22 @@
   .command-box__copy { align-self: flex-end; }
 }
 .user-mode-card { margin-top: 1.5rem; padding: 1.25rem; border: 1px solid var(--rk-border); border-radius: var(--rk-radius-lg); background: var(--rk-surface); }
+.download-picker { margin-top: 2rem; padding: clamp(1.25rem, 3vw, 2.5rem); border: 1px solid var(--rk-border); border-radius: var(--rk-radius-lg); background: var(--rk-surface); box-shadow: var(--rk-shadow-sm); max-width: 900px; }
+.download-picker h2 { margin: .8rem 0 .45rem; font-size: clamp(1.4rem, 3vw, 2rem); }
+.download-picker__intro p { margin-bottom: 1.25rem; }
+.platform-picker { display: flex; flex-wrap: wrap; gap: .35rem; padding-bottom: 1rem; border-bottom: 1px solid var(--rk-border); }
+.platform-picker button { padding: .65rem 1.2rem; border: 1px solid transparent; border-radius: var(--rk-radius); color: var(--rk-text-secondary); font-weight: 650; }
+.platform-picker button:hover { background: var(--rk-surface-secondary); color: var(--rk-text); }
+.platform-picker button.is-selected { background: var(--rk-primary-soft); border-color: var(--rk-primary); color: var(--rk-primary); }
+.download-picker__body { padding-top: 1.5rem; min-height: 180px; }
+.architecture-picker { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; font-size: .9rem; font-weight: 650; }
+.architecture-picker select { max-width: 100%; padding: .6rem .85rem; border: 1px solid var(--rk-border); border-radius: var(--rk-radius); background: var(--rk-surface); color: var(--rk-text); }
+.download-picker__action { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; margin: 1.3rem 0; }
+.download-picker__meta { display: flex; flex-wrap: wrap; gap: .9rem; margin: 0; color: var(--rk-text-muted); font-size: .84rem; }
+.download-picker__links { display: flex; flex-wrap: wrap; gap: 1.2rem; font-size: .85rem; }
+.download-picker__links button { padding: 0; color: var(--rk-primary); font: inherit; }
+.download-picker__all { display: inline-block; margin-top: 1.5rem; font-size: .85rem; }
+.offline-details summary { color: var(--rk-text); cursor: pointer; font-weight: 700; font-size: 1.2rem; }
+.offline-details[open] summary { margin-bottom: 1.5rem; }
+.download-picker :is(button, select, a):focus-visible { outline: 2px solid var(--rk-primary); outline-offset: 4px; }
+@media (max-width: 460px) { .platform-picker button { flex: 1 0 40%; } .download-picker__action .btn { width: 100%; } }

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { DownloadsComponent } from './downloads.component';
 import { ContentApiService } from '../../core/api/content-api.service';
 import { I18nService, SiteLanguage } from '../../core/i18n/i18n.service';
@@ -65,5 +65,39 @@ describe('Downloads package guidance', () => {
     expect(component.clientLaunchCommand(artifact({ platform: 'linux' }))).toContain('payload/linux/client/');
     expect(component.clientLaunchCommand(artifact({ platform: 'macos' }))).toBe('');
     expect(fixture.nativeElement.textContent).toContain('downloads.userMode.unavailable');
+  });
+
+  it('recommends the newest available client for the selected system, not a server package', async () => {
+    const fixture = await render([artifact(), artifact({ version: '0.2.0', url: '/new-client.zip' }), artifact({ version: '9.0.0', packageKind: 'server' })]);
+    const component = fixture.componentInstance;
+    component.selectPlatform('windows');
+    fixture.detectChanges();
+    expect(component.recommended()?.version).toBe('0.2.0');
+    expect(fixture.nativeElement.querySelector('.download-picker a[download]')?.getAttribute('href')).toBe('/new-client.zip');
+  });
+
+  it('requires an architecture choice for a system with multiple builds and no reliable CPU hint', async () => {
+    const fixture = await render([artifact({ platform: 'macos' }), artifact({ platform: 'macos', architecture: 'arm64' })]);
+    const component = fixture.componentInstance;
+    component.selectPlatform('macos');
+    fixture.detectChanges();
+    expect(component.recommended()).toBeNull();
+    expect(fixture.nativeElement.querySelector('.download-picker a[download]')).toBeNull();
+    component.selectArchitecture('arm64');
+    fixture.detectChanges();
+    expect(component.recommended()?.architecture).toBe('arm64');
+  });
+
+  it('shows a retryable catalog error instead of an unpublished-release message', async () => {
+    const fixture = await render([]);
+    const api = TestBed.inject(ContentApiService);
+    vi.spyOn(api, 'downloads').mockReturnValueOnce(throwError(() => new Error('offline')));
+    fixture.componentInstance.loadDownloads();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.download-picker').textContent).toContain('downloads.recommendation.loadError');
+    expect(fixture.nativeElement.textContent).not.toContain('downloads.note');
+    fixture.componentInstance.loadDownloads();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.failed()).toBe(false);
   });
 });

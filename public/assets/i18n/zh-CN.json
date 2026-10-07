@@ -1,9 +1,9 @@
 {
   "pageTitles": {
-    "home": "RelaxKon — 跨越设备的桌面",
+    "home": "RelaxKonOS — 你的服务器工作台",
     "products": "产品 — RelaxKon",
     "relaxkonos": "RelaxKonOS — 现代远程工作区运行环境",
-    "downloads": "下载 — RelaxKon",
+    "downloads": "下载 RelaxKonOS — Windows、macOS、Linux 与 Android",
     "releases": "发行说明 — RelaxKon",
     "release": "发行详情 — RelaxKon",
     "faq": "常见问题 — RelaxKon",
@@ -13,10 +13,10 @@
     "releaseDetail": "{title} — RelaxKon 发行说明"
   },
   "pageDescriptions": {
-    "home": "RelaxKonOS 是跨平台的远程工作区运行环境：界面本地渲染、应用持续运行、工作区由服务器管理。它不是 RDP、VNC 或像素流。",
+    "home": "通过桌面和 Android 客户端管理自己的服务器。RelaxKonOS 集中文件、终端、Docker、网站与 Git，界面本地渲染，工作区由服务器保存。",
     "products": "RelaxKon 的产品线：RelaxKonOS——跨平台、云原生的桌面运行环境。",
     "relaxkonos": "RelaxKonOS 是跨平台、云原生的桌面运行环境：界面本地渲染、应用持续运行、工作区由服务器管理，并内置二十余个应用。",
-    "downloads": "下载已发布的 RelaxKonOS 桌面端、Android 与服务端安装包，附校验码与发布时间。",
+    "downloads": "选择系统与处理器架构，下载最新可用的 RelaxKonOS 稳定版客户端。提供发布日期、SHA-256 校验和、服务端安装包及安装指南。",
     "releases": "RelaxKonOS 发行说明：版本亮点、变更内容与已知限制。",
     "faq": "关于 RelaxKonOS 产品、架构、安全模型与可扩展性的常见问题解答。",
     "about": "RelaxKon 专注开发这样的工作区软件：界面留在本地，持久能力留在远端。",
@@ -92,11 +92,11 @@
   "home": {
     "hero": {
       "eyebrow": "RelaxKonOS",
-      "title": "桌面与手机，共用你的服务器工作区。",
-      "lead": "RelaxKonOS 在 Windows、macOS、Linux 桌面与 Android 手机上本地渲染界面，通过状态同步访问你自己的服务器。集中管理文件、终端、Docker、网站、证书、Git、隧道与代理；支持直连 Server、通过 SSH 隧道登录 Server，以及独立 SSH 工作台。",
-      "ctaPrimary": "了解 RelaxKonOS",
+      "title": "你的服务器，一个工作台。",
+      "lead": "在桌面和手机上管理文件、终端、容器与网站。界面在设备上流畅呈现，工作区与服务保留在你的服务器。",
+      "ctaPrimary": "下载 RelaxKonOS",
       "ctaSecondary": "阅读文档",
-      "note": "不是 RDP，不是 VNC，也不是像素流。",
+      "note": "连接自己的服务器，掌握自己的工作区。",
       "clientTitle": "客户端",
       "clientSubtitle": "你面前的设备 · 本地渲染",
       "clientItem1": "桌面 Shell 与窗口管理",
@@ -113,28 +113,28 @@
     },
     "features": {
       "eyebrow": "核心能力",
-      "title": "围绕状态设计，而不是围绕屏幕。",
-      "lead": "RelaxKonOS 的每一个决定都遵循同一个思路：交互留在用户身边，持久性留在服务端。",
+      "title": "常用的服务器操作，集中完成。",
+      "lead": "从日常文件操作到部署与运维，使用同一个工作区。",
       "items": {
         "0": {
           "title": "本地 UI 渲染",
           "text": "桌面客户端使用 Avalonia，Android 使用 Kotlin/Compose 在本地绘制界面；文字和操作界面保持原生清晰。"
         },
         "1": {
-          "title": "应用可持续运行",
-          "text": "终端会话、守护程序与远程服务持续运行在服务端，网络瞬断不再等于会话丢失。"
+          "title": "连接中断，服务继续",
+          "text": "终端会话、守护程序和远程服务运行在服务器上，可在网络短暂中断后重新连接。"
         },
         "2": {
-          "title": "边界清晰",
-          "text": "独立的协议程序集承载全部契约，客户端、服务端与应用可以各自演进。"
+          "title": "集中管理",
+          "text": "在统一界面中处理文件、终端、Docker、Git 和服务器服务。"
         },
         "3": {
           "title": "跨平台",
           "text": "桌面客户端面向 Windows、macOS 与 Linux，另有 Android 原生客户端。实际可下载的平台与架构以下载目录为准。"
         },
         "4": {
-          "title": "安全靠委托",
-          "text": "执行身份与文件权限来自服务器操作系统；系统登录与 Alias 登录绑定同一用户，特权操作另行授权。"
+          "title": "按权限操作",
+          "text": "沿用服务器账户与文件权限，特权操作单独确认授权。"
         },
         "5": {
           "title": "原生可扩展",
@@ -144,7 +144,7 @@
     },
     "apps": {
       "eyebrow": "内置应用",
-      "title": "开箱即用的工作台，而不是一张空桌面。",
+      "title": "文件、部署与运维，各有入口。",
       "lead": "桌面应用通过统一能力与协议访问服务端；Android 提供对应的原生页面，实际功能随服务器模式、权限与平台而变化。",
       "groupEveryday": "日常使用",
       "groupSystem": "系统",
@@ -217,22 +217,22 @@
     },
     "download": {
       "eyebrow": "获取 RelaxKonOS",
-      "title": "获取已发布的客户端与服务端。",
-      "lead": "下载目录已提供 Windows/Linux x64 桌面客户端与系统服务端包，附大小和 SHA-256。Android、macOS 与用户模式包仅在验证并发布后列出。",
+      "title": "从你的设备开始。",
+      "lead": "选择适合设备的客户端，再连接或安装自己的服务器。",
       "cta": "前往下载页",
       "secondary": "查看发行说明"
     }
   },
   "os": {
     "eyebrow": "产品 / RelaxKonOS",
-    "title": "让桌面跨越设备。",
-    "lead": "RelaxKonOS 提供 Avalonia 桌面客户端与 Kotlin/Compose Android 客户端，界面在本地渲染，工作区状态与运行服务留在服务器。可以直连 Server、通过 SSH 隧道访问回环服务，或使用 SSH 终端与 SFTP 工作台。",
-    "ctaPrimary": "阅读架构指南",
-    "ctaSecondary": "查看下载",
-    "notRemoteTitle": "它不是什么",
-    "notRemoteText": "RelaxKonOS 不是 RDP、VNC 或像素流系统，也不是浏览器里的管理面板。服务端从不渲染桌面图像，它管理的是让工作空间得以持久存在的状态与服务。",
+    "title": "把服务器变成你的工作区。",
+    "lead": "用桌面与 Android 客户端连接服务器，集中处理文件、终端、容器、网站与代码。支持 Server 直连、SSH 隧道和独立 SSH 工作台。",
+    "ctaPrimary": "下载客户端",
+    "ctaSecondary": "了解架构",
+    "notRemoteTitle": "本地界面，服务器能力",
+    "notRemoteText": "客户端渲染界面，服务端管理状态与服务。两端交换数据和操作，不传输桌面像素流。",
     "capabilitiesEyebrow": "能力",
-    "capabilitiesTitle": "服务器桌面需要的一切，都在这一个 Shell 里。",
+    "capabilitiesTitle": "日常操作与服务器管理，一处完成。",
     "appsEyebrow": "应用程序",
     "appsTitle": "二十多个内置应用。",
     "appsLead": "桌面应用接入统一运行时；Android 提供独立原生页面。入口与操作按连接模式、服务器能力和权限显示。",
@@ -242,8 +242,8 @@
     "platformEyebrow": "平台支持",
     "platformTitle": "客户端随处运行，服务端各归其位。",
     "securityEyebrow": "安全模型",
-    "securityTitle": "身份与权限，全部委托。",
-    "securityLead": "三条规则，让安全模型短到可以完整审计。",
+    "securityTitle": "沿用服务器身份与权限。",
+    "securityLead": "账户身份、文件访问与特权操作，各有明确的授权规则。",
     "extendEyebrow": "可扩展性",
     "extendTitle": "开发你自己的应用。",
     "extendLead": "桌面 .roapp 扩展使用 IExternalRemoteApplication 与受限 IExternalAppContext，通过开发者 CLI 打包；内置应用的 RemoteApplicationBase 是独立入口。",
@@ -275,12 +275,12 @@
   },
   "downloads": {
     "eyebrow": "下载",
-    "title": "产品下载",
-    "lead": "按平台与架构列出每一个已发布的构建，并附带大小与校验和。",
+    "title": "下载 RelaxKonOS",
+    "lead": "选择你的系统，获取最新可用稳定版。",
     "note": "当前没有可下载的发布物，请稍后查看下载目录。",
-    "latest": "最新",
+    "latest": "个安装包",
     "prerelease": "预览",
-    "empty": "尚未配置任何下载项。",
+    "empty": "当前没有可下载的稳定版安装包。",
     "serverHint": "桌面客户端、系统服务端与用户模式服务端是不同的包；Android 使用签名 APK。离线服务器只需对应的服务端包。",
     "clientRunTitle": "下载后直接运行客户端",
     "clientRunHint": "客户端不需要安装到服务器。下载到自己的电脑后解压，并执行下方命令。",
@@ -293,7 +293,7 @@
     "userMode": {
       "eyebrow": "无需 sudo",
       "title": "在普通 Linux 账号下安装（用户模式）",
-      "lead": "用户模式不需要 root，服务只监听 127.0.0.1。请在服务器中心选择 Linux 用户模式，客户端会管理 SSH 转发。需要 *-user-server.zip 发布包。",
+      "lead": "在普通 Linux 账户下运行服务端，无需 sudo。默认通过回环地址和客户端管理的 SSH 隧道访问，需要独立的 user-server 包。",
       "docCta": "阅读用户模式安装文档",
       "unavailable": "当前目录尚无用户模式包。取得可用的 user-server 发布包后，可在客户端选择本地包或服务器上的包；系统包不能替代。"
     },
@@ -316,8 +316,8 @@
     },
     "packages": {
       "eyebrow": "直接下载",
-      "title": "安装包与校验和",
-      "lead": "适合离线安装、受控发布，或需要手动核验校验和的场景。"
+      "title": "其他架构与服务端安装包",
+      "lead": "每种系统、架构和包类型仅列出最新可用稳定版。服务端包用于在目标主机安装，客户端包用于自己的设备。"
     },
     "androidTitle": "安装 Android 客户端",
     "androidHint": "下载已发布的签名 APK，在 Android 系统安装界面确认安装。更新必须使用同一签名证书；AAB 用于商店发布，不作为直接安装包。",
@@ -325,18 +325,37 @@
     "androidDocs": "Android 功能与连接指南",
     "installFlow": {
       "eyebrow": "快速开始",
-      "title": "在客户端中安装服务端",
-      "lead": "先安装客户端，再通过服务器中心连接目标主机并完成安装。",
+      "title": "下载后，三步开始使用",
+      "lead": "已有服务端可直接登录；首次使用可在客户端完成安装。",
       "stepOneTitle": "下载并打开客户端",
-      "stepOneText": "在自己的电脑或 Android 设备上安装与平台匹配的客户端。",
+      "stepOneText": "ZIP 包解压后运行客户端；Android 下载 APK 并在系统界面确认安装。",
       "downloadCta": "选择客户端包",
       "stepTwoTitle": "连接目标主机",
-      "stepTwoText": "打开服务器中心，填写 SSH 地址、端口和账号，核对主机密钥并完成环境检查。",
-      "stepThreeTitle": "选择选项并安装",
-      "stepThreeText": "选择来源与安装模式，设置端口、目录、网络、证书和权限，确认后等待健康检查通过。",
+      "stepTwoText": "已有 Server 填写地址登录；远程安装从服务器中心连接 SSH，Windows 本机安装选择“管理本机”。",
+      "stepThreeTitle": "打开你的工作区",
+      "stepThreeText": "安装时确认来源、模式和权限，等待健康检查通过，再登录并打开文件、终端或管理应用。",
       "maintenance": "更新、修复、回滚与卸载也在服务器中心完成；卸载默认保留数据。",
       "guideCta": "阅读安装指南",
       "serverCenterCta": "了解服务器中心"
+    },
+    "recommendation": {
+      "stable": "最新可用稳定版",
+      "title": "获取客户端",
+      "detected": "检测到 {platform}，可随时选择其他系统。",
+      "chooseSystem": "请选择要运行客户端的系统。",
+      "chooseArchitecture": "选择处理器架构",
+      "architectureHint": "x64 适用于 Intel / AMD 64 位设备；arm64 适用于 ARM 64 位设备，包括 Apple 芯片。请核对设备架构。",
+      "downloadFor": "下载 {platform} 客户端",
+      "setupGuide": "安装与使用指南",
+      "copyChecksum": "复制 SHA-256",
+      "allDownloads": "其他系统、架构与服务端包",
+      "unavailable": "暂未发布此系统与架构的稳定版客户端。可选择其他架构，或查看使用指南。",
+      "loadError": "无法加载下载目录，请重试。",
+      "architectures": {
+        "x64": "x64 · Intel / AMD",
+        "arm64": "arm64 · ARM / Apple 芯片",
+        "universal": "通用 APK"
+      }
     }
   },
   "releases": {
@@ -384,7 +403,7 @@
     "product": "产品",
     "resources": "资源",
     "project": "项目",
-    "description": "跨平台远程工作空间操作系统环境，本地渲染 UI，服务端管理工作空间。",
+    "description": "用桌面和手机，连接自己的服务器工作区。",
     "rights": "保留所有权利。",
     "builtWith": "网站与文档由同一套内容 API 提供。",
     "linkProduct": "RelaxKonOS",

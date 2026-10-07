@@ -12,6 +12,6 @@ export class NotFoundComponent {
   readonly i18n = inject(I18nService);
 
   constructor() {
-    inject(SeoService).apply({ titleKey: 'pageTitles.notFound', descriptionKey: 'pageDescriptions.notFound' });
+    inject(SeoService).apply({ titleKey: 'pageTitles.notFound', descriptionKey: 'pageDescriptions.notFound', noindex: true });
   }
 }

@@ -23,10 +23,8 @@ const MANUAL_LANGUAGE_STORAGE_KEY = 'rk-language';
  * language. A manual choice is remembered; all non-Chinese and non-Japanese
  * locales resolve to English.
  *
- * `<html lang>` is not simply the UI language: a documentation article can be
- * served in a language of its own, and assistive technology reads the body with
- * whatever `lang` says. `htmlLanguage` therefore prefers the content language
- * reported by the page that is on screen and falls back to the UI language.
+ * Website and documentation share one selected language. An article retains
+ * its own `lang` attribute if the content API returns an English fallback.
  */
 @Injectable({ providedIn: 'root' })
 export class I18nService {
@@ -39,15 +37,8 @@ export class I18nService {
   readonly ready = signal(false);
   readonly current = computed(() => SITE_LANGUAGES.find(item => item.code === this.language()) ?? SITE_LANGUAGES[0]);
 
-  /**
-   * Language of the page body currently on screen, when it differs from the UI
-   * language. Documentation routes serve one article per language while the
-   * chrome around it stays in the visitor's UI language, so the two can differ.
-   */
-  private readonly contentLanguage = signal<SiteLanguage | null>(null);
-
-  /** The value kept on `<html lang>`. */
-  readonly htmlLanguage = computed(() => this.contentLanguage() ?? this.language());
+  /** The shell always speaks the selected site language; fallback articles label themselves. */
+  readonly htmlLanguage = this.language;
 
   constructor() {
     if (this.isBrowser) {
@@ -70,18 +61,12 @@ export class I18nService {
   }
 
   async setLanguage(language: SiteLanguage): Promise<void> {
-    if (this.isBrowser) localStorage.setItem(MANUAL_LANGUAGE_STORAGE_KEY, language);
+    if (this.isBrowser) {
+      try { localStorage.setItem(MANUAL_LANGUAGE_STORAGE_KEY, language); } catch { /* Session choice still works when storage is unavailable. */ }
+    }
     if (language === this.language() && this.ready()) return;
     this.language.set(language);
     await this.load(language);
-  }
-
-  /**
-   * Points `<html lang>` at the language of the body text on screen. Pass `null`
-   * (or a language the site does not serve) to fall back to the UI language.
-   */
-  setContentLanguage(language: string | null): void {
-    this.contentLanguage.set(isSiteLanguage(language) ? language : null);
   }
 
   /** Translates a dotted key with optional `{placeholder}` interpolation. */
@@ -95,26 +80,30 @@ export class I18nService {
   }
 
   private async load(language: SiteLanguage): Promise<void> {
+    const generation = ++this.loadGeneration;
     try {
       const response = await fetch(`assets/i18n/${language}.json`, { cache: 'no-cache' });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      this.messages.set(flatten((await response.json()) as NestedDictionary));
+      const messages = flatten((await response.json()) as NestedDictionary);
+      if (generation === this.loadGeneration) this.messages.set(messages);
     } catch {
+      if (generation !== this.loadGeneration) return;
       if (language !== 'en-US') {
         await this.load('en-US');
         return;
       }
       this.messages.set({});
     } finally {
-      // `<html lang>` is applied by the `htmlLanguage` effect, so it also tracks
-      // the content language while a documentation article is on screen.
-      this.ready.set(true);
+      if (generation === this.loadGeneration) this.ready.set(true);
     }
   }
 
   private detectLanguage(): SiteLanguage {
     if (!this.isBrowser) return 'en-US';
-    const saved = localStorage.getItem(MANUAL_LANGUAGE_STORAGE_KEY);
+    const routeLanguage = this.document.location.pathname.split('/')[2];
+    if (this.document.location.pathname.startsWith('/docs/') && isSiteLanguage(routeLanguage)) return routeLanguage;
+    let saved: string | null = null;
+    try { saved = localStorage.getItem(MANUAL_LANGUAGE_STORAGE_KEY); } catch { /* Use the browser language. */ }
     if (isSiteLanguage(saved)) return saved;
     return this.detectSystemLanguage();
   }
@@ -128,11 +117,13 @@ export class I18nService {
   }
 
   private hasManualLanguageChoice(): boolean {
-    return this.isBrowser && isSiteLanguage(localStorage.getItem(MANUAL_LANGUAGE_STORAGE_KEY));
+    try { return this.isBrowser && isSiteLanguage(localStorage.getItem(MANUAL_LANGUAGE_STORAGE_KEY)); } catch { return false; }
   }
+
+  private loadGeneration = 0;
 }
 
-function isSiteLanguage(value: string | null): value is SiteLanguage {
+export function isSiteLanguage(value: string | null | undefined): value is SiteLanguage {
   return value === 'en-US' || value === 'zh-CN' || value === 'ja-JP';
 }
 

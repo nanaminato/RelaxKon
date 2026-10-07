@@ -1,22 +1,13 @@
 <div class="docs" [class.docs--drawer]="drawerOpen()">
   <!-- Sidebar -->
-  <aside class="sidebar" [class.is-open]="drawerOpen()" aria-label="Documentation navigation">
+  <aside class="sidebar" [class.is-open]="drawerOpen()" [attr.aria-label]="i18n.t('docs.sidebar')">
     <div class="sidebar__head">
       <a class="sidebar__title" routerLink="/docs">{{ i18n.t('docs.title') }}</a>
       <button class="sidebar__close" type="button" (click)="drawerOpen.set(false)" [attr.aria-label]="i18n.t('docs.closeDrawer')">✕</button>
     </div>
 
-    <!-- ngModel (not [value]) so both switchers re-sync once the options exist;
-         a plain [value] binding is written before @for renders the <option>s. -->
+    @if (versions().length > 1) {
     <div class="switchers">
-      <label>
-        <span>{{ i18n.t('docs.languageLabel') }}</span>
-        <select [ngModel]="language()" (ngModelChange)="switchLanguage($event)">
-          @for (item of languages(); track item.code) {
-            <option [ngValue]="item.code">{{ item.name }}</option>
-          }
-        </select>
-      </label>
       <label>
         <span>{{ i18n.t('docs.versionLabel') }}</span>
         <select [ngModel]="version()" (ngModelChange)="switchVersion($event)">
@@ -26,6 +17,7 @@
         </select>
       </label>
     </div>
+    }
 
     <div class="sidebar__search">
       <input
@@ -107,8 +99,7 @@
         <p class="notice mt-0">{{ i18n.t('docs.fallbackNotice', { language: fallbackLanguageName() }) }}</p>
       }
 
-      <!-- The article carries its own `lang`: the surrounding chrome is in the UI
-           language, and the two differ whenever a reader browses another language. -->
+      <!-- Fallback articles identify their actual language for assistive technology. -->
       <article #article class="prose" [attr.lang]="articleLanguage()" [innerHTML]="html()"></article>
 
       <nav class="pager">

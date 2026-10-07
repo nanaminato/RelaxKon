@@ -1,7 +1,7 @@
 import { Component, DestroyRef, ElementRef, HostListener, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink, RouterLinkActive } from '@angular/router';
-import { I18nService, SITE_LANGUAGES, SiteLanguage } from '../../core/i18n/i18n.service';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { I18nService, SITE_LANGUAGES, isSiteLanguage } from '../../core/i18n/i18n.service';
 import { ThemePreference, ThemeService } from '../../core/theme/theme.service';
 import { GithubLinkComponent } from '../../shared/components/github-link/github-link.component';
 import { SearchOverlayComponent } from '../search/search-overlay.component';
@@ -29,6 +29,7 @@ export class HeaderComponent {
 
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly router = inject(Router);
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
@@ -80,6 +81,14 @@ export class HeaderComponent {
   }
 
   setLanguage(value: string): void {
-    void this.i18n.setLanguage(value as SiteLanguage);
+    if (!isSiteLanguage(value)) return;
+    const tree = this.router.parseUrl(this.router.url);
+    const segments = tree.root.children['primary']?.segments;
+    if (segments?.[0]?.path === 'docs' && segments.length >= 3) {
+      void this.router.navigate(['/docs', value, ...segments.slice(2).map(segment => segment.path)], {
+        queryParams: tree.queryParams, fragment: tree.fragment ?? undefined,
+      });
+    }
+    void this.i18n.setLanguage(value);
   }
 }

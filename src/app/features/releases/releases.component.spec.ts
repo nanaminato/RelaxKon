@@ -13,18 +13,17 @@ import { API_BASE_URL } from '../../core/config/api-base-url.token';
 describe('Release language selection', () => {
   function configure() {
     const language = signal<SiteLanguage>('zh-CN');
-    const contentLanguage = signal<string | null>(null);
     const seo = { apply: vi.fn() };
     TestBed.configureTestingModule({
       providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting(),
         { provide: API_BASE_URL, useValue: '/api' },
         { provide: ActivatedRoute, useValue: { snapshot: { paramMap: new Map([['version', '0.1.2']]) } } },
-        { provide: I18nService, useValue: { language, t: (key: string) => key, setContentLanguage: (value: string | null) => contentLanguage.set(value) } },
+        { provide: I18nService, useValue: { language, t: (key: string) => key } },
         { provide: SeoService, useValue: seo },
         { provide: MarkdownService, useValue: { render: (content: string) => content } },
       ],
     });
-    return { language, contentLanguage, seo, http: TestBed.inject(HttpTestingController) };
+    return { language, seo, http: TestBed.inject(HttpTestingController) };
   }
 
   it('cancels the old list request when the selected language changes', async () => {
@@ -42,7 +41,7 @@ describe('Release language selection', () => {
   });
 
   it('switches detail requests and marks English fallback content and SEO correctly', async () => {
-    const { language, contentLanguage, seo, http } = configure();
+    const { language, seo, http } = configure();
     const fixture = TestBed.createComponent(ReleaseDetailComponent);
     fixture.detectChanges();
     const old = http.expectOne('/api/releases/0.1.2?language=zh-CN');
@@ -57,10 +56,9 @@ describe('Release language selection', () => {
     await fixture.whenStable();
     expect(fixture.nativeElement.textContent).toContain('releases.fallbackNotice');
     expect(fixture.nativeElement.querySelector('article').getAttribute('lang')).toBe('en-US');
-    expect(contentLanguage()).toBe('en-US');
+    expect(language()).toBe('ja-JP');
     expect(seo.apply).toHaveBeenLastCalledWith(expect.objectContaining({ description: 'English summary' }));
     fixture.destroy();
-    expect(contentLanguage()).toBeNull();
     http.verify();
   });
 });

@@ -12,6 +12,9 @@ export interface PageMeta {
   path?: string;
   /** Root-relative or absolute share image; defaults to the site-wide card. */
   image?: string;
+  language?: SiteLanguage;
+  noindex?: boolean;
+  software?: readonly { version: string; platform: string; url: string }[];
 }
 
 const SITE_ORIGIN = 'https://relaxkon.com';
@@ -66,10 +69,11 @@ export class SeoService {
       : page.description;
     const url = this.canonicalUrl(page.path);
     const image = this.shareImageUrl(page.image);
-    const language = this.i18n.language();
+    const language = page.language ?? this.i18n.language();
 
     this.title.setTitle(title);
     this.setMeta('name', 'description', description);
+    this.setMeta('name', 'robots', page.noindex ? 'noindex, follow' : 'index, follow');
 
     this.setMeta('property', 'og:type', 'website');
     this.setMeta('property', 'og:site_name', 'RelaxKon');
@@ -90,10 +94,12 @@ export class SeoService {
     this.setMeta('name', 'twitter:image:alt', title);
 
     this.setCanonical(url);
+    this.setLanguageAlternates(page.noindex ? undefined : page.path);
+    this.setStructuredData(page, title, description, url, language);
   }
 
   private setMeta(attribute: 'name' | 'property', key: string, value?: string): void {
-    if (!value) return;
+    if (!value) { this.meta.removeTag(`${attribute}="${key}"`); return; }
     this.meta.updateTag({ [attribute]: key, content: value });
   }
 
@@ -116,7 +122,40 @@ export class SeoService {
   }
 
   private canonicalUrl(path?: string): string {
-    return `${this.origin}${path ?? this.document.location?.pathname ?? '/'}`;
+    return `${this.origin}${new URL(path ?? this.document.location?.pathname ?? '/', this.origin).pathname}`;
+  }
+
+  /** Only documentation has distinct, crawlable URLs for each language. */
+  private setLanguageAlternates(path?: string): void {
+    this.document.head.querySelectorAll('link[data-rk-hreflang]').forEach(node => node.remove());
+    const match = path?.split(/[?#]/)[0].match(/^\/docs\/(en-US|zh-CN|ja-JP)\/(.+)$/);
+    if (!match) return;
+    for (const language of [...Object.keys(OG_LOCALES), 'x-default']) {
+      const link = this.document.createElement('link');
+      link.rel = 'alternate';
+      link.hreflang = language;
+      link.href = `${this.origin}/docs/${language === 'x-default' ? 'en-US' : language}/${match[2]}`;
+      link.setAttribute('data-rk-hreflang', '');
+      this.document.head.appendChild(link);
+    }
+  }
+
+  private setStructuredData(page: PageMeta, title: string, description: string | undefined, url: string, language: SiteLanguage): void {
+    this.document.head.querySelector('#rk-structured-data')?.remove();
+    if (page.noindex) return;
+    const graph: Record<string, unknown>[] = [
+      { '@type': 'Organization', '@id': `${this.origin}/#organization`, name: 'RelaxKon', url: this.origin, logo: `${this.origin}/brand-mark.png`, sameAs: ['https://github.com/nanaminato/RelaxKonOS'] },
+      { '@type': 'WebSite', '@id': `${this.origin}/#website`, name: 'RelaxKon', url: this.origin, publisher: { '@id': `${this.origin}/#organization` } },
+      { '@type': 'WebPage', '@id': `${url}#webpage`, name: title, description, url, inLanguage: language, isPartOf: { '@id': `${this.origin}/#website` } },
+    ];
+    for (const item of page.software ?? []) {
+      graph.push({ '@type': 'SoftwareApplication', name: 'RelaxKonOS', applicationCategory: 'DeveloperApplication', operatingSystem: item.platform, softwareVersion: item.version, downloadUrl: new URL(item.url, this.origin).href, publisher: { '@id': `${this.origin}/#organization` } });
+    }
+    const script = this.document.createElement('script');
+    script.id = 'rk-structured-data';
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
+    this.document.head.appendChild(script);
   }
 
   private shareImageUrl(image?: string): string {

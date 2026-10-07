@@ -4,8 +4,8 @@
     <h1>{{ i18n.t('os.title') }}</h1>
     <p class="lead">{{ i18n.t('os.lead') }}</p>
     <div class="btn-row mt-2">
-      <a class="btn btn--primary btn--lg" [routerLink]="architectureLink()">{{ i18n.t('os.ctaPrimary') }}</a>
-      <a class="btn btn--secondary btn--lg" routerLink="/downloads">{{ i18n.t('os.ctaSecondary') }}</a>
+      <a class="btn btn--primary btn--lg" routerLink="/downloads">{{ i18n.t('os.ctaPrimary') }}</a>
+      <a class="btn btn--secondary btn--lg" [routerLink]="architectureLink()">{{ i18n.t('os.ctaSecondary') }}</a>
       <a class="btn btn--ghost" [routerLink]="mobileLink()">{{ i18n.t('os.mobileCta') }}</a>
     </div>
   </div>

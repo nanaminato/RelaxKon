@@ -92,20 +92,18 @@ tools/                    # i18n 与截图校验、sitemap 生成、分享卡片
 
 运行时词条位于 `public/assets/i18n/{en-US,zh-CN,ja-JP}.json`，以嵌套对象书写，加载时被压平成点号键，模板里用 `t('home.hero.title')` 取值；支持 `{placeholder}` 插值。未手动选择时，UI 语言跟随浏览器/系统首选语言：中文为 `zh-CN`、日文为 `ja-JP`、其余语言一律为 `en-US`；浏览器触发 `languagechange` 时也会同步。用户在页头手动选择后，选择才保存到 LocalStorage 的 `rk-language` 键并优先使用。
 
-三份词典的键必须完全对齐（当前各 376 条），缺键会直接显示键名。改完用 `node tools/verify-i18n-keys.mjs` 复核，再用 `node tools/verify-i18n-usage.mjs` 确认模板里引用的键都真的存在（缺键不会让构建失败，只会在页面上显示成键名）。**新增一种 UI 语言**需要：
+三份词典的键必须完全对齐（当前各 391 条），缺键会直接显示键名。改完用 `node tools/verify-i18n-keys.mjs` 复核，再用 `node tools/verify-i18n-usage.mjs` 确认模板里引用的键都真的存在（缺键不会让构建失败，只会在页面上显示成键名）。**新增一种 UI 语言**需要：
 
 1. 添加 `public/assets/i18n/<code>.json`；
 2. 扩展 `core/i18n/i18n.service.ts` 中的 `SiteLanguage` 联合类型与 `SITE_LANGUAGES` 常量。
 
 ## 内容语言与文档回退
 
-文档与 FAQ 使用的是**内容语言**，由 API 提供，与 UI 语言相互独立。
+文档与 FAQ 的译文由 API 提供，使用官网当前语言。
 
 `RelaxKonServer/Content/Docs/{en-US,zh-CN,ja-JP}` 当前各 49 篇（入门 12 + 概念 9 + 应用 28），三种语言已完全对齐，因此正常浏览不会触发回退。回退机制本身仍然存在：某个 slug 在目标语言缺失时会取 `en-US` 的版本，并把响应的 `isFallback` 置为 `true`，由界面提示读者。**改动内容语言的文件数时必须让三种语言保持一致**，否则导航会出现回退项。
 
-因此**正文语言与界面语言可以不同**。`<html lang>` 由 `I18nService` 的 `htmlLanguage`（`contentLanguage ?? language`）决定，文档页通过 `i18n.setContentLanguage(...)` 把它指向正文**实际**使用的语言——回退时按实际语言上报，而不是路由上请求的语言；离开 `/docs` 时清空，恢复为 UI 语言。
-
-`<article>` 元素另外单独挂了 `lang`，因为外壳（导航、侧栏）始终是 UI 语言。这套机制是为了让屏幕阅读器按正确语言朗读正文，**改动文档页时不要绕过这两个写入点**。注意 API 的 `DocumentResponse.language` 回显的是请求的语言，判断实际语言要用 `isFallback`。
+官网和文档共用页头的语言设置。打开带语言的文档链接时，界面同步到该语言；切换语言会保留文档路径、版本和锚点。`<html lang>` 使用界面语言。缺少译文时，正文回退到英文，`<article lang>` 标明实际语言，并显示回退提示；回退页面不参与搜索索引。API 的 `DocumentResponse.language` 回显请求语言，因此用 `isFallback` 判断正文是否为英文。
 
 ## 代码约定
 

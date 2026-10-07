@@ -3,7 +3,61 @@
     <p class="eyebrow">{{ i18n.t('downloads.eyebrow') }}</p>
     <h1>{{ i18n.t('downloads.title') }}</h1>
     <p class="lead">{{ i18n.t('downloads.lead') }}</p>
-    @if (!loading() && !availableItems().length) {
+    <div class="download-picker" aria-labelledby="download-picker-title">
+      <div class="download-picker__intro">
+        <span class="badge badge--accent">{{ i18n.t('downloads.recommendation.stable') }}</span>
+        <h2 id="download-picker-title">{{ i18n.t('downloads.recommendation.title') }}</h2>
+        <p class="muted">{{ i18n.t(device().platform ? 'downloads.recommendation.detected' : 'downloads.recommendation.chooseSystem', { platform: platformLabel(device().platform ?? '') }) }}</p>
+      </div>
+      <div class="platform-picker" role="group" [attr.aria-label]="i18n.t('common.platform')">
+        @for (platform of platforms; track platform) {
+          <button type="button" [class.is-selected]="selectedPlatform() === platform" [attr.aria-pressed]="selectedPlatform() === platform" (click)="selectPlatform(platform)">{{ platformLabel(platform) }}</button>
+        }
+      </div>
+      <div class="download-picker__body" aria-live="polite" [attr.aria-busy]="loading()">
+        @if (loading()) {
+          <p>{{ i18n.t('common.loading') }}</p>
+        } @else if (failed()) {
+          <p>{{ i18n.t('downloads.recommendation.loadError') }}</p>
+          <button class="btn btn--secondary" type="button" (click)="loadDownloads()">{{ i18n.t('common.retry') }}</button>
+        } @else if (!selectedPlatform()) {
+          <p class="muted">{{ i18n.t('downloads.recommendation.chooseSystem') }}</p>
+        } @else {
+          @if (architectures().length) {
+            <label class="architecture-picker">
+              <span>{{ i18n.t('common.architecture') }}</span>
+              <select [ngModel]="selectedArchitecture()" (ngModelChange)="selectArchitecture($event)">
+                <option ngValue="">{{ i18n.t('downloads.recommendation.chooseArchitecture') }}</option>
+                @for (architecture of architectures(); track architecture) {
+                  <option [ngValue]="architecture">{{ architectureLabel(architecture) }}</option>
+                }
+              </select>
+            </label>
+            <p class="small muted">{{ i18n.t('downloads.recommendation.architectureHint') }}</p>
+          }
+          @if (recommended(); as item) {
+            <div class="download-picker__action">
+              <a class="btn btn--primary btn--lg" [href]="downloadHref(item.url)" download>{{ i18n.t('downloads.recommendation.downloadFor', { platform: platformLabel(item.platform) }) }} <span aria-hidden="true">↓</span></a>
+              <p class="download-picker__meta"><span class="mono">v{{ item.version }}</span><span>{{ item.size }}</span><span>{{ item.releaseDate | rkDate: 'medium' : i18n.language() }}</span></p>
+            </div>
+            <div class="download-picker__links">
+              <a [routerLink]="gettingStartedLink()">{{ i18n.t('downloads.recommendation.setupGuide') }} →</a>
+              <a [routerLink]="['/releases', item.version]">{{ i18n.t('releases.title') }}</a>
+              @if (item.checksum) {
+                <button type="button" (click)="copy(item.checksum, 'checksum')">{{ copied() === 'checksum' ? i18n.t('common.copied') : i18n.t('downloads.recommendation.copyChecksum') }}</button>
+              }
+            </div>
+          } @else if (platformClients().length && !selectedArchitecture()) {
+            <p class="muted">{{ i18n.t('downloads.recommendation.chooseArchitecture') }}</p>
+          } @else {
+            <p class="muted">{{ i18n.t('downloads.recommendation.unavailable') }}</p>
+            <a class="btn btn--secondary" [routerLink]="gettingStartedLink()">{{ i18n.t('downloads.recommendation.setupGuide') }}</a>
+          }
+        }
+      </div>
+      <a class="download-picker__all" href="/downloads#packages" (click)="scrollToPackages($event)">{{ i18n.t('downloads.recommendation.allDownloads') }} →</a>
+    </div>
+    @if (!loading() && !failed() && !availableItems().length) {
       <p class="notice notice--warning mt-2">{{ i18n.t('downloads.note') }}</p>
     }
   </div>
@@ -18,7 +72,7 @@
     </div>
 
     <ol class="install-steps">
-      <li><span>01</span><div><strong>{{ i18n.t('downloads.installFlow.stepOneTitle') }}</strong><p>{{ i18n.t('downloads.installFlow.stepOneText') }}</p><a href="#packages">{{ i18n.t('downloads.installFlow.downloadCta') }}</a></div></li>
+      <li><span>01</span><div><strong>{{ i18n.t('downloads.installFlow.stepOneTitle') }}</strong><p>{{ i18n.t('downloads.installFlow.stepOneText') }}</p><a href="/downloads#packages" (click)="scrollToPackages($event)">{{ i18n.t('downloads.installFlow.downloadCta') }}</a></div></li>
       <li><span>02</span><div><strong>{{ i18n.t('downloads.installFlow.stepTwoTitle') }}</strong><p>{{ i18n.t('downloads.installFlow.stepTwoText') }}</p></div></li>
       <li><span>03</span><div><strong>{{ i18n.t('downloads.installFlow.stepThreeTitle') }}</strong><p>{{ i18n.t('downloads.installFlow.stepThreeText') }}</p></div></li>
     </ol>
@@ -43,34 +97,6 @@
   </div>
 </section>
 
-<section class="section offline-section" aria-labelledby="offline-title">
-  <div class="container">
-    <div class="section__head">
-      <p class="eyebrow">{{ i18n.t('downloads.offline.eyebrow') }}</p>
-      <h2 id="offline-title">{{ i18n.t('downloads.offline.title') }}</h2>
-      <p class="muted">{{ i18n.t('downloads.offline.lead') }}</p>
-    </div>
-    <ol class="offline-steps">
-      <li><span>01</span><div><strong>{{ i18n.t('downloads.offline.stepOneTitle') }}</strong><p>{{ i18n.t('downloads.offline.stepOneText') }}</p></div></li>
-      <li><span>02</span><div><strong>{{ i18n.t('downloads.offline.stepTwoTitle') }}</strong><p>{{ i18n.t('downloads.offline.stepTwoText') }}</p></div></li>
-      <li><span>03</span><div><strong>{{ i18n.t('downloads.offline.stepThreeTitle') }}</strong><p>{{ i18n.t('downloads.offline.stepThreeText') }}</p></div></li>
-    </ol>
-  </div>
-</section>
-
-<section class="section" aria-labelledby="android-title">
-  <div class="container">
-    <article class="card">
-      <h2 id="android-title">{{ i18n.t('downloads.androidTitle') }}</h2>
-      <p>{{ i18n.t('downloads.androidHint') }}</p>
-      @if (!loading() && !androidItems().length) {
-        <p class="muted">{{ i18n.t('downloads.androidUnavailable') }}</p>
-      }
-      <a class="btn btn--secondary" [routerLink]="androidDocLink()">{{ i18n.t('downloads.androidDocs') }}</a>
-    </article>
-  </div>
-</section>
-
 <section class="section" id="packages" aria-labelledby="packages-title">
   <div class="container">
     <div class="section__head">
@@ -84,6 +110,8 @@
           <div class="skeleton" style="height: 190px"></div>
         }
       </div>
+    } @else if (failed()) {
+      <p class="muted">{{ i18n.t('downloads.recommendation.loadError') }}</p>
     } @else if (!groups().length) {
       <p class="muted">{{ i18n.t('downloads.empty') }}</p>
     } @else {
@@ -96,7 +124,7 @@
             </header>
             <div class="grid grid--2">
               @for (item of group.items; track item.architecture + item.version + item.packageKind) {
-                <article class="card download">
+                <article class="card download" [attr.aria-label]="platformLabel(item.platform) + ' ' + item.architecture + ' ' + packageKindLabel(item.packageKind)">
                   <div class="download__head">
                     <span class="chip mono">{{ item.architecture }}</span>
                     <span class="chip">{{ packageKindLabel(item.packageKind) }}</span>
@@ -145,5 +173,35 @@
       <p class="muted small mt-2">{{ i18n.t('downloads.serverHint') }}</p>
       <a class="btn btn--ghost" routerLink="/releases">{{ i18n.t('releases.title') }} →</a>
     }
+  </div>
+</section>
+
+<section class="section offline-section" aria-labelledby="offline-title">
+  <div class="container">
+    <details class="offline-details">
+    <summary id="offline-title">{{ i18n.t('downloads.offline.title') }}</summary>
+    <div class="section__head">
+      <p class="eyebrow">{{ i18n.t('downloads.offline.eyebrow') }}</p>
+      <p class="muted">{{ i18n.t('downloads.offline.lead') }}</p>
+    </div>
+    <ol class="offline-steps">
+      <li><span>01</span><div><strong>{{ i18n.t('downloads.offline.stepOneTitle') }}</strong><p>{{ i18n.t('downloads.offline.stepOneText') }}</p></div></li>
+      <li><span>02</span><div><strong>{{ i18n.t('downloads.offline.stepTwoTitle') }}</strong><p>{{ i18n.t('downloads.offline.stepTwoText') }}</p></div></li>
+      <li><span>03</span><div><strong>{{ i18n.t('downloads.offline.stepThreeTitle') }}</strong><p>{{ i18n.t('downloads.offline.stepThreeText') }}</p></div></li>
+    </ol>
+    </details>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="android-title">
+  <div class="container">
+    <article class="card">
+      <h2 id="android-title">{{ i18n.t('downloads.androidTitle') }}</h2>
+      <p>{{ i18n.t('downloads.androidHint') }}</p>
+      @if (!loading() && !androidItems().length) {
+        <p class="muted">{{ i18n.t('downloads.androidUnavailable') }}</p>
+      }
+      <a class="btn btn--secondary" [routerLink]="androidDocLink()">{{ i18n.t('downloads.androidDocs') }}</a>
+    </article>
   </div>
 </section>

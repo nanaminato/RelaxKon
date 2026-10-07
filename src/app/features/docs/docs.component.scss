@@ -11,7 +11,7 @@
 .sidebar__head { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-bottom: .9rem; }
 .sidebar__title { color: var(--rk-text); font-size: 1.02rem; font-weight: 780; letter-spacing: -.02em; }
 .sidebar__close { display: none; font-size: 1rem; color: var(--rk-text-muted); }
-.switchers { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin-bottom: .9rem; }
+.switchers { display: grid; grid-template-columns: 1fr; gap: .5rem; margin-bottom: .9rem; }
 .switchers label { display: grid; gap: .25rem; }
 .switchers span { color: var(--rk-text-muted); font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .switchers select {

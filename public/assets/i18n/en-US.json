@@ -1,9 +1,9 @@
 {
   "pageTitles": {
-    "home": "RelaxKon — Desktops beyond devices",
+    "home": "RelaxKonOS — Your server workspace",
     "products": "Products — RelaxKon",
     "relaxkonos": "RelaxKonOS — A modern remote workspace operating environment",
-    "downloads": "Downloads — RelaxKon",
+    "downloads": "Download RelaxKonOS for Windows, macOS, Linux and Android",
     "releases": "Releases — RelaxKon",
     "release": "Release — RelaxKon",
     "faq": "FAQ — RelaxKon",
@@ -13,10 +13,10 @@
     "releaseDetail": "{title} — RelaxKon Releases"
   },
   "pageDescriptions": {
-    "home": "RelaxKonOS is a cross-platform remote workspace operating environment with local UI rendering, persistent applications and server-managed workspaces. Not RDP, VNC or pixel streaming.",
+    "home": "Manage your servers from desktop and Android. RelaxKonOS brings files, terminals, Docker, websites and Git into one workspace, with local rendering and server-managed state.",
     "products": "RelaxKon software products: RelaxKonOS, a cross-platform cloud-native desktop operating environment.",
     "relaxkonos": "RelaxKonOS is a cross-platform, cloud-native desktop operating environment with local UI rendering, persistent applications, server-managed workspaces and twenty-plus built-in applications.",
-    "downloads": "Download published RelaxKonOS desktop, Android and server packages with checksums and release dates.",
+    "downloads": "Choose your operating system and processor to download the latest available stable RelaxKonOS client. Find release dates, SHA-256 checksums, server packages and setup guides.",
     "releases": "RelaxKonOS release notes with highlights, changes and known limitations.",
     "faq": "Answers about the RelaxKonOS product, architecture, security model and extensibility.",
     "about": "RelaxKon builds workspace software where the interface stays local and durable capabilities stay remote.",
@@ -92,11 +92,11 @@
   "home": {
     "hero": {
       "eyebrow": "RelaxKonOS",
-      "title": "Your server workspace, on desktop and mobile.",
-      "lead": "RelaxKonOS renders locally on Windows, macOS and Linux desktops and Android devices, using state synchronization to access your own server. Manage files, terminals, Docker, websites, certificates, Git, tunnels and proxies. Connect directly to Server, sign in to Server through an SSH tunnel, or use a separate SSH workbench.",
-      "ctaPrimary": "Explore RelaxKonOS",
+      "title": "Your servers. One workspace.",
+      "lead": "Manage files, terminals, containers and websites from your desktop or phone. The interface runs on your device; your workspace and services stay on your servers.",
+      "ctaPrimary": "Download RelaxKonOS",
       "ctaSecondary": "Read the documentation",
-      "note": "Not RDP. Not VNC. Not pixel streaming.",
+      "note": "Your server. Your workspace.",
       "clientTitle": "Client",
       "clientSubtitle": "This device — local rendering",
       "clientItem1": "Desktop shell and window manager",
@@ -113,28 +113,28 @@
     },
     "features": {
       "eyebrow": "Core capabilities",
-      "title": "Designed around state, not screens.",
-      "lead": "Every decision in RelaxKonOS follows the same idea: keep interaction with the user, keep durability on the server.",
+      "title": "Everyday server tasks, together.",
+      "lead": "From everyday file tasks to deployment and operations, work in one workspace.",
       "items": {
         "0": {
           "title": "Local UI rendering",
           "text": "Desktop clients use Avalonia and Android uses Kotlin/Compose to render locally, keeping text and controls native and sharp."
         },
         "1": {
-          "title": "Persistent applications",
-          "text": "Terminal sessions, guarded workloads and remote services keep running on the server, so a dropped connection is never a lost session."
+          "title": "Services outlast a connection",
+          "text": "Terminal sessions, guarded workloads and remote services run on the server, allowing reconnection after a brief network interruption."
         },
         "2": {
-          "title": "Clear boundaries",
-          "text": "A dedicated protocol assembly owns every contract, so client, server and applications evolve independently."
+          "title": "Manage in one place",
+          "text": "Work with files, terminals, Docker, Git and server services in one interface."
         },
         "3": {
           "title": "Cross-platform",
           "text": "Desktop clients target Windows, macOS and Linux, alongside a native Android client. The download catalog lists the platforms and architectures actually published."
         },
         "4": {
-          "title": "Security by delegation",
-          "text": "Execution identity and file permissions come from the host OS. System and Alias sign-ins bind to the same user; privileged operations require separate authorization."
+          "title": "Work within your permissions",
+          "text": "Use your server account and file permissions, with separate authorization for privileged operations."
         },
         "5": {
           "title": "Extensible by design",
@@ -144,7 +144,7 @@
     },
     "apps": {
       "eyebrow": "Built-in applications",
-      "title": "A complete workbench, not an empty desktop.",
+      "title": "Files, deployment and operations.",
       "lead": "Desktop apps access server capabilities through shared contracts. Android provides native screens; availability depends on server mode, permissions and platform.",
       "groupEveryday": "Everyday",
       "groupSystem": "System",
@@ -217,22 +217,22 @@
     },
     "download": {
       "eyebrow": "Get RelaxKonOS",
-      "title": "Get published client and server builds.",
-      "lead": "The catalog includes Windows/Linux x64 desktop clients and system server packages with sizes and SHA-256 checksums. Android, macOS and user-mode packages appear only after verification and publication.",
+      "title": "Start on your device.",
+      "lead": "Choose a client for your device, then connect to or set up your server.",
       "cta": "Go to downloads",
       "secondary": "Read the release notes"
     }
   },
   "os": {
     "eyebrow": "Product / RelaxKonOS",
-    "title": "Desktops beyond devices.",
-    "lead": "RelaxKonOS combines an Avalonia desktop client and a Kotlin/Compose Android client with locally rendered interfaces, server-side workspace state and running services. Connect directly to Server, reach its loopback service through an SSH tunnel, or use an SSH terminal and SFTP workbench.",
-    "ctaPrimary": "Read the architecture guide",
-    "ctaSecondary": "See downloads",
-    "notRemoteTitle": "What it is not",
-    "notRemoteText": "RelaxKonOS is not RDP, VNC or a pixel streaming system, and it is not a browser-based management dashboard. The server never renders a desktop image; it manages the state and services that make a workspace durable.",
+    "title": "Make your server your workspace.",
+    "lead": "Connect from desktop or Android to work with files, terminals, containers, websites and code. Use a direct Server connection, an SSH tunnel or a standalone SSH workspace.",
+    "ctaPrimary": "Download the client",
+    "ctaSecondary": "Explore the architecture",
+    "notRemoteTitle": "Local interface, server capabilities",
+    "notRemoteText": "The client renders the interface and the server manages state and services. They exchange data and operations instead of a desktop pixel stream.",
     "capabilitiesEyebrow": "Capabilities",
-    "capabilitiesTitle": "Everything a server desktop needs, in one shell.",
+    "capabilitiesTitle": "Everyday work and server management, together.",
     "appsEyebrow": "Applications",
     "appsTitle": "Twenty-plus built-in applications.",
     "appsLead": "Desktop apps share a runtime; Android provides separate native screens. Connections, host capabilities and permissions determine available actions.",
@@ -242,8 +242,8 @@
     "platformEyebrow": "Platform support",
     "platformTitle": "Client anywhere, server where it belongs.",
     "securityEyebrow": "Security model",
-    "securityTitle": "Identity and permissions, delegated.",
-    "securityLead": "Three rules keep the security story short enough to audit.",
+    "securityTitle": "Built on server identities and permissions.",
+    "securityLead": "Account identities, file access and privileged operations have explicit authorization rules.",
     "extendEyebrow": "Extensibility",
     "extendTitle": "Build your own applications.",
     "extendLead": "Desktop .roapp extensions use IExternalRemoteApplication and the scoped IExternalAppContext, packaged with the developer CLI. Built-in apps have a separate RemoteApplicationBase entry point.",
@@ -275,12 +275,12 @@
   },
   "downloads": {
     "eyebrow": "Downloads",
-    "title": "Product downloads",
-    "lead": "Every published build, by platform and architecture, with its size and checksum.",
+    "title": "Download RelaxKonOS",
+    "lead": "Choose your system. Get the latest available stable release.",
     "note": "There are currently no downloadable artifacts. Check the catalog again later.",
-    "latest": "Latest",
+    "latest": "packages",
     "prerelease": "Preview",
-    "empty": "No downloads are configured yet.",
+    "empty": "No stable packages are currently available.",
     "serverHint": "Desktop clients, system servers and user-mode servers are different packages; Android uses signed APKs. Offline servers need only the appropriate server bundle.",
     "clientRunTitle": "Run the client after downloading",
     "clientRunHint": "The client does not belong on the server. Download it to your own device, extract it, then run the command below.",
@@ -293,7 +293,7 @@
     "userMode": {
       "eyebrow": "No sudo",
       "title": "Install under an ordinary Linux account (User Mode)",
-      "lead": "User Mode requires no root and listens on 127.0.0.1. Choose Linux User Mode in Server Center; the client manages SSH forwarding. A *-user-server.zip package is required.",
+      "lead": "Run the server under an ordinary Linux account without sudo. By default, access uses loopback and a client-managed SSH tunnel. A separate user-server package is required.",
       "docCta": "Read the User Mode guide",
       "unavailable": "No User Mode package is listed yet. Once available, select a local or server-side user-server ZIP in the client. System packages cannot substitute."
     },
@@ -316,8 +316,8 @@
     },
     "packages": {
       "eyebrow": "Direct downloads",
-      "title": "Packages and checksums",
-      "lead": "Use a direct archive for offline installs, controlled rollouts, or a manual checksum review."
+      "title": "Other architectures and server packages",
+      "lead": "The latest available stable package for each system, architecture and package type. Server packages are for the target host; client packages are for your device."
     },
     "androidTitle": "Install the Android client",
     "androidHint": "Download a published signed APK and confirm installation in Android. Updates must use the same signing certificate. AAB files are for store distribution, not direct installation.",
@@ -325,18 +325,37 @@
     "androidDocs": "Android features and connection guide",
     "installFlow": {
       "eyebrow": "Get started",
-      "title": "Install the server from the client",
-      "lead": "Install the client, then connect to the target host through Server Center.",
+      "title": "Get started in three steps",
+      "lead": "Sign in to an existing server, or set one up from the client.",
       "stepOneTitle": "Download and open the client",
-      "stepOneText": "Install the matching client on your computer or Android device.",
+      "stepOneText": "Extract the ZIP and launch the desktop client. On Android, open the APK and confirm installation.",
       "downloadCta": "Choose a client package",
       "stepTwoTitle": "Connect to the target host",
-      "stepTwoText": "Open Server Center, enter the SSH address, port and account, verify the host key and run preflight.",
-      "stepThreeTitle": "Review options and install",
-      "stepThreeText": "Choose the source and mode, configure ports, directories, network, certificates and permissions, then wait for health verification.",
+      "stepTwoText": "Sign in with your Server address, connect over SSH in Server Center for remote setup, or choose Manage this PC for local Windows setup.",
+      "stepThreeTitle": "Open your workspace",
+      "stepThreeText": "For setup, confirm the source, mode and permissions and wait for the health check. Then sign in and open files, terminals or management apps.",
       "maintenance": "Use Server Center for updates, repair, rollback and uninstall. Uninstall retains data by default.",
       "guideCta": "Read the installation guide",
       "serverCenterCta": "Explore Server Center"
+    },
+    "recommendation": {
+      "stable": "Latest available stable release",
+      "title": "Get the client",
+      "detected": "Detected {platform}. You can choose another system.",
+      "chooseSystem": "Choose the system where you will run the client.",
+      "chooseArchitecture": "Choose a processor architecture",
+      "architectureHint": "x64 is for 64-bit Intel / AMD devices; arm64 is for 64-bit ARM devices, including Apple silicon. Check your device architecture.",
+      "downloadFor": "Download for {platform}",
+      "setupGuide": "Setup and usage guide",
+      "copyChecksum": "Copy SHA-256",
+      "allDownloads": "Other systems, architectures and server packages",
+      "unavailable": "No stable client is published for this system and architecture. Choose another architecture or read the guide.",
+      "loadError": "Could not load the download catalog. Please retry.",
+      "architectures": {
+        "x64": "x64 · Intel / AMD",
+        "arm64": "arm64 · ARM / Apple silicon",
+        "universal": "Universal APK"
+      }
     }
   },
   "releases": {
@@ -384,7 +403,7 @@
     "product": "Product",
     "resources": "Resources",
     "project": "Project",
-    "description": "A cross-platform remote workspace operating environment with local UI rendering and server-managed workspaces.",
+    "description": "Connect to your server workspace from desktop or mobile.",
     "rights": "All rights reserved.",
     "builtWith": "Website and documentation served from a single content API.",
     "linkProduct": "RelaxKonOS",

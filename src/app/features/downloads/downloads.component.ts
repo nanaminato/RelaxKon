@@ -1,17 +1,19 @@
 import { docsUrl } from '../../core/docs/docs-link';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { Component, PLATFORM_ID, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, PLATFORM_ID, computed, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LocalizedDatePipe } from '../../core/pipes/localized-date.pipe';
 import { RouterLink } from '@angular/router';
-import { catchError, of } from 'rxjs';
 import { ContentApiService } from '../../core/api/content-api.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { DownloadInfo } from '../../core/models/content.models';
 import { SeoService } from '../../core/seo/seo.service';
 import { GithubLinkComponent } from '../../shared/components/github-link/github-link.component';
+import { DOWNLOAD_PLATFORMS, DeviceTarget, DownloadPlatform, detectDevice, latestDownloads } from './download-selection';
 
 @Component({
-  imports: [LocalizedDatePipe, RouterLink, GithubLinkComponent],
+  imports: [LocalizedDatePipe, RouterLink, GithubLinkComponent, FormsModule],
   templateUrl: './downloads.component.html',
   styleUrl: './downloads.component.scss',
 })
@@ -20,14 +22,31 @@ export class DownloadsComponent {
   private readonly api = inject(ContentApiService);
   private readonly document = inject(DOCUMENT);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly seo = inject(SeoService);
 
   readonly loading = signal(true);
   readonly items = signal<DownloadInfo[]>([]);
+  readonly failed = signal(false);
+  readonly platforms = DOWNLOAD_PLATFORMS;
+  readonly device = signal<DeviceTarget>(this.isBrowser ? detectDevice(navigator.userAgent, '', navigator.maxTouchPoints) : { platform: null, architecture: null });
+  readonly selectedPlatform = signal<DownloadPlatform | null>(this.device().platform);
+  readonly selectedArchitecture = signal('');
+  readonly latestItems = computed(() => latestDownloads(this.items()));
+  readonly clients = computed(() => this.latestItems().filter(item => item.packageKind === 'client'));
+  readonly platformClients = computed(() => this.clients().filter(item => item.platform === this.selectedPlatform()));
+  readonly architectures = computed(() => {
+    const values = new Set(this.platformClients().map(item => item.architecture));
+    if (this.device().platform === this.selectedPlatform() && this.device().architecture) values.add(this.device().architecture!);
+    return [...values].sort();
+  });
+  readonly recommended = computed(() => this.platformClients().find(item => item.architecture === this.selectedArchitecture()) ?? null);
+  readonly gettingStartedLink = computed(() => docsUrl(this.i18n.language(), this.selectedPlatform() === 'android' ? 'getting-started/android' : 'getting-started/quick-start'));
   readonly copied = signal<'client' | 'checksum' | null>(null);
 
   readonly groups = computed(() => {
     const map = new Map<string, DownloadInfo[]>();
-    for (const item of this.items()) {
+    for (const item of this.latestItems()) {
       // Content files predate the generated release feed and may spell a
       // platform differently (for example, "Windows" vs "windows"). Keep a
       // single platform section regardless of that presentation detail.
@@ -39,7 +58,7 @@ export class DownloadsComponent {
     return [...map.entries()].map(([platform, groupItems]) => ({ platform, items: groupItems }));
   });
 
-  readonly availableItems = computed(() => this.items().filter(item => item.isAvailable && !!item.url));
+  readonly availableItems = this.latestItems;
   readonly androidItems = computed(() => this.availableItems().filter(item => item.platform === 'android' && item.fileName?.endsWith('.apk')));
   readonly userModeItems = computed(() => this.availableItems().filter(item => item.packageKind === 'user-server'));
   readonly androidDocLink = computed(() => docsUrl(this.i18n.language(), 'getting-started/android'));
@@ -51,19 +70,69 @@ export class DownloadsComponent {
   readonly userModeDocLink = computed(() => ['/docs', this.i18n.language(), 'latest', 'getting-started', 'user-mode']);
 
   constructor() {
-    inject(SeoService).apply({
+    this.seo.apply({
       titleKey: 'pageTitles.downloads',
       descriptionKey: 'pageDescriptions.downloads',
       path: '/downloads',
     });
 
-    this.api
-      .downloads()
-      .pipe(catchError(() => of<DownloadInfo[]>([])))
-      .subscribe(items => {
+    this.loadDownloads();
+    if (this.isBrowser) void this.refineDevice();
+  }
+
+  loadDownloads(): void {
+    this.loading.set(true);
+    this.failed.set(false);
+    this.api.downloads().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: items => {
         this.items.set(items);
+        this.chooseArchitecture();
         this.loading.set(false);
-      });
+        this.seo.apply({
+          titleKey: 'pageTitles.downloads', descriptionKey: 'pageDescriptions.downloads', path: '/downloads',
+          software: this.clients().map(item => ({ version: item.version, platform: this.platformLabel(item.platform), url: this.downloadHref(item.url) })),
+        });
+      },
+      error: () => { this.failed.set(true); this.loading.set(false); },
+    });
+  }
+
+  private manuallySelected = false;
+  selectPlatform(platform: DownloadPlatform): void {
+    this.manuallySelected = true;
+    this.selectedPlatform.set(platform);
+    this.chooseArchitecture();
+  }
+
+  selectArchitecture(value: string): void {
+    this.manuallySelected = true;
+    this.selectedArchitecture.set(value);
+  }
+
+  architectureLabel(value: string): string {
+    return this.i18n.t(`downloads.recommendation.architectures.${value}`) === `downloads.recommendation.architectures.${value}`
+      ? value : this.i18n.t(`downloads.recommendation.architectures.${value}`);
+  }
+
+  private chooseArchitecture(): void {
+    const detected = this.device();
+    const choices = this.architectures();
+    this.selectedArchitecture.set(detected.platform === this.selectedPlatform() && detected.architecture
+      ? detected.architecture : choices.length === 1 ? choices[0] : '');
+  }
+
+  private async refineDevice(): Promise<void> {
+    const hints = (navigator as Navigator & { userAgentData?: { platform?: string; getHighEntropyValues?: (keys: string[]) => Promise<{ architecture?: string; bitness?: string }> } }).userAgentData;
+    if (!hints) return;
+    let target = detectDevice(navigator.userAgent, hints.platform, navigator.maxTouchPoints);
+    try {
+      const info = await hints.getHighEntropyValues?.(['architecture', 'bitness']);
+      if (target.platform && info?.bitness === '64') target = { ...target, architecture: info.architecture === 'arm' ? 'arm64' : info.architecture === 'x86' ? 'x64' : target.architecture };
+    } catch { /* Keep the OS recommendation and let the visitor choose the CPU. */ }
+    if (this.destroyRef.destroyed || this.manuallySelected) return;
+    this.device.set(target);
+    this.selectedPlatform.set(target.platform);
+    this.chooseArchitecture();
   }
 
   platformLabel(platform: string): string {
@@ -102,6 +171,11 @@ export class DownloadsComponent {
     } catch {
       this.copied.set(null);
     }
+  }
+
+  scrollToPackages(event: MouseEvent): void {
+    event.preventDefault();
+    this.document.getElementById("packages")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   downloadHref(url: string): string {
