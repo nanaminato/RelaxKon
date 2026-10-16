@@ -49,10 +49,10 @@ describe('Downloads package guidance', () => {
     expect(fixture.nativeElement.querySelector('.download a[download]')).toBeNull();
   });
 
-  it('distinguishes a user server from a system server bundle', async () => {
-    const fixture = await render([artifact({ platform: 'linux', packageKind: 'user-server', fileName: 'user-server.zip' })]);
+  it('offers the shared Linux server bundle for User Mode', async () => {
+    const fixture = await render([artifact({ platform: 'linux', packageKind: 'server', fileName: 'server.zip' })]);
     expect(fixture.componentInstance.userModeItems()).toHaveLength(1);
-    expect(fixture.nativeElement.textContent).toContain('downloads.packageKind.user-server');
+    expect(fixture.nativeElement.textContent).toContain('downloads.packageKind.server');
     expect(fixture.nativeElement.textContent).not.toContain('downloads.userMode.unavailable');
     expect(fixture.nativeElement.querySelector('.download .client-run')).toBeNull();
   });

@@ -38,7 +38,7 @@ describe('Latest published stable downloads', () => {
     expect(items.map(item => item.version)).toEqual(['0.1.2']);
   });
   it('keeps separate targets for each architecture and package type and normalizes platform names', () => {
-    const items = latestDownloads([artifact({ platform: 'Windows' }), artifact({ architecture: 'arm64' }), artifact({ packageKind: 'server' }), artifact({ platform: 'linux', packageKind: 'user-server' })]);
+    const items = latestDownloads([artifact({ platform: 'Windows' }), artifact({ architecture: 'arm64' }), artifact({ packageKind: 'server' }), artifact({ platform: 'linux', packageKind: 'server' })]);
     expect(items).toHaveLength(4);
     expect(items[0].platform).toBe('windows');
   });

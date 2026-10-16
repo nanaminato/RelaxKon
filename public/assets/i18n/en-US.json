@@ -281,7 +281,7 @@
     "latest": "packages",
     "prerelease": "Preview",
     "empty": "No stable packages are currently available.",
-    "serverHint": "Desktop clients, system servers and user-mode servers are different packages; Android uses signed APKs. Offline servers need only the appropriate server bundle.",
+    "serverHint": "Desktop clients and servers use separate packages; System Mode and User Mode share the server bundle. Android uses signed APKs. Offline servers need only the appropriate server bundle.",
     "clientRunTitle": "Run the client after downloading",
     "clientRunHint": "The client does not belong on the server. Download it to your own device, extract it, then run the command below.",
     "platform": {
@@ -293,15 +293,14 @@
     "userMode": {
       "eyebrow": "No sudo",
       "title": "Install under an ordinary Linux account (User Mode)",
-      "lead": "Run the server under an ordinary Linux account without sudo. By default, access uses loopback and a client-managed SSH tunnel. A separate user-server package is required.",
+      "lead": "Run the server under an ordinary Linux account without sudo. Access defaults to loopback with a client-managed SSH tunnel. Both modes share the server bundle for the target architecture; select Linux User Mode during installation.",
       "docCta": "Read the User Mode guide",
-      "unavailable": "No User Mode package is listed yet. Once available, select a local or server-side user-server ZIP in the client. System packages cannot substitute."
+      "unavailable": "No Linux server bundle is listed. Select a local or server-side server ZIP that includes the User Mode installation scripts."
     },
     "packageKind": {
       "client": "Client",
       "server": "Server",
-      "archive": "Archive",
-      "user-server": "User-mode server"
+      "archive": "Archive"
     },
     "offline": {
       "eyebrow": "Offline installation",

@@ -281,7 +281,7 @@
     "latest": "个安装包",
     "prerelease": "预览",
     "empty": "当前没有可下载的稳定版安装包。",
-    "serverHint": "桌面客户端、系统服务端与用户模式服务端是不同的包；Android 使用签名 APK。离线服务器只需对应的服务端包。",
+    "serverHint": "桌面客户端与服务端分别提供安装包；系统模式和用户模式共用服务端包。Android 使用签名 APK。离线服务器只需对应的服务端包。",
     "clientRunTitle": "下载后直接运行客户端",
     "clientRunHint": "客户端不需要安装到服务器。下载到自己的电脑后解压，并执行下方命令。",
     "platform": {
@@ -293,15 +293,14 @@
     "userMode": {
       "eyebrow": "无需 sudo",
       "title": "在普通 Linux 账号下安装（用户模式）",
-      "lead": "在普通 Linux 账户下运行服务端，无需 sudo。默认通过回环地址和客户端管理的 SSH 隧道访问，需要独立的 user-server 包。",
+      "lead": "在普通 Linux 账户下运行服务端，无需 sudo。默认通过回环地址和客户端管理的 SSH 隧道访问。用户模式与系统模式共用对应架构的 server 包，安装时选择 Linux 用户模式。",
       "docCta": "阅读用户模式安装文档",
-      "unavailable": "当前目录尚无用户模式包。取得可用的 user-server 发布包后，可在客户端选择本地包或服务器上的包；系统包不能替代。"
+      "unavailable": "当前目录尚无 Linux 服务端包。可选择本地或服务器上的 server ZIP；请确认包包含用户模式安装脚本。"
     },
     "packageKind": {
       "client": "客户端",
       "server": "服务端",
-      "archive": "归档包",
-      "user-server": "用户模式服务端"
+      "archive": "归档包"
     },
     "offline": {
       "eyebrow": "离线安装",

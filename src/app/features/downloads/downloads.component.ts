@@ -60,7 +60,7 @@ export class DownloadsComponent {
 
   readonly availableItems = this.latestItems;
   readonly androidItems = computed(() => this.availableItems().filter(item => item.platform === 'android' && item.fileName?.endsWith('.apk')));
-  readonly userModeItems = computed(() => this.availableItems().filter(item => item.packageKind === 'user-server'));
+  readonly userModeItems = computed(() => this.availableItems().filter(item => item.platform.toLowerCase() === 'linux' && item.packageKind === 'server'));
   readonly androidDocLink = computed(() => docsUrl(this.i18n.language(), 'getting-started/android'));
 
   readonly installationDocLink = computed(() => docsUrl(this.i18n.language(), 'getting-started/installation'));

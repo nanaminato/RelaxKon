@@ -52,7 +52,7 @@ export interface DownloadInfo {
   releaseDate: string;
   isAvailable: boolean;
   fileName: string | null;
-  packageKind: 'client' | 'server' | 'user-server' | null;
+  packageKind: 'client' | 'server' | null;
 }
 
 export interface ReleaseSummary {
