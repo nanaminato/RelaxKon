@@ -72,6 +72,10 @@ en-US 的值逐字等于原字面量，零渲染变化；zh-CN 与 ja-JP 为新�
 与 `Content/Docs/<lang>/latest/**` 的实际文件数不符。同时补上了 `og-image.png` / `sitemap.xml` /
 `robots.txt` 的说明与三个新 npm 脚本。
 
+> 2026-10-23 追加：词典已增至 390 键，README 不再写死「376 / 367」这类历史数字，改为以
+> `tools/verify-i18n-keys.mjs` 的输出为准；文档篇数 49 篇（12 + 9 + 28）未变。本节与下方
+> 「验证结果」中的计数是 2026-10-05 当天的快照。
+
 ## 验收方式
 
 ```bash
