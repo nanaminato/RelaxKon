@@ -88,6 +88,41 @@ describe('Downloads package guidance', () => {
     expect(component.recommended()?.architecture).toBe('arm64');
   });
 
+  it('carries a manually chosen architecture across systems that ship it', async () => {
+    const fixture = await render([
+      artifact(), artifact({ architecture: 'arm64' }),
+      artifact({ platform: 'macos' }), artifact({ platform: 'macos', architecture: 'arm64' }),
+      artifact({ platform: 'linux' }), artifact({ platform: 'linux', architecture: 'arm64' }),
+    ]);
+    const component = fixture.componentInstance;
+    component.selectPlatform('macos');
+    component.selectArchitecture('arm64');
+    fixture.detectChanges();
+    component.selectPlatform('linux');
+    fixture.detectChanges();
+    expect(component.selectedArchitecture()).toBe('arm64');
+    expect(component.recommended()?.architecture).toBe('arm64');
+    component.selectPlatform('windows');
+    fixture.detectChanges();
+    expect(component.recommended()?.architecture).toBe('arm64');
+  });
+
+  it('falls back when the preferred architecture is not published for the target system', async () => {
+    const fixture = await render([
+      artifact({ architecture: 'arm64' }),
+      artifact({ platform: 'android', architecture: 'universal', fileName: 'mobile.apk' }),
+    ]);
+    const component = fixture.componentInstance;
+    component.selectPlatform('windows');
+    component.selectArchitecture('arm64');
+    component.selectPlatform('android');
+    fixture.detectChanges();
+    expect(component.selectedArchitecture()).toBe('universal');
+    component.selectPlatform('windows');
+    fixture.detectChanges();
+    expect(component.selectedArchitecture()).toBe('arm64');
+  });
+
   it('shows a retryable catalog error instead of an unpublished-release message', async () => {
     const fixture = await render([]);
     const api = TestBed.inject(ContentApiService);

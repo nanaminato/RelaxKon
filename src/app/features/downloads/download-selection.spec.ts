@@ -42,6 +42,12 @@ describe('Latest published stable downloads', () => {
     expect(items).toHaveLength(4);
     expect(items[0].platform).toBe('windows');
   });
+  it('accepts the published build variant suffix while still rejecting prereleases', () => {
+    const items = latestDownloads([artifact({ version: '0.2.0-v1a' })]);
+    expect(items.map(item => item.version)).toEqual(['0.2.0-v1a']);
+    expect(latestDownloads([artifact({ version: '0.2.0-rc.1' })])).toHaveLength(0);
+    expect(compareVersions('0.2.0-v1a', '0.1.9')).toBeGreaterThan(0);
+  });
   it('offers only installable APKs on Android, never store publishing AAB files', () => {
     const items = latestDownloads([artifact({ platform: 'android', fileName: 'mobile.apk' }), artifact({ platform: 'android', version: '1.0.0', fileName: 'mobile.aab' })]);
     expect(items.map(item => item.fileName)).toEqual(['mobile.apk']);

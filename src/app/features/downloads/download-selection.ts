@@ -19,8 +19,17 @@ export function detectDevice(userAgent: string, platformHint = '', touchPoints =
 }
 
 function versionParts(version: string): number[] {
-  return version.replace(/^v/i, '').split('+')[0].split('.').map(part => Number(part) || 0);
+  return version.replace(/^v/i, '').split('+')[0].split('.')
+    .map(part => Number(part.split('-')[0]) || 0);
 }
+
+/**
+ * Stable releases are published as `0.2.0-v1a`: the `-v<n>[a-z]` tail marks a
+ * build variant of the same numeric version, not a prerelease. Qualifiers such
+ * as `-beta.1`, `-rc.2` or `-alpha` must still be rejected, so the suffix rule
+ * is deliberately narrower than "anything after a hyphen".
+ */
+const STABLE_VERSION = /^v?\d+(?:\.\d+)*(?:[+-]v?\d+[a-z]?)?$/i;
 
 export function compareVersions(a: string, b: string): number {
   const left = versionParts(a), right = versionParts(b);
@@ -35,7 +44,7 @@ export function compareVersions(a: string, b: string): number {
 export function latestDownloads(items: DownloadInfo[]): DownloadInfo[] {
   const targets = new Map<string, DownloadInfo>();
   for (const source of items) {
-    if (!source.isAvailable || !source.url || !/^v?\d+(?:\.\d+)*(?:\+[^\s]+)?$/i.test(source.version)) continue;
+    if (!source.isAvailable || !source.url || !STABLE_VERSION.test(source.version)) continue;
     const item = { ...source, platform: source.platform.toLowerCase(), architecture: source.architecture.toLowerCase() };
     // App bundles are store publishing artifacts, not user-installable Android packages.
     if (item.platform === 'android' && !item.fileName?.toLowerCase().endsWith('.apk')) continue;

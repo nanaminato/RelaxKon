@@ -318,6 +318,13 @@
       "title": "Other architectures and server packages",
       "lead": "The latest available stable package for each system, architecture and package type. Server packages are for the target host; client packages are for your device."
     },
+    "details": {
+      "title": "Download details",
+      "package": "Package",
+      "action": "Action",
+      "empty": "Choose a system and architecture to see the file size, checksum and package type.",
+      "note": "The client archive runs after extraction and is not installed on the server; use the server bundle for the target host."
+    },
     "androidTitle": "Install the Android client",
     "androidHint": "Download a published signed APK and confirm installation in Android. Updates must use the same signing certificate. AAB files are for store distribution, not direct installation.",
     "androidUnavailable": "No published Android APK is listed yet. Source implementation does not imply public package availability.",

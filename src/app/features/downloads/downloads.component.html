@@ -1,61 +1,112 @@
 <section class="page-hero">
-  <div class="container page-hero__inner">
+  <div class="container page-hero__inner dl-hero">
     <p class="eyebrow">{{ i18n.t('downloads.eyebrow') }}</p>
     <h1>{{ i18n.t('downloads.title') }}</h1>
     <p class="lead">{{ i18n.t('downloads.lead') }}</p>
-    <div class="download-picker" aria-labelledby="download-picker-title">
-      <div class="download-picker__intro">
-        <span class="badge badge--accent">{{ i18n.t('downloads.recommendation.stable') }}</span>
-        <h2 id="download-picker-title">{{ i18n.t('downloads.recommendation.title') }}</h2>
-        <p class="muted">{{ i18n.t(device().platform ? 'downloads.recommendation.detected' : 'downloads.recommendation.chooseSystem', { platform: platformLabel(device().platform ?? '') }) }}</p>
-      </div>
-      <div class="platform-picker" role="group" [attr.aria-label]="i18n.t('common.platform')">
-        @for (platform of platforms; track platform) {
-          <button type="button" [class.is-selected]="selectedPlatform() === platform" [attr.aria-pressed]="selectedPlatform() === platform" (click)="selectPlatform(platform)">{{ platformLabel(platform) }}</button>
-        }
-      </div>
-      <div class="download-picker__body" aria-live="polite" [attr.aria-busy]="loading()">
-        @if (loading()) {
-          <p>{{ i18n.t('common.loading') }}</p>
-        } @else if (failed()) {
-          <p>{{ i18n.t('downloads.recommendation.loadError') }}</p>
-          <button class="btn btn--secondary" type="button" (click)="loadDownloads()">{{ i18n.t('common.retry') }}</button>
-        } @else if (!selectedPlatform()) {
-          <p class="muted">{{ i18n.t('downloads.recommendation.chooseSystem') }}</p>
-        } @else {
-          @if (architectures().length) {
-            <label class="architecture-picker">
-              <span>{{ i18n.t('common.architecture') }}</span>
-              <select [ngModel]="selectedArchitecture()" (ngModelChange)="selectArchitecture($event)">
-                <option ngValue="">{{ i18n.t('downloads.recommendation.chooseArchitecture') }}</option>
-                @for (architecture of architectures(); track architecture) {
-                  <option [ngValue]="architecture">{{ architectureLabel(architecture) }}</option>
-                }
-              </select>
-            </label>
-            <p class="small muted">{{ i18n.t('downloads.recommendation.architectureHint') }}</p>
+
+    <div class="download-picker">
+      <div class="download-picker__main">
+        <div class="dl-tabs" role="tablist" [attr.aria-label]="i18n.t('common.platform')">
+          @for (platform of platforms; track platform) {
+            <button type="button" role="tab" class="dl-tab" id="dl-tab-{{ platform }}"
+              [class.is-selected]="selectedPlatform() === platform"
+              [attr.aria-selected]="selectedPlatform() === platform"
+              [attr.aria-controls]="'dl-panel'"
+              [attr.tabindex]="selectedPlatform() === platform ? 0 : -1"
+              (click)="selectPlatform(platform)"
+              (keydown)="onTabKeydown($event, platform)">
+              <span class="dl-tab__name">{{ platformLabel(platform) }}</span>
+              @if (platformCounts().get(platform); as count) {
+                <span class="dl-tab__count">{{ count }}</span>
+              }
+            </button>
           }
-          @if (recommended(); as item) {
-            <div class="download-picker__action">
-              <a class="btn btn--primary btn--lg" [href]="downloadHref(item.url)" download>{{ i18n.t('downloads.recommendation.downloadFor', { platform: platformLabel(item.platform) }) }} <span aria-hidden="true">↓</span></a>
-              <p class="download-picker__meta"><span class="mono">v{{ item.version }}</span><span>{{ item.size }}</span><span>{{ item.releaseDate | rkDate: 'medium' : i18n.language() }}</span></p>
+        </div>
+
+        <div class="download-picker__body" id="dl-panel" role="tabpanel" aria-live="polite" [attr.aria-busy]="loading()">
+          @if (loading()) {
+            <div class="stack">
+              <div class="skeleton" style="height: 20px; width: 180px"></div>
+              <div class="skeleton" style="height: 56px; width: 100%; max-width: 420px"></div>
             </div>
-            <div class="download-picker__links">
-              <a [routerLink]="gettingStartedLink()">{{ i18n.t('downloads.recommendation.setupGuide') }} →</a>
-              <a [routerLink]="['/releases', item.version]">{{ i18n.t('releases.title') }}</a>
-              @if (item.checksum) {
-                <button type="button" (click)="copy(item.checksum, 'checksum')">{{ copied() === 'checksum' ? i18n.t('common.copied') : i18n.t('downloads.recommendation.copyChecksum') }}</button>
+          } @else if (failed()) {
+            <p class="dl-empty">{{ i18n.t('downloads.recommendation.loadError') }}</p>
+            <button class="btn btn--secondary btn--sm" type="button" (click)="loadDownloads()">{{ i18n.t('common.retry') }}</button>
+          } @else if (!selectedPlatform()) {
+            <p class="dl-empty">{{ i18n.t('downloads.recommendation.chooseSystem') }}</p>
+          } @else {
+            <div class="dl-versionline">
+              @if (railItem(); as item) {
+                <span class="dl-version mono">v{{ item.version }}</span>
+                <span class="badge badge--accent">{{ i18n.t('downloads.recommendation.stable') }}</span>
+              } @else {
+                <span class="dl-version">{{ platformLabel(selectedPlatform() ?? '') }}</span>
               }
             </div>
-          } @else if (platformClients().length && !selectedArchitecture()) {
-            <p class="muted">{{ i18n.t('downloads.recommendation.chooseArchitecture') }}</p>
-          } @else {
-            <p class="muted">{{ i18n.t('downloads.recommendation.unavailable') }}</p>
-            <a class="btn btn--secondary" [routerLink]="gettingStartedLink()">{{ i18n.t('downloads.recommendation.setupGuide') }}</a>
+            <p class="dl-hint">{{ i18n.t(device().platform ? 'downloads.recommendation.detected' : 'downloads.recommendation.chooseSystem', { platform: platformLabel(device().platform ?? '') }) }}</p>
+
+            @if (architectures().length > 1) {
+              <div class="dl-arch" role="radiogroup" [attr.aria-label]="i18n.t('common.architecture')">
+                <span>{{ i18n.t('common.architecture') }}</span>
+                @for (architecture of architectures(); track architecture) {
+                  <button type="button" role="radio" [attr.aria-checked]="selectedArchitecture() === architecture"
+                    [class.is-selected]="selectedArchitecture() === architecture"
+                    (click)="selectArchitecture(architecture)">{{ architectureLabel(architecture) }}</button>
+                }
+              </div>
+            }
+
+            @if (recommended(); as item) {
+              <div class="dl-action">
+                <a class="btn btn--primary btn--lg dl-cta" [href]="downloadHref(item.url)" download>
+                  <span class="dl-cta__label">{{ i18n.t('downloads.recommendation.downloadFor', { platform: platformLabel(item.platform) }) }}</span>
+                  <span class="dl-cta__meta mono">{{ item.fileName }} · {{ item.size }}</span>
+                </a>
+                <button type="button" class="btn btn--secondary dl-secondary" (click)="copy(item.checksum, 'checksum')">
+                  {{ copied() === 'checksum' ? i18n.t('common.copied') : i18n.t('downloads.recommendation.copyChecksum') }}
+                </button>
+              </div>
+              <div class="download-picker__links">
+                <a [routerLink]="gettingStartedLink()">{{ i18n.t('downloads.recommendation.setupGuide') }} →</a>
+                <a [routerLink]="['/releases', item.version]">{{ i18n.t('releases.title') }} →</a>
+              </div>
+            } @else if (platformClients().length && !selectedArchitecture()) {
+              <p class="dl-empty">{{ i18n.t('downloads.recommendation.chooseArchitecture') }}</p>
+              <p class="small muted">{{ i18n.t('downloads.recommendation.architectureHint') }}</p>
+            } @else {
+              <p class="dl-empty">{{ i18n.t('downloads.recommendation.unavailable') }}</p>
+              <a class="btn btn--secondary btn--sm" [routerLink]="gettingStartedLink()">{{ i18n.t('downloads.recommendation.setupGuide') }}</a>
+            }
           }
-        }
+        </div>
       </div>
-      <a class="download-picker__all" href="/downloads#packages" (click)="scrollToPackages($event)">{{ i18n.t('downloads.recommendation.allDownloads') }} →</a>
+
+      <aside class="download-picker__rail">
+        <h2 class="dl-rail__title">{{ i18n.t('downloads.details.title') }}</h2>
+        @if (railItem(); as item) {
+          <dl class="dl-facts">
+            <div><dt>{{ i18n.t('common.version') }}</dt><dd class="mono">v{{ item.version }}</dd></div>
+            @if (recommended()) {
+              <div><dt>{{ i18n.t('common.fileSize') }}</dt><dd class="mono">{{ item.size }}</dd></div>
+            }
+            <div><dt>{{ i18n.t('common.releaseDate') }}</dt><dd>{{ item.releaseDate | rkDate: 'medium' : i18n.language() }}</dd></div>
+            <div><dt>{{ i18n.t('downloads.details.package') }}</dt><dd>{{ packageKindLabel(item.packageKind) }}</dd></div>
+          </dl>
+          @if (recommended()) {
+            <div class="dl-hash">
+              <span>{{ i18n.t('common.checksum') }}</span>
+              <code [title]="item.checksum">{{ checksumPreview(item.checksum) }}</code>
+              <button type="button" (click)="copy(item.checksum, 'checksum')">{{ copied() === 'checksum' ? i18n.t('common.copied') : i18n.t('common.copy') }}</button>
+            </div>
+            <p class="dl-rail__note">{{ i18n.t('downloads.details.note') }}</p>
+          } @else {
+            <p class="dl-rail__note">{{ i18n.t('downloads.details.empty') }}</p>
+          }
+        } @else {
+          <p class="dl-rail__note">{{ i18n.t('downloads.details.empty') }}</p>
+        }
+        <a class="dl-rail__all" href="/downloads#packages" (click)="scrollToPackages($event)">{{ i18n.t('downloads.recommendation.allDownloads') }} →</a>
+      </aside>
     </div>
     @if (!loading() && !failed() && !availableItems().length) {
       <p class="notice notice--warning mt-2">{{ i18n.t('downloads.note') }}</p>
@@ -105,9 +156,9 @@
       <p class="muted">{{ i18n.t('downloads.packages.lead') }}</p>
     </div>
     @if (loading()) {
-      <div class="grid grid--3">
-        @for (placeholder of [1, 2, 3]; track placeholder) {
-          <div class="skeleton" style="height: 190px"></div>
+      <div class="stack">
+        @for (placeholder of [1, 2, 3, 4]; track placeholder) {
+          <div class="skeleton" style="height: 54px"></div>
         }
       </div>
     } @else if (failed()) {
@@ -115,36 +166,48 @@
     } @else if (!groups().length) {
       <p class="muted">{{ i18n.t('downloads.empty') }}</p>
     } @else {
-      <div class="stack groups">
+      <div class="dl-table">
+        <div class="dl-table__head" aria-hidden="true">
+          <span>{{ i18n.t('common.architecture') }}</span>
+          <span>{{ i18n.t('downloads.details.package') }}</span>
+          <span>{{ i18n.t('common.version') }}</span>
+          <span>{{ i18n.t('common.fileSize') }}</span>
+          <span>{{ i18n.t('common.releaseDate') }}</span>
+          <span class="dl-table__action">{{ i18n.t('downloads.details.action') }}</span>
+        </div>
         @for (group of groups(); track group.platform) {
-          <section class="group">
-            <header class="group__head">
-              <h3>{{ platformLabel(group.platform) }}</h3>
+          <section class="dl-group">
+            <h3 class="dl-group__head">
+              <span>{{ platformLabel(group.platform) }}</span>
               <span class="muted small">{{ group.items.length }} {{ i18n.t('downloads.latest') }}</span>
-            </header>
-            <div class="grid grid--2">
-              @for (item of group.items; track item.architecture + item.version + item.packageKind) {
-                <article class="card download" [attr.aria-label]="platformLabel(item.platform) + ' ' + item.architecture + ' ' + packageKindLabel(item.packageKind)">
-                  <div class="download__head">
-                    <span class="chip mono">{{ item.architecture }}</span>
-                    <span class="chip">{{ packageKindLabel(item.packageKind) }}</span>
-                    @if (item.isAvailable) {
-                      <span class="badge badge--success"><span class="badge__dot"></span>{{ i18n.t('common.available') }}</span>
+            </h3>
+            @for (item of group.items; track item.architecture + item.version + item.packageKind) {
+              <article class="download" [attr.aria-label]="platformLabel(item.platform) + ' ' + item.architecture + ' ' + packageKindLabel(item.packageKind)">
+                <div class="download__row">
+                  <span class="download__cell mono">{{ item.architecture }}</span>
+                  <span class="download__cell"><span class="chip">{{ packageKindLabel(item.packageKind) }}</span></span>
+                  <span class="download__cell mono">v{{ item.version }}</span>
+                  <span class="download__cell mono">{{ item.size }}</span>
+                  <span class="download__cell">{{ item.releaseDate | rkDate: 'medium' : i18n.language() }}</span>
+                  <span class="download__action">
+                    @if (item.isAvailable && item.url) {
+                      <a class="btn btn--secondary btn--sm" [href]="downloadHref(item.url)" download>{{ i18n.t('common.download') }} ↓</a>
                     } @else {
-                      <span class="badge badge--warning">{{ i18n.t('common.comingSoon') }}</span>
+                      <button class="btn btn--secondary btn--sm" type="button" disabled>{{ i18n.t('common.notAvailable') }}</button>
                     }
-                  </div>
-                  <dl class="download__meta">
-                    <div><dt>{{ i18n.t('common.version') }}</dt><dd class="mono">{{ item.version }}</dd></div>
-                    <div><dt>{{ i18n.t('common.releaseDate') }}</dt><dd>{{ item.releaseDate | rkDate: 'medium' : i18n.language() }}</dd></div>
-                    <div><dt>{{ i18n.t('common.fileSize') }}</dt><dd class="mono">{{ item.size }}</dd></div>
-                    @if (item.checksum) {
-                      <div class="download__checksum"><dt>{{ i18n.t('common.checksum') }}</dt><dd class="mono">{{ item.checksum }}</dd><button type="button" (click)="copy(item.checksum, 'checksum')">{{ copied() === 'checksum' ? i18n.t('common.copied') : i18n.t('common.copy') }}</button></div>
-                    }
-                  </dl>
-                  @if (item.fileName) { <p class="mono small muted mb-0">{{ item.fileName }}</p> }
+                  </span>
+                </div>
+                <div class="download__extra">
+                  @if (item.fileName) { <span class="mono">{{ item.fileName }}</span> }
+                  @if (item.checksum) {
+                    <span class="download__checksum">
+                      <span>{{ i18n.t('common.checksum') }}</span>
+                      <code class="mono" [title]="item.checksum">{{ checksumPreview(item.checksum) }}</code>
+                      <button type="button" (click)="copy(item.checksum, 'checksum')">{{ copied() === 'checksum' ? i18n.t('common.copied') : i18n.t('common.copy') }}</button>
+                    </span>
+                  }
                   @if (item.platform === 'android') {
-                    <p class="muted small">{{ i18n.t('downloads.androidHint') }}</p>
+                    <span>{{ i18n.t('downloads.androidHint') }}</span>
                     <a [routerLink]="androidDocLink()">{{ i18n.t('downloads.androidDocs') }}</a>
                   }
                   @if (item.packageKind === 'client' && ['windows', 'linux'].includes(item.platform)) {
@@ -159,14 +222,9 @@
                       </div>
                     </details>
                   }
-                  @if (item.isAvailable && item.url) {
-                    <a class="btn btn--primary btn--sm" [href]="downloadHref(item.url)" download>{{ i18n.t('common.download') }}</a>
-                  } @else {
-                    <button class="btn btn--secondary btn--sm" type="button" disabled>{{ i18n.t('common.notAvailable') }}</button>
-                  }
-                </article>
-              }
-            </div>
+                </div>
+              </article>
+            }
           </section>
         }
       </div>

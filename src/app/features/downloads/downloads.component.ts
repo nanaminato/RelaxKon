@@ -41,6 +41,9 @@ export class DownloadsComponent {
     return [...values].sort();
   });
   readonly recommended = computed(() => this.platformClients().find(item => item.architecture === this.selectedArchitecture()) ?? null);
+
+  /** The rail can still describe the release before a CPU is chosen; only file facts wait for it. */
+  readonly railItem = computed(() => this.recommended() ?? this.platformClients()[0] ?? null);
   readonly gettingStartedLink = computed(() => docsUrl(this.i18n.language(), this.selectedPlatform() === 'android' ? 'getting-started/android' : 'getting-started/quick-start'));
   readonly copied = signal<'client' | 'checksum' | null>(null);
 
@@ -98,20 +101,55 @@ export class DownloadsComponent {
   }
 
   private manuallySelected = false;
+  /** The CPU the visitor picked by hand; carried across systems that ship it. */
+  private preferredArchitecture = '';
+
   selectPlatform(platform: DownloadPlatform): void {
     this.manuallySelected = true;
     this.selectedPlatform.set(platform);
+    // Keep an architecture the visitor already chose instead of resetting it on every
+    // tab change; fall back to detection only when the target system lacks it.
+    if (this.preferredArchitecture && this.architectures().includes(this.preferredArchitecture)) {
+      this.selectedArchitecture.set(this.preferredArchitecture);
+      return;
+    }
     this.chooseArchitecture();
   }
 
   selectArchitecture(value: string): void {
     this.manuallySelected = true;
+    this.preferredArchitecture = value;
     this.selectedArchitecture.set(value);
   }
+
+  /** JetBrains-style rail: a full digest is never useful, so it is shortened and copyable. */
+  checksumPreview(value: string): string {
+    return value.length > 20 ? `${value.slice(0, 20)}…` : value;
+  }
+
+  readonly platformCounts = computed(() => {
+    const counts = new Map<string, number>();
+    for (const item of this.clients()) {
+      counts.set(item.platform, (counts.get(item.platform) ?? 0) + 1);
+    }
+    return counts;
+  });
 
   architectureLabel(value: string): string {
     return this.i18n.t(`downloads.recommendation.architectures.${value}`) === `downloads.recommendation.architectures.${value}`
       ? value : this.i18n.t(`downloads.recommendation.architectures.${value}`);
+  }
+
+  /** Roving tabindex keeps the tab strip usable with arrow keys, as ARIA tabs expect. */
+  onTabKeydown(event: KeyboardEvent, platform: DownloadPlatform): void {
+    if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const index = this.platforms.indexOf(platform);
+    const target = event.key === 'Home' ? this.platforms[0]
+      : event.key === 'End' ? this.platforms[this.platforms.length - 1]
+      : this.platforms[(index + (event.key === 'ArrowRight' ? 1 : -1) + this.platforms.length) % this.platforms.length];
+    this.selectPlatform(target);
+    this.document.getElementById(`dl-tab-${target}`)?.focus();
   }
 
   private chooseArchitecture(): void {
