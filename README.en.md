@@ -109,7 +109,7 @@ All colours, spacing, radii and shadows are CSS custom properties (`--rk-*`) def
 
 Runtime translations live in `public/assets/i18n/{en-US,zh-CN,ja-JP}.json` as nested objects. They are flattened to dotted keys at load time, so templates call `t('home.hero.title')`, with `{placeholder}` interpolation. Until a visitor manually selects a language, the UI follows the browser/system preferred language: Chinese becomes `zh-CN`, Japanese becomes `ja-JP`, and every other language becomes `en-US`; it also follows a browser `languagechange` event. Only a manual header selection is persisted under the `rk-language` LocalStorage key and takes precedence.
 
-The three dictionaries must stay key-for-key identical (390 keys each today); a missing key renders as the key itself. Re-check with `npm run verify:i18n`, which first compares the three dictionaries and then confirms every key referenced from templates and components actually exists — a missing key never fails the build, it just shows up as the key name on the page. **Add a UI language** by:
+The three dictionaries must stay key-for-key identical (395 keys each today); a missing key renders as the key itself. Re-check with `npm run verify:i18n`, which first compares the three dictionaries and then confirms every key referenced from templates and components actually exists — a missing key never fails the build, it just shows up as the key name on the page. **Add a UI language** by:
 
 1. Adding `public/assets/i18n/<code>.json`
 2. Extending the `SiteLanguage` union and `SITE_LANGUAGES` in `core/i18n/i18n.service.ts`
@@ -118,7 +118,7 @@ The three dictionaries must stay key-for-key identical (390 keys each today); a 
 
 Documentation and FAQ use **content** languages supplied by the API, using the active website language.
 
-`RelaxKonServer/Content/Docs/{en-US,zh-CN,ja-JP}` currently holds 49 documents per language (12 getting-started + 9 concepts + 28 applications), so all three are fully aligned and normal browsing never falls back. The fallback mechanism itself remains: when a slug is missing in the requested language it is served from `en-US` and the response sets `isFallback` so the UI can say so. **Keep the three languages in step when you add or remove content files**, otherwise fallback entries appear in the navigation.
+`RelaxKonServer/Content/Docs/{en-US,zh-CN,ja-JP}` currently holds 52 documents per language (12 getting-started + 10 concepts + 30 applications), so all three are fully aligned and normal browsing never falls back. The fallback mechanism itself remains: when a slug is missing in the requested language it is served from `en-US` and the response sets `isFallback` so the UI can say so. **Keep the three languages in step when you add or remove content files**, otherwise fallback entries appear in the navigation.
 
 The website and documentation share the header language setting. Opening a localized documentation URL synchronizes the interface language; switching languages preserves the document path, version and anchor. `<html lang>` follows the interface. Missing translations fall back to English, with an explicit notice and the actual language on `<article lang>`; fallback pages are excluded from search indexing. The API echoes the requested language in `DocumentResponse.language`, so use `isFallback` to identify an English fallback.
 
@@ -129,6 +129,15 @@ Documentation, FAQ, release notes and download listings all live in `RelaxKonSer
 Tutorial screenshots live under `public/assets/docs/screenshots/{zh-CN,en-US,ja-JP}/` with the inventory in `manifest.json` next to them (currently 20 screenshot slots × 3 languages). **All 60 entries are still `status: placeholder`**; see the [screenshot workflow](./docs/documentation-screenshots.md) (in Chinese) for replacing them with real captures. Tutorial diagram SVGs live in `public/assets/tutorials/<lang>/`. Run `npm run verify:doc-images` after touching either.
 
 Editorial rule: the site separates "what the source can do", "what was actually verified" and "what was published", and never presents source support as a shipped feature. The 0.1.2 release record was reconstructed from the download listing at the time and makes no claim about later source features; Android details belong to `Client/RelaxKonOS.Client.Android/docs/` in the product repository, and the site keeps only user-facing summaries and links.
+
+## Downloads page
+
+`features/downloads/` turns the `/api/downloads` feed into a "pick a system, pick a CPU, download" surface. A few rules are easy to break:
+
+- **Stable-release filter** (`STABLE_VERSION` in `download-selection.ts`): a suffix such as `0.2.0-v1a` is a build variant of the same version and still counts as stable, while `-beta.1`, `-rc.2` or `-alpha` are filtered out. Items also need `isAvailable` set and a non-empty `url`; Android only lists `.apk` files, because an AAB is a store artifact rather than an installable package.
+- **The CPU choice survives a system switch**: an architecture picked by hand is reused on other systems that ship it, and detection only takes over when the target system has no such build.
+- **The detail rail** falls back to the system's first package before a CPU is chosen, showing only version, release date and package kind; file size and checksum are file facts and appear once an architecture is selected. Checksums are shortened to 20 characters, with the copy button carrying the full value.
+- **The tab strip is a proper ARIA tablist**: arrow keys, Home and End move between tabs and take focus with them (`onTabKeydown` maintains the roving tabindex); the number on each tab is that system's client package count.
 
 ## Upgrading dependencies
 

@@ -771,7 +771,7 @@
   </url>
   <url>
     <loc>https://relaxkon.com/docs/en-US/latest/concepts/architecture</loc>
-    <lastmod>2026-10-16</lastmod>
+    <lastmod>2026-11-01</lastmod>
     <xhtml:link rel="alternate" hreflang="en-US" href="https://relaxkon.com/docs/en-US/latest/concepts/architecture"/>
     <xhtml:link rel="alternate" hreflang="ja-JP" href="https://relaxkon.com/docs/ja-JP/latest/concepts/architecture"/>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://relaxkon.com/docs/zh-CN/latest/concepts/architecture"/>
@@ -779,7 +779,7 @@
   </url>
   <url>
     <loc>https://relaxkon.com/docs/ja-JP/latest/concepts/architecture</loc>
-    <lastmod>2026-10-16</lastmod>
+    <lastmod>2026-11-01</lastmod>
     <xhtml:link rel="alternate" hreflang="en-US" href="https://relaxkon.com/docs/en-US/latest/concepts/architecture"/>
     <xhtml:link rel="alternate" hreflang="ja-JP" href="https://relaxkon.com/docs/ja-JP/latest/concepts/architecture"/>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://relaxkon.com/docs/zh-CN/latest/concepts/architecture"/>
@@ -787,7 +787,7 @@
   </url>
   <url>
     <loc>https://relaxkon.com/docs/zh-CN/latest/concepts/architecture</loc>
-    <lastmod>2026-10-16</lastmod>
+    <lastmod>2026-11-01</lastmod>
     <xhtml:link rel="alternate" hreflang="en-US" href="https://relaxkon.com/docs/en-US/latest/concepts/architecture"/>
     <xhtml:link rel="alternate" hreflang="ja-JP" href="https://relaxkon.com/docs/ja-JP/latest/concepts/architecture"/>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://relaxkon.com/docs/zh-CN/latest/concepts/architecture"/>
@@ -888,6 +888,30 @@
     <xhtml:link rel="alternate" hreflang="ja-JP" href="https://relaxkon.com/docs/ja-JP/latest/concepts/security"/>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://relaxkon.com/docs/zh-CN/latest/concepts/security"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://relaxkon.com/docs/en-US/latest/concepts/security"/>
+  </url>
+  <url>
+    <loc>https://relaxkon.com/docs/en-US/latest/concepts/server-modules</loc>
+    <lastmod>2026-11-01</lastmod>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://relaxkon.com/docs/en-US/latest/concepts/server-modules"/>
+    <xhtml:link rel="alternate" hreflang="ja-JP" href="https://relaxkon.com/docs/ja-JP/latest/concepts/server-modules"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://relaxkon.com/docs/zh-CN/latest/concepts/server-modules"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://relaxkon.com/docs/en-US/latest/concepts/server-modules"/>
+  </url>
+  <url>
+    <loc>https://relaxkon.com/docs/ja-JP/latest/concepts/server-modules</loc>
+    <lastmod>2026-11-01</lastmod>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://relaxkon.com/docs/en-US/latest/concepts/server-modules"/>
+    <xhtml:link rel="alternate" hreflang="ja-JP" href="https://relaxkon.com/docs/ja-JP/latest/concepts/server-modules"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://relaxkon.com/docs/zh-CN/latest/concepts/server-modules"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://relaxkon.com/docs/en-US/latest/concepts/server-modules"/>
+  </url>
+  <url>
+    <loc>https://relaxkon.com/docs/zh-CN/latest/concepts/server-modules</loc>
+    <lastmod>2026-11-01</lastmod>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://relaxkon.com/docs/en-US/latest/concepts/server-modules"/>
+    <xhtml:link rel="alternate" hreflang="ja-JP" href="https://relaxkon.com/docs/ja-JP/latest/concepts/server-modules"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://relaxkon.com/docs/zh-CN/latest/concepts/server-modules"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://relaxkon.com/docs/en-US/latest/concepts/server-modules"/>
   </url>
   <url>
     <loc>https://relaxkon.com/docs/en-US/latest/concepts/session</loc>

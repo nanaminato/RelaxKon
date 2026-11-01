@@ -109,7 +109,7 @@ tools/
 
 运行时词条位于 `public/assets/i18n/{en-US,zh-CN,ja-JP}.json`，以嵌套对象书写，加载时被压平成点号键，模板里用 `t('home.hero.title')` 取值，支持 `{placeholder}` 插值。未手动选择时，UI 语言跟随浏览器/系统首选语言：中文为 `zh-CN`、日文为 `ja-JP`、其余语言一律为 `en-US`；浏览器触发 `languagechange` 时也会同步。用户在页头手动选择后，选择才保存到 LocalStorage 的 `rk-language` 键并优先使用。
 
-三份词典的键必须完全对齐（当前各 390 条），缺键会直接显示键名。改完用 `npm run verify:i18n` 复核：前半段检查三语是否对齐，后半段确认模板与组件里引用的键都真的存在（缺键不会让构建失败，只会在页面上显示成键名）。**新增一种 UI 语言**需要：
+三份词典的键必须完全对齐（当前各 395 条），缺键会直接显示键名。改完用 `npm run verify:i18n` 复核：前半段检查三语是否对齐，后半段确认模板与组件里引用的键都真的存在（缺键不会让构建失败，只会在页面上显示成键名）。**新增一种 UI 语言**需要：
 
 1. 添加 `public/assets/i18n/<code>.json`；
 2. 扩展 `core/i18n/i18n.service.ts` 中的 `SiteLanguage` 联合类型与 `SITE_LANGUAGES` 常量。
@@ -118,7 +118,7 @@ tools/
 
 文档与 FAQ 的译文由 API 提供，使用官网当前语言。
 
-`RelaxKonServer/Content/Docs/{en-US,zh-CN,ja-JP}` 当前各 49 篇（入门 12 + 概念 9 + 应用 28），三种语言已完全对齐，因此正常浏览不会触发回退。回退机制本身仍然存在：某个 slug 在目标语言缺失时会取 `en-US` 的版本，并把响应的 `isFallback` 置为 `true`，由界面提示读者。**改动内容文件数量时必须让三种语言保持一致**，否则导航会出现回退项。
+`RelaxKonServer/Content/Docs/{en-US,zh-CN,ja-JP}` 当前各 52 篇（入门 12 + 概念 10 + 应用 30），三种语言已完全对齐，因此正常浏览不会触发回退。回退机制本身仍然存在：某个 slug 在目标语言缺失时会取 `en-US` 的版本，并把响应的 `isFallback` 置为 `true`，由界面提示读者。**改动内容文件数量时必须让三种语言保持一致**，否则导航会出现回退项。
 
 官网和文档共用页头的语言设置。打开带语言的文档链接时，界面同步到该语言；切换语言会保留文档路径、版本和锚点。`<html lang>` 使用界面语言。缺少译文时，正文回退到英文，`<article lang>` 标明实际语言，并显示回退提示；回退页面不参与搜索索引。API 的 `DocumentResponse.language` 回显请求语言，因此用 `isFallback` 判断正文是否为英文。
 
@@ -129,6 +129,15 @@ tools/
 教程截图位于 `public/assets/docs/screenshots/{zh-CN,en-US,ja-JP}/`，清单写在同目录的 `manifest.json`（当前 20 个截图位 × 3 语言）。**目前 60 条记录全部是 `status: placeholder`**，换成真图的做法见[截图维护说明](./docs/documentation-screenshots.md)（中文）。教程图解 SVG 在 `public/assets/tutorials/<lang>/`。两者改完都跑 `npm run verify:doc-images`。
 
 文案口径：官网区分「当前源码能力 / 实际验收 / 已发布包」，不把源码支持写成已发布。0.1.2 的发行记录由当时的下载目录清单补齐，不推断它包含之后的源码功能；Android 细节以产品工程的 `Client/RelaxKonOS.Client.Android/docs/` 为准，官网只留用户向摘要与链接。
+
+## 下载页
+
+`features/downloads/` 把 `/api/downloads` 的清单变成「选系统 → 选架构 → 下载」的界面。几条容易踩的规则：
+
+- **稳定版判定**（`download-selection.ts` 里的 `STABLE_VERSION`）：`0.2.0-v1a` 这种 `-v<n><字母>` 后缀是同一版本的构建变体，仍算稳定版；`-beta.1`、`-rc.2`、`-alpha` 之类一律过滤。除此之外还要求 `isAvailable` 为真、`url` 非空；Android 只列 `.apk`，AAB 是商店发布物而非安装包。
+- **架构选择跨系统保留**：手动选过 CPU 后切到别的系统仍沿用该架构，只有目标系统没有它时才回落到自动识别。
+- **右侧详情栏**在没选架构时用该系统的首个包占位，只显示版本、发布日期和包类型；文件大小与校验和属于「文件事实」，选中架构后才出现。校验和只显示前 20 位，完整值走复制按钮。
+- **标签栏是标准 ARIA tabs**：方向键 / Home / End 切换并同步焦点（`onTabKeydown` 维护 roving tabindex）；标签上的数字是该系统的客户端包数量。
 
 ## 升级依赖
 
